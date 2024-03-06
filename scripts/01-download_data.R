@@ -7,7 +7,7 @@
 # Pre-requisites: [...UPDATE THIS...]
 # Any other information needed? [...UPDATE THIS...]
 
-
+S
 #### Workspace setup ####
 library(dataverse)
 library(tidyverse)
@@ -22,17 +22,12 @@ ces2020 <-
   ) |>
   select(votereg, CC20_410, race, region, CC20_300b_4, CC20_300b_5, CC20_303)
 
-write_csv(ces2020, "ces2020.csv")
-git lfs install
+write_csv(ces2020, "data/raw_data/ces2020.csv")
+#git lfs install
 
-#### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(raw_data.csv, "inputs/data/raw_data.csv") 
 
-git lfs track "path/to/large/file"
-git lfs track "data/raw_data/CES20_Common_OUTPUT_vv.csv"
-git lfs ls-files
-git push --force origin <your_branch_name>
-  
+#git lfs track "path/to/large/file"
+#git lfs track "data/raw_data/CES20_Common_OUTPUT_vv.csv"
+#git lfs ls-files
+
          
