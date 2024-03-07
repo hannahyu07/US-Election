@@ -932,7 +932,6 @@ Biden,White,West,Retired
 Biden,Black,South,Retired
 Biden,White,West,Retired
 Biden,White,South,Full-time
-Trump,White,South,NA
 Biden,White,South,Part-time
 Trump,White,South,Full-time
 Biden,White,West,Full-time
@@ -2376,7 +2375,6 @@ Biden,White,Northeast,Full-time
 Trump,White,Midwest,Homemaker
 Trump,White,South,Full-time
 Trump,White,South,Full-time
-Biden,White,Northeast,NA
 Trump,White,Northeast,Retired
 Biden,White,Midwest,Full-time
 Trump,White,Northeast,Full-time
@@ -5204,7 +5202,6 @@ Biden,White,Midwest,Student
 Trump,White,South,Unemployed
 Trump,White,Midwest,Full-time
 Biden,White,Midwest,Temporarily laid off
-Trump,White,South,NA
 Trump,Black,West,Retired
 Trump,White,Northeast,Retired
 Biden,Black,Midwest,Full-time
@@ -6746,7 +6743,6 @@ Biden,White,Midwest,Homemaker
 Biden,White,Northeast,Full-time
 Biden,Hispanic,South,Full-time
 Biden,White,South,Retired
-Biden,White,South,NA
 Biden,White,Northeast,Part-time
 Trump,White,South,Full-time
 Trump,White,South,Retired
@@ -10374,7 +10370,6 @@ Trump,Native American,South,Full-time
 Biden,White,Midwest,Full-time
 Biden,White,Midwest,Full-time
 Trump,White,Northeast,Retired
-Biden,White,Northeast,NA
 Biden,White,Northeast,Full-time
 Biden,Middle Eastern,West,Retired
 Trump,White,South,Retired
@@ -10842,7 +10837,6 @@ Trump,White,West,Retired
 Biden,White,South,Full-time
 Biden,White,Northeast,Full-time
 Trump,White,Northeast,Retired
-Biden,Hispanic,Northeast,NA
 Biden,White,Midwest,Homemaker
 Biden,White,Northeast,Full-time
 Trump,Hispanic,South,Full-time
@@ -12031,7 +12025,6 @@ Biden,Black,South,Temporarily laid off
 Trump,Black,West,Full-time
 Biden,Two or more races,Midwest,Homemaker
 Biden,Asian,West,Part-time
-Biden,White,South,NA
 Biden,White,Midwest,Full-time
 Trump,White,Midwest,Full-time
 Biden,Hispanic,West,Permanently disabled
@@ -15216,7 +15209,6 @@ Trump,White,South,Retired
 Trump,White,Midwest,Full-time
 Biden,White,Midwest,Retired
 Trump,White,Northeast,Permanently disabled
-Biden,Black,Northeast,NA
 Biden,Middle Eastern,Midwest,Full-time
 Biden,White,South,Part-time
 Biden,White,Midwest,Unemployed
@@ -18831,7 +18823,6 @@ Biden,White,South,Retired
 Biden,Hispanic,West,Full-time
 Trump,White,South,Part-time
 Biden,White,Northeast,Retired
-Biden,White,South,NA
 Biden,White,South,Full-time
 Biden,White,Northeast,Student
 Trump,White,South,Retired
@@ -23866,7 +23857,6 @@ Trump,White,Midwest,Full-time
 Biden,White,South,Full-time
 Biden,White,Northeast,Retired
 Trump,White,South,Retired
-Biden,White,Northeast,NA
 Biden,Black,South,Full-time
 Trump,White,Midwest,Full-time
 Biden,White,West,Part-time
@@ -25319,7 +25309,6 @@ Biden,White,West,Part-time
 Biden,White,Midwest,Student
 Trump,White,West,Retired
 Biden,White,South,Retired
-Trump,White,South,NA
 Trump,White,West,Retired
 Biden,White,South,Full-time
 Biden,White,Midwest,Full-time
@@ -28101,7 +28090,6 @@ Biden,Native American,South,Retired
 Biden,Asian,Midwest,Full-time
 Trump,White,South,Full-time
 Biden,White,South,Temporarily laid off
-Biden,Black,Midwest,NA
 Biden,White,South,Part-time
 Biden,Black,West,Retired
 Biden,White,West,Full-time
@@ -29269,7 +29257,6 @@ Biden,White,South,Full-time
 Biden,White,South,Full-time
 Trump,White,South,Retired
 Trump,White,Midwest,Full-time
-Trump,White,South,NA
 Trump,White,Midwest,Retired
 Trump,White,South,Part-time
 Biden,White,Midwest,Unemployed
@@ -30069,7 +30056,6 @@ Trump,White,South,Full-time
 Biden,White,Midwest,Retired
 Trump,White,West,Permanently disabled
 Trump,White,South,Full-time
-Trump,White,South,NA
 Trump,White,Northeast,Unemployed
 Trump,Two or more races,West,Retired
 Biden,Asian,West,Full-time
@@ -33900,7 +33886,6 @@ Trump,White,South,Retired
 Biden,White,Northeast,Part-time
 Biden,White,South,Retired
 Biden,White,Midwest,Other
-Trump,White,Northeast,NA
 Biden,White,West,Other
 Trump,White,Midwest,Homemaker
 Biden,White,South,Retired
@@ -34119,7 +34104,6 @@ Trump,White,South,Full-time
 Trump,White,South,Full-time
 Biden,White,South,Full-time
 Biden,White,South,Full-time
-Trump,White,Midwest,NA
 Trump,Two or more races,South,Part-time
 Biden,White,West,Full-time
 Trump,White,Midwest,Full-time
@@ -39921,7 +39905,6 @@ Biden,White,South,Full-time
 Biden,White,Northeast,Unemployed
 Biden,White,Midwest,Retired
 Biden,White,Midwest,Full-time
-Trump,Hispanic,West,NA
 Biden,Hispanic,West,Homemaker
 Biden,White,Midwest,Student
 Biden,Black,West,Full-time
@@ -42809,7 +42792,6 @@ Trump,White,Northeast,Full-time
 Biden,Native American,West,Homemaker
 Trump,Hispanic,South,Retired
 Trump,White,Northeast,Full-time
-Trump,White,West,NA
 Biden,White,Midwest,Full-time
 Biden,White,South,Full-time
 Trump,Hispanic,South,Homemaker
@@ -43232,7 +43214,6 @@ Biden,Hispanic,West,Part-time
 Biden,White,Northeast,Retired
 Biden,White,Northeast,Part-time
 Biden,White,West,Student
-Trump,White,Midwest,NA
 Biden,Hispanic,Northeast,Homemaker
 Trump,White,Northeast,Full-time
 Trump,White,South,Homemaker
@@ -43271,7 +43252,6 @@ Trump,Hispanic,South,Full-time
 Trump,White,South,Full-time
 Trump,White,West,Full-time
 Trump,White,West,Part-time
-Biden,White,Northeast,NA
 Biden,Black,Midwest,Unemployed
 Biden,White,Northeast,Student
 Biden,Native American,West,Retired

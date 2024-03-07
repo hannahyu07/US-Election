@@ -28,10 +28,13 @@ raw_ces2020 <-
 # only interested in:
 # respondents who are registered to vote: votereg = 1
 # vote for Trump or Biden: CC20_410 = 1 Biden, 2 Trump
+# no NA in race, region
+# filter NA in employ
 cleaned_ces2020 <-
   raw_ces2020 |>
   filter(votereg == 1,
          CC20_410 %in% c(1, 2)) |>
+  filter(!is.na(employ)) |>
   mutate(
     voted_for = if_else(CC20_410 == 1, "Biden", "Trump"),
     voted_for = as_factor(voted_for),
@@ -45,33 +48,11 @@ cleaned_ces2020 <-
       race == 7 ~ "Two or more races",
       race == 8 ~ "Other"
     ),
-    race = factor(
-      race,
-      levels = c(
-        "White",
-        "Black",
-        "Hispanic",
-        "Asian",
-        "Native American",
-        "Middle Eastern",
-        "Two or more races",
-        "Other"
-      )
-    ),
     region = case_when(
       region == 1 ~ "Northeast",
       region == 2 ~ "Midwest",
       region == 3 ~ "South",
       region == 4 ~ "West"
-    ),
-    region = factor(
-      region,
-      levels = c(
-        "Northeast",
-        "Midwest",
-        "South",
-        "West"
-      )
     ),
     employ = case_when(
       employ == 1 ~ "Full-time",
@@ -83,21 +64,6 @@ cleaned_ces2020 <-
       employ == 7 ~ "Homemaker",
       employ == 8 ~ "Student",
       employ == 9 ~ "Other"
-      
-    ),
-    employ = factor(
-      employ,
-      levels = c(
-        "Full-time",
-        "Part-time",
-        "Temporarily laid off",
-        "Unemployed",
-        "Retired",
-        "Permanently disabled",
-        "Homemaker",
-        "Student",
-        "Other"
-      )
     )
   ) |>
   select(voted_for, race, region, employ)

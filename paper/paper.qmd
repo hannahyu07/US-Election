@@ -20,6 +20,7 @@ bibliography: references.bib
 
 library(tidyverse)
 library(palmerpenguins)
+library(here)
 ```
 
 
@@ -34,6 +35,58 @@ The remainder of this paper is structured as follows. @sec-data....
 # Data {#sec-data}
 
 Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+
+```{r}
+# read in data
+ces2020 <-  read_csv(here::here("data/analysis_data/cleaned_ces2020.csv"))
+```
+
+```{r}
+# change column type to factor
+ces2020 <-
+  ces2020 |>
+  mutate(
+    voted_for = as_factor(voted_for),
+    race = factor(
+      race,
+      levels = c(
+        "White",
+        "Black",
+        "Hispanic",
+        "Asian",
+        "Native American",
+        "Middle Eastern",
+        "Two or more races",
+        "Other"
+      )
+    ),
+    region = factor(
+      region,
+      levels = c(
+        "Northeast",
+        "Midwest",
+        "South",
+        "West"
+      )
+    ),
+    employ = factor(
+      employ,
+      levels = c(
+        "Full-time",
+        "Part-time",
+        "Temporarily laid off",
+        "Unemployed",
+        "Retired",
+        "Permanently disabled",
+        "Homemaker",
+        "Student",
+        "Other"
+      )
+    )
+  ) |>
+  select(voted_for, race, region, employ)
+```
+
 
 ```{r}
 #| label: fig-bills

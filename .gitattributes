@@ -1,2 +1,0 @@
-path/to/large/file filter=lfs diff=lfs merge=lfs -text
-data/raw_data/ces2020.csv filter=lfs diff=lfs merge=lfs -text
