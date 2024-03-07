@@ -1,44 +1,106 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Purpose: Cleans the raw CES data in the data folder
+# Author: Yimiao Yuan
+# Date: 06 March 2024
+# Contact: yymlinda.yuan@mail.utoronto.ca
+# License: --
+# Pre-requisites: run 01-download_data.R in scripts folder first to get the raw data
+# Common Content of dataset: https://doi.org/10.7910/DVN/E9N6PH
 
 #### Workspace setup ####
 library(tidyverse)
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+# read in raw data, define column type
+raw_ces2020 <-
+  read_csv(
+    "data/raw_data/ces2020.csv",
+    col_types =
+      cols(
+        "votereg" = col_integer(),
+        "CC20_410" = col_integer(),
+        "race" = col_integer(),
+        "region" = col_integer(),
+        "employ" = col_integer()
+      )
+  )
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
+# only interested in:
+# respondents who are registered to vote: votereg = 1
+# vote for Trump or Biden: CC20_410 = 1 Biden, 2 Trump
+cleaned_ces2020 <-
+  raw_ces2020 |>
+  filter(votereg == 1,
+         CC20_410 %in% c(1, 2)) |>
   mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
+    voted_for = if_else(CC20_410 == 1, "Biden", "Trump"),
+    voted_for = as_factor(voted_for),
+    race = case_when(
+      race == 1 ~ "White",
+      race == 2 ~ "Black",
+      race == 3 ~ "Hispanic",
+      race == 4 ~ "Asian",
+      race == 5 ~ "Native American",
+      race == 6 ~ "Middle Eastern",
+      race == 7 ~ "Two or more races",
+      race == 8 ~ "Other"
+    ),
+    race = factor(
+      race,
+      levels = c(
+        "White",
+        "Black",
+        "Hispanic",
+        "Asian",
+        "Native American",
+        "Middle Eastern",
+        "Two or more races",
+        "Other"
+      )
+    ),
+    region = case_when(
+      region == 1 ~ "Northeast",
+      region == 2 ~ "Midwest",
+      region == 3 ~ "South",
+      region == 4 ~ "West"
+    ),
+    region = factor(
+      region,
+      levels = c(
+        "Northeast",
+        "Midwest",
+        "South",
+        "West"
+      )
+    ),
+    employ = case_when(
+      employ == 1 ~ "Full-time",
+      employ == 2 ~ "Part-time",
+      employ == 3 ~ "Temporarily laid off",
+      employ == 4 ~ "Unemployed",
+      employ == 5 ~ "Retired",
+      employ == 6 ~ "Permanently disabled",
+      employ == 7 ~ "Homemaker",
+      employ == 8 ~ "Student",
+      employ == 9 ~ "Other"
+      
+    ),
+    employ = factor(
+      employ,
+      levels = c(
+        "Full-time",
+        "Part-time",
+        "Temporarily laid off",
+        "Unemployed",
+        "Retired",
+        "Permanently disabled",
+        "Homemaker",
+        "Student",
+        "Other"
+      )
+    )
   ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
-  mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
-  ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
-  tidyr::drop_na()
+  select(voted_for, race, region, employ)
 
 #### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+write_csv(cleaned_ces2020, "data/analysis_data/cleaned_ces2020.csv")
