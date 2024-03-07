@@ -1,8 +1,8 @@
 #### Preamble ####
-# Purpose: Models... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Models
+# Author: 
+# Date: 07 March 2024
+# Contact: 
 # License: MIT
 # Pre-requisites: [...UPDATE THIS...]
 # Any other information needed? [...UPDATE THIS...]
@@ -13,25 +13,47 @@ library(tidyverse)
 library(rstanarm)
 
 #### Read data ####
-analysis_data <- read_csv("data/analysis_data/analysis_data.csv")
+analysis_data <- read_csv("data/analysis_data/cleaned_ces2020.csv")
 
 ### Model data ####
-first_model <-
-  stan_glm(
-    formula = flying_time ~ length + width,
-    data = analysis_data,
-    family = gaussian(),
-    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_aux = exponential(rate = 1, autoscale = TRUE),
-    seed = 853
-  )
+# first_model <-
+#   stan_glm(
+#     formula = flying_time ~ length + width,
+#     data = analysis_data,
+#     family = gaussian(),
+#     prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+#     prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
+#     prior_aux = exponential(rate = 1, autoscale = TRUE),
+#     seed = 853
+#   )
 
+# Convert variables to factors
+analysis_data$race <- factor(analysis_data$race)
+analysis_data$region <- factor(analysis_data$region)
+analysis_data$employ <- factor(analysis_data$employ)
+
+# Create voted_for variable in binary form
+analysis_data$voted_for_binary <- ifelse(analysis_data$voted_for == "Biden", 1, 0)
+
+#Model data
+set.seed(123)
+
+political_preferences <-
+  stan_glm(
+    voted_for_binary ~ race + region + employ,
+    data = analysis_data,
+    family = binomial(link = "logit"),
+    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    prior_intercept = 
+      normal(location = 0, scale = 2.5, autoscale = TRUE),
+    seed = 123
+  )
 
 #### Save model ####
 saveRDS(
-  first_model,
-  file = "models/first_model.rds"
+  political_preferences,
+  file = "models/political_preferences.rds"
 )
+
 
 
