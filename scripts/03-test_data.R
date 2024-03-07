@@ -11,20 +11,21 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(readr)
 
 
 #### Test data ####
 # read in cleaned data
 cleaned_ces2020 <-  read_csv("data/analysis_data/cleaned_ces2020.csv")
 
-# check column class
+# Check column class voted_for, race, region, and employ
 class(cleaned_ces2020$voted_for) == "character"
 class(cleaned_ces2020$race) == "character"
 class(cleaned_ces2020$region) == "character"
 class(cleaned_ces2020$employ) == "character"
 
-# range of data
-# voted_for
+# Range of data
+# Check range of data for voted_for  
 correct_voted_for <- 
   c("Trump", "Biden")
 
@@ -37,7 +38,7 @@ if (all(cleaned_ces2020$voted_for |>
 }
 
 
-# race
+# Check range of data for race
 correct_race <-
   c(
     "White",
@@ -59,7 +60,7 @@ if (all(cleaned_ces2020$race |>
 }
 
 
-# region
+# Check range of data for region
 correct_region <-
   c(
     "Northeast",
@@ -77,7 +78,7 @@ if (all(cleaned_ces2020$region |>
 }
 
 
-# employ
+# Check range of data for employ
 correct_employ <-
   c(
     "Full-time",
