@@ -7,27 +7,25 @@
 # Pre-requisites: [...UPDATE THIS...]
 # Any other information needed? [...UPDATE THIS...]
 
-S
+
 #### Workspace setup ####
 library(dataverse)
 library(tidyverse)
-# [...UPDATE THIS...]
 
+
+#### Download data ####
 ces2020 <-
   get_dataframe_by_name(
     filename = "CES20_Common_OUTPUT_vv.csv",
     dataset = "10.7910/DVN/E9N6PH",
     server = "dataverse.harvard.edu",
     .f = read_csv
-  ) |>
-  select(votereg, CC20_410, race, region, CC20_300b_4, CC20_300b_5, CC20_303)
+  ) 
 
+ces2020 <-
+  ces2020 |>
+  select(votereg, CC20_410, race, region, employ)
+
+
+#### Save data ####
 write_csv(ces2020, "data/raw_data/ces2020.csv")
-#git lfs install
-
-
-#git lfs track "path/to/large/file"
-#git lfs track "data/raw_data/CES20_Common_OUTPUT_vv.csv"
-#git lfs ls-files
-
-         
