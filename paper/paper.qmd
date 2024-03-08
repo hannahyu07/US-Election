@@ -135,7 +135,9 @@ ces2020 |>
 #| fig-cap: The distribution of presidential preferences, by region and employment status, only white people
 #| echo: false
 
-ces2020 |>
+ces2020_selected_data <- ces2020[ces2020$race == "White", ]
+
+ces2020_selected_data |>
   ggplot(aes(x = employ, fill = voted_for)) +
   stat_count(position = "dodge") +
   facet_wrap(facets = vars(region)) +
