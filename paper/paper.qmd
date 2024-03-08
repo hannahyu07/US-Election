@@ -224,7 +224,30 @@ political_preferences <-
 political_preferences2 <-
   readRDS(file = here::here("models/political_preferences2.rds"))
 
+
+political_preferences3 <-
+  readRDS(file = here::here("models/political_preferences3.rds"))
+
+
+political_preferences4 <-
+  readRDS(file = here::here("models/political_preferences4.rds"))
+
+political_preferences5 <-
+  readRDS(file = here::here("models/political_preferences5.rds"))
+
+political_preferences6 <-
+  readRDS(file = here::here("models/political_preferences6.rds"))
+
+political_preferences7 <-
+  readRDS(file = here::here("models/political_preferences7.rds"))
+
+political_preferences8 <-
+  readRDS(file = here::here("models/political_preferences8.rds"))
+
+political_preferences9 <-
+  readRDS(file = here::here("models/political_preferences9.rds"))
 ```
+
 
 ```{r}
 #| echo: false
@@ -266,7 +289,67 @@ modelsummary(
 ```
 
 ```{r}
-modelplot(political_preferences2, conf_level = 0.9) +
+modelsummary(
+  list(
+    "Support Biden" = political_preferences3
+  ),
+  statistic = "mad"
+  )
+```
+
+```{r}
+modelsummary(
+  list(
+    "Support Biden" = political_preferences4
+  ),
+  statistic = "mad"
+  )
+```
+```{r}
+modelsummary(
+  list(
+    "Support Biden" = political_preferences5
+  ),
+  statistic = "mad"
+  )
+```
+```{r}
+modelsummary(
+  list(
+    "Support Biden" = political_preferences6
+  ),
+  statistic = "mad"
+  )
+```
+```{r}
+modelsummary(
+  list(
+    "Support Biden" = political_preferences7
+  ),
+  statistic = "mad"
+  )
+```
+```{r}
+modelsummary(
+  list(
+    "Support Biden" = political_preferences8
+  ),
+  statistic = "mad"
+  )
+```
+
+```{r}
+modelsummary(
+  list(
+    "Support Biden" = political_preferences9
+  ),
+  statistic = "mad"
+  )
+```
+
+
+```{r}
+modelplot(political_preferences9, conf_level = 0.9) +
   labs(x = "90 per cent credibility interval")
 ```
 
