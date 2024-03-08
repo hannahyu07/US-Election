@@ -229,8 +229,8 @@ political_preferences2 <-
 ```{r}
 #| echo: false
 #| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| label: tbl-modelresults1
+#| tbl-cap: "Explanatory models Political Preferences (n = 40000)"
 #| warning: false
 
 
@@ -249,8 +249,8 @@ modelsummary(
 ```{r}
 #| echo: false
 #| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| label: tbl-modelresults2
+#| tbl-cap: ""Explanatory models Political Preferences (n = 1000)"
 #| warning: false
 
 
