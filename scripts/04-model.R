@@ -67,8 +67,24 @@ saveRDS(
 )
 
 
+
+# Filter data to include only observations where region is "South"
+ces2020_reduced_south <- subset(analysis_data, region == "South")
+
+# Sample 1000 observations from the filtered dataset
+ces2020_reduced_south <- ces2020_reduced_south[sample(nrow(ces2020_reduced_south), 1000), ]
+
+# Fit logistic regression model using the filtered dataset
+political_preferences3 <- stan_glm(
+  voted_for_binary ~ race + employ,
+  data = ces2020_reduced_south,
+  family = binomial(link = "logit"),
+  prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+  prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
+  seed = 123
+)
 #### Save model ####
 saveRDS(
-  political_preferences2,
-  file = "models/political_preferences2.rds"
+  political_preferences3,
+  file = "models/political_preferences3.rds"
 )
