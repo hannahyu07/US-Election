@@ -23,7 +23,7 @@ library(palmerpenguins)
 library(here)
 library(rstanarm)
 library(modelsummary)
-
+library(ggplot2)
 ```
 
 
@@ -203,9 +203,15 @@ We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use
 
 ### Model justification
 
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall. These groups are more likely to align with Biden's policies, which prioritize inclusivity and diversity. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
+Conversely, we anticipate a negative relationship between voters in the South and Midwest regions and support for Biden. These regions have a stronger conservative presence and a history of supporting Republican candidates like Trump. States such as Texas and Florida, which are known Republican strongholds, are located in the South. Therefore, individuals in these regions may be less inclined to support Biden's progressive agenda.
+
+Regarding employment status, we expect students, unemployed individuals, and those temporarily laid off to be more inclined to support Biden. Students are often exposed to diverse perspectives and progressive ideas in educational settings, making them more likely to endorse Biden's platform. Unemployed and laid-off individuals may favor Biden due to the Democratic Party's advocacy for social welfare programs and support for workers' rights.
+
+The voting behavior of employed individuals is harder to distinguish. Some working individuals support Trump due to their opposition to higher taxes and prefer his promises of tax cuts and economic deregulation. Conversely, others lean towards Biden because they believe tax increases should primarily target the wealthy and not burden the middle class.
+Additionally, educated and liberal-leaning working professionals may prioritize issues such as healthcare, climate change, and social justice, aligning them with Biden's platform. 
+
 
 
 # Results
@@ -217,123 +223,56 @@ Our results are summarized in @tbl-modelresults.
 #| eval: true
 #| warning: false
 #| message: false
-
-
-political_preferences2 <-
-  readRDS(file = here::here("models/political_preferences2.rds"))
-
-
-political_preferences3 <-
-  readRDS(file = here::here("models/political_preferences3.rds"))
-
-
-political_preferences4 <-
-  readRDS(file = here::here("models/political_preferences4.rds"))
-
-political_preferences5 <-
-  readRDS(file = here::here("models/political_preferences5.rds"))
-
-political_preferences6 <-
-  readRDS(file = here::here("models/political_preferences6.rds"))
-
-political_preferences7 <-
-  readRDS(file = here::here("models/political_preferences7.rds"))
-
-political_preferences8 <-
-  readRDS(file = here::here("models/political_preferences8.rds"))
-
-political_preferences9 <-
-  readRDS(file = here::here("models/political_preferences9.rds"))
-```
-
-
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults2
+#|label: tbl-modelresults1
 #| tbl-cap: ""Explanatory models Political Preferences (n = 1000)"
-#| warning: false
 
+political_preferences1 <-
+  readRDS(file = here::here("models/political_preferences1.rds"))
 
 
 modelsummary(
   list(
-    "Support Biden" = political_preferences2
-  ),
-  statistic = "mad"
-  )
-
-
-```
-
-```{r}
-modelsummary(
-  list(
-    "Support Biden" = political_preferences3
+    "Support Biden" = political_preferences1
   ),
   statistic = "mad"
   )
 ```
 
 ```{r}
-modelsummary(
-  list(
-    "Support Biden" = political_preferences4
-  ),
-  statistic = "mad"
-  )
+# Extract posterior samples
+posterior_samples <- as.matrix(political_preferences)
+
+# Calculate credible intervals (e.g., 95%)
+credible_intervals <- apply(posterior_samples, 2, function(x) quantile(x, c(0.025, 0.975)))
+
+# Extract coefficient names
+coefficient_names <- colnames(posterior_samples)
+
+# Create a data frame with coefficient names, coefficient estimates, and credible intervals
+table_data <- data.frame(
+  Posterior_Mean = colMeans(posterior_samples),
+  Credible_Interval_Lower = credible_intervals[1, ],
+  Credible_Interval_Upper = credible_intervals[2, ]
+)
+
+# Print the table
+print(table_data)
+
+
 ```
 
 ```{r}
-modelsummary(
-  list(
-    "Support Biden" = political_preferences5
-  ),
-  statistic = "mad"
-  )
-```
-
-```{r}
-modelsummary(
-  list(
-    "Support Biden" = political_preferences6
-  ),
-  statistic = "mad"
-  )
-```
-
-```{r}
-modelsummary(
-  list(
-    "Support Biden" = political_preferences7
-  ),
-  statistic = "mad"
-  )
-```
-
-```{r}
-modelsummary(
-  list(
-    "Support Biden" = political_preferences8
-  ),
-  statistic = "mad"
-  )
-```
-
-```{r}
-modelsummary(
-  list(
-    "Support Biden" = political_preferences9
-  ),
-  statistic = "mad"
-  )
-```
-
-
-```{r}
-modelplot(political_preferences9, conf_level = 0.9) +
+modelplot(political_preferences1, conf_level = 0.9) +
   labs(x = "90 per cent credibility interval")
+```
+```{r}
+# Create the model plot
+model_plot <- modelplot(political_preferences1, conf_level = 0.9)
+
+# Modify the x-axis limits
+model_plot + xlim(-10, 10) +  # Adjust the limits as needed
+  labs(x = "90% Credibility Interval")
+
 ```
 
 # Discussion
