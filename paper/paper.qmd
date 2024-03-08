@@ -218,8 +218,6 @@ Our results are summarized in @tbl-modelresults.
 #| warning: false
 #| message: false
 
-political_preferences <-
-  readRDS(file = here::here("models/political_preferences.rds"))
 
 political_preferences2 <-
   readRDS(file = here::here("models/political_preferences2.rds"))
@@ -248,25 +246,6 @@ political_preferences9 <-
   readRDS(file = here::here("models/political_preferences9.rds"))
 ```
 
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults1
-#| tbl-cap: "Explanatory models Political Preferences (n = 40000)"
-#| warning: false
-
-
-
-modelsummary(
-  list(
-    "Support Biden" = political_preferences
-  ),
-  statistic = "mad"
-  )
-
-
-```
 
 
 ```{r}
@@ -305,6 +284,7 @@ modelsummary(
   statistic = "mad"
   )
 ```
+
 ```{r}
 modelsummary(
   list(
@@ -313,6 +293,7 @@ modelsummary(
   statistic = "mad"
   )
 ```
+
 ```{r}
 modelsummary(
   list(
@@ -321,6 +302,7 @@ modelsummary(
   statistic = "mad"
   )
 ```
+
 ```{r}
 modelsummary(
   list(
@@ -329,6 +311,7 @@ modelsummary(
   statistic = "mad"
   )
 ```
+
 ```{r}
 modelsummary(
   list(
