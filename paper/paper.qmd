@@ -218,12 +218,12 @@ Our results are summarized in @tbl-modelresults.
 #| warning: false
 #| message: false
 
-library(rstanarm)
 political_preferences <-
   readRDS(file = here::here("models/political_preferences.rds"))
 
-# first_model <-
-#   readRDS(file = here::here("models/first_model.rds"))
+political_preferences2 <-
+  readRDS(file = here::here("models/political_preferences2.rds"))
+
 ```
 
 ```{r}
@@ -232,10 +232,8 @@ political_preferences <-
 #| label: tbl-modelresults
 #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
-install.packages("modelsummary")
 
-# Load the modelsummary package
-library(modelsummary)
+
 
 modelsummary(
   list(
@@ -248,7 +246,29 @@ modelsummary(
 ```
 
 
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-modelresults
+#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| warning: false
 
+
+
+modelsummary(
+  list(
+    "Support Biden" = political_preferences2
+  ),
+  statistic = "mad"
+  )
+
+
+```
+
+```{r}
+modelplot(political_preferences2, conf_level = 0.9) +
+  labs(x = "90 per cent credibility interval")
+```
 
 # Discussion
 

@@ -43,5 +43,32 @@ saveRDS(
   file = "models/political_preferences.rds"
 )
 
+# Model 2 for n = 1000
+set.seed(123)
+
+ces2020_reduced <- 
+  analysis_data |> 
+  slice_sample(n = 1000)
+
+political_preferences2 <-
+  stan_glm(
+    voted_for_binary ~ race + region + employ,
+    data = ces2020_reduced,
+    family = binomial(link = "logit"),
+    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+    prior_intercept = 
+      normal(location = 0, scale = 2.5, autoscale = TRUE),
+    seed = 123
+  )
+
+saveRDS(
+  political_preferences2,
+  file = "models/political_preferences2.rds"
+)
 
 
+#### Save model ####
+saveRDS(
+  political_preferences2,
+  file = "models/political_preferences2.rds"
+)
