@@ -91,18 +91,63 @@ ces2020 <-
 ```
 
 
+
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
+#| label: fig-race_region
+#| fig-cap: The distribution of presidential preferences, by region and race
 #| echo: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
+ces2020 |>
+  ggplot(aes(x = race, fill = voted_for)) +
+  stat_count(position = "dodge") +
+  facet_wrap(facets = vars(region)) +
   theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+  labs(
+    x = "Race",
+    y = "Number of respondents",
+    fill = "Voted for"
+  ) +
+  coord_flip() +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
+```{r}
+#| label: fig-race_employ
+#| fig-cap: The distribution of presidential preferences, by region and employment status
+#| echo: false
+
+ces2020 |>
+  ggplot(aes(x = employ, fill = voted_for)) +
+  stat_count(position = "dodge") +
+  facet_wrap(facets = vars(region)) +
+  theme_minimal() +
+  labs(
+    x = "Employment status",
+    y = "Number of respondents",
+    fill = "Voted for"
+  ) +
+  coord_flip() +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
+```{r}
+#| label: fig-race_employ_white
+#| fig-cap: The distribution of presidential preferences, by region and employment status, only white people
+#| echo: false
+
+ces2020 |>
+  ggplot(aes(x = employ, fill = voted_for)) +
+  stat_count(position = "dodge") +
+  facet_wrap(facets = vars(region)) +
+  theme_minimal() +
+  labs(
+    x = "Employment status",
+    y = "Number of respondents",
+    fill = "Voted for"
+  ) +
+  coord_flip() +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
 ```
 
 Talk more about it.
