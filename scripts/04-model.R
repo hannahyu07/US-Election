@@ -15,18 +15,6 @@ library(rstanarm)
 #### Read data ####
 analysis_data <- read_csv("data/analysis_data/cleaned_ces2020.csv")
 
-### Model data ####
-# first_model <-
-#   stan_glm(
-#     formula = flying_time ~ length + width,
-#     data = analysis_data,
-#     family = gaussian(),
-#     prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
-#     prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
-#     prior_aux = exponential(rate = 1, autoscale = TRUE),
-#     seed = 853
-#   )
-
 # Convert variables to factors
 analysis_data$race <- factor(analysis_data$race)
 analysis_data$region <- factor(analysis_data$region)
@@ -35,7 +23,7 @@ analysis_data$employ <- factor(analysis_data$employ)
 # Create voted_for variable in binary form
 analysis_data$voted_for_binary <- ifelse(analysis_data$voted_for == "Biden", 1, 0)
 
-#Model data
+# Model data
 set.seed(123)
 
 political_preferences <-
