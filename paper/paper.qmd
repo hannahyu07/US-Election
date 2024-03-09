@@ -181,7 +181,9 @@ Talk way more about it.
 
 The goal of our modelling strategy is twofold. Firstly,...
 
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in 
+
+[Appendix -@sec-model-details].
 
 ## Model set-up
 
@@ -198,8 +200,10 @@ y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
 \end{align}
 
 
+
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
 
+To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. 
 
 ### Model justification
 
@@ -218,16 +222,25 @@ Additionally, educated and liberal-leaning working professionals may prioritize 
 
 Our results are summarized in @tbl-modelresults.
 
+
 ```{r}
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
-#|label: tbl-modelresults1
-#| tbl-cap: ""Explanatory models Political Preferences (n = 1000)"
+#| label: tbl-modelresults1
+#| tbl-cap: "Explanatory models Political Preferences (n = 1000)"
 
 political_preferences1 <-
   readRDS(file = here::here("models/political_preferences1.rds"))
+
+# Change variable names directly in the model object
+names(political_preferences1$coefficients) <- c(
+  "Intercept", "Black", "Hispanic", "Middle Eastern", "Native American", 
+  "Other race", "Two or more races", "White", "Northeast", "South", "West",
+  "Homemaker", "Other employment", "Part-time", "Permanently disabled", 
+  "Retired", "Student", "Temporarily laid off", "Unemployed"
+)
 
 
 modelsummary(
@@ -237,34 +250,110 @@ modelsummary(
   statistic = "mad"
   )
 ```
+# need to be fixed
+Our results generally matches our justification. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.
+
+The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
+
+Black people's support for Biden is large. The estimated coefficient of 2.549 means that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group.
+
+Hispanic races on average are also more likely to vote for Biden. (not significant)
+We observe an outlier race other which has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
+
 
 ```{r}
-# Extract posterior samples
-posterior_samples <- as.matrix(political_preferences)
 
-# Calculate credible intervals (e.g., 95%)
-credible_intervals <- apply(posterior_samples, 2, function(x) quantile(x, c(0.025, 0.975)))
-
-# Extract coefficient names
-coefficient_names <- colnames(posterior_samples)
-
-# Create a data frame with coefficient names, coefficient estimates, and credible intervals
-table_data <- data.frame(
-  Posterior_Mean = colMeans(posterior_samples),
-  Credible_Interval_Lower = credible_intervals[1, ],
-  Credible_Interval_Upper = credible_intervals[2, ]
+# Define the updated variable names
+new_coef_names <- c(
+  "Intercept", "Black", "Hispanic", "Middle Eastern", "Native American", 
+  "Other race", "Two or more races", "White", "Northeast", "South", "West",
+  "Homemaker", "Other employment", "Part-time", "Permanently disabled", 
+  "Retired", "Student", "Temporarily laid off", "Unemployed"
 )
 
-# Print the table
-print(table_data)
+# Update variable names in the model object
+names(political_preferences1$coefficients) <- new_coef_names
+
+# Print the updated model summary
+print(
+  modelsummary(
+    list("Support Biden" = political_preferences1),
+    statistic = "mad"
+  )
+)
 
 
 ```
+
+
+
+```{r}
+
+# Print the updated model summary with modified variable names
+print(
+  modelsummary(
+    list("Support Biden" = political_preferences1),
+    statistic = "mad",
+    coef_map = list(
+      Intercept = "Intercept",
+      raceBlack = "Black",
+      raceHispanic = "Hispanic",
+      raceMiddle_Eastern = "Middle Eastern",
+      raceNative_American = "Native American",
+      raceOther = "Other race",
+      `raceTwo or more races` = "Two or more races",
+      raceWhite = "White",
+      regionNortheast = "Northeast",
+      regionSouth = "South",
+      regionWest = "West",
+      employHomemaker = "Homemaker",
+      employOther = "Other employment",
+      employPart_time = "Part-time",
+      employPermanently_disabled = "Permanently disabled",
+      employRetired = "Retired",
+      employStudent = "Student",
+      `employTemporarily laid off` = "Temporarily laid off",
+      employUnemployed = "Unemployed"
+    )
+  )
+)
+
+
+
+```
+
+
+
+```{r}
+# Extract posterior samples
+# posterior_samples <- as.matrix(political_preferences)
+# 
+# # Calculate credible intervals (e.g., 95%)
+# credible_intervals <- apply(posterior_samples, 2, function(x) quantile(x, c(0.025, 0.975)))
+# 
+# # Extract coefficient names
+# coefficient_names <- colnames(posterior_samples)
+# 
+# # Create a data frame with coefficient names, coefficient estimates, and credible intervals
+# table_data <- data.frame(
+#   Posterior_Mean = colMeans(posterior_samples),
+#   Credible_Interval_Lower = credible_intervals[1, ],
+#   Credible_Interval_Upper = credible_intervals[2, ]
+# )
+# 
+# # Print the table
+# print(table_data)
+
+
+```
+Due to the fact that the credibility interval for race Other is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. That's why we created a second plot with the x axis limited from -10 to 10. 
+
 
 ```{r}
 modelplot(political_preferences1, conf_level = 0.9) +
   labs(x = "90 per cent credibility interval")
 ```
+
 ```{r}
 # Create the model plot
 model_plot <- modelplot(political_preferences1, conf_level = 0.9)
