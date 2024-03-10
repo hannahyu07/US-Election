@@ -33,9 +33,21 @@ You can and should cross-reference sections and sub-sections. We use @citeR and 
 
 The remainder of this paper is structured as follows. @sec-data....
 
+## Estimand
+
 
 
 # Data {#sec-data}
+
+
+
+## Data Measurement
+
+
+
+## Summary Statistics
+
+
 
 Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 
