@@ -105,6 +105,55 @@ ces2020 <-
 ```
 
 
+# Model
+
+The goal of our modelling strategy is twofold. Firstly,...
+
+Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in 
+
+[Appendix -@sec-model-details].
+
+## Model set-up
+
+Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+
+
+
+\begin{align} 
+y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
+\mbox{logit}(\pi_i) &= \alpha + \beta_1 \times \mbox{race}_i + \beta_2 \times \mbox{region}_i + \beta_3 \times \mbox{employ}_i\\
+\alpha &\sim \mbox{Normal}(0, 2.5) \\
+\beta_1 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_2 &\sim \mbox{Normal}(0, 2.5)
+\end{align}
+
+
+
+We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+
+To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. 
+
+### Model justification
+
+We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall. These groups are more likely to align with Biden's policies, which prioritize inclusivity and diversity. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
+
+Conversely, we anticipate a negative relationship between voters in the South and Midwest regions and support for Biden. These regions have a stronger conservative presence and a history of supporting Republican candidates like Trump. States such as Texas and Florida, which are known Republican strongholds, are located in the South. Therefore, individuals in these regions may be less inclined to support Biden's progressive agenda.
+
+Regarding employment status, we expect students, unemployed individuals, and those temporarily laid off to be more inclined to support Biden. Students are often exposed to diverse perspectives and progressive ideas in educational settings, making them more likely to endorse Biden's platform. Unemployed and laid-off individuals may favor Biden due to the Democratic Party's advocacy for social welfare programs and support for workers' rights.
+
+The voting behavior of employed individuals is harder to distinguish. Some working individuals support Trump due to their opposition to higher taxes and prefer his promises of tax cuts and economic deregulation. Conversely, others lean towards Biden because they believe tax increases should primarily target the wealthy and not burden the middle class.
+Additionally, educated and liberal-leaning working professionals may prioritize issues such as healthcare, climate change, and social justice, aligning them with Biden's platform. 
+
+
+-------------------------------needs some explanation
+```{r}
+# We could use posterior predictive checks, introduced in Section 12.4, to show that the logistic regression approach is a good choice for this circumstance.
+
+pp_check(political_preferences1) +
+  theme(legend.position = "bottom")
+```
+
+
 
 ```{r}
 #| label: fig-race_region
@@ -166,48 +215,40 @@ ces2020_selected_data |>
   theme(legend.position = "bottom")
 ```
 
+```{r stateplot, echo=F, message=F, warning=F, fig.cap="Proportion of each State Voting for Biden"}
+# get state by state proportions for our polling data
+polling_props <- polling %>% 
+  group_by(stateicp, vote_biden) %>% 
+  summarise(n = n()) %>% 
+  mutate(prop = n/sum(n)) 
+
+# combine the polling data proportions with the post-stratification data
+poll_post_biden <- inner_join(polling_props, voting_biden, by = "stateicp")
+poll_post_biden <- poll_post_biden %>% 
+  filter(vote_biden == 1)
+
+# plot for predictions
+
+poll_post_biden %>% 
+  ggplot(aes(x = stateicp, y = biden_predict)) +
+  geom_point(aes(color = "black")) +
+  geom_line(aes(group = 1)) +
+  scale_y_continuous(labels = scales::percent) +
+  theme(axis.text.x = element_text(angle = 70, size = 6, hjust = 1)) +
+  geom_ribbon(aes(group = 1, ymin=biden_predict_lower, ymax=biden_predict_upper), 
+              alpha = 0.2, fill = "red") +
+  geom_line(data = poll_post_biden, aes(x=stateicp, y=prop, group = 2), 
+            linetype = "twodash") +
+  geom_point(data = poll_post_biden, aes(x=stateicp, y=prop, colour = "red")) +
+  geom_hline(aes(yintercept = 0.5), alpha = 0.5) +
+  scale_color_discrete(name = "Data", labels = c("Population", "Sample")) +
+  labs(title = "Proportion of People voting for Joe Biden by State",
+       x = "State", y = "Percentage Voting Biden")
+```
 
 
 
 
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in 
-
-[Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-
-
-\begin{align} 
-y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
-\mbox{logit}(\pi_i) &= \alpha + \beta_1 \times \mbox{race}_i + \beta_2 \times \mbox{region}_i + \beta_3 \times \mbox{employ}_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta_1 &\sim \mbox{Normal}(0, 2.5) \\
-\beta_2 &\sim \mbox{Normal}(0, 2.5)
-\end{align}
-
-
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. 
-
-### Model justification
-
-We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall. These groups are more likely to align with Biden's policies, which prioritize inclusivity and diversity. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
-
-Conversely, we anticipate a negative relationship between voters in the South and Midwest regions and support for Biden. These regions have a stronger conservative presence and a history of supporting Republican candidates like Trump. States such as Texas and Florida, which are known Republican strongholds, are located in the South. Therefore, individuals in these regions may be less inclined to support Biden's progressive agenda.
-
-Regarding employment status, we expect students, unemployed individuals, and those temporarily laid off to be more inclined to support Biden. Students are often exposed to diverse perspectives and progressive ideas in educational settings, making them more likely to endorse Biden's platform. Unemployed and laid-off individuals may favor Biden due to the Democratic Party's advocacy for social welfare programs and support for workers' rights.
-
-The voting behavior of employed individuals is harder to distinguish. Some working individuals support Trump due to their opposition to higher taxes and prefer his promises of tax cuts and economic deregulation. Conversely, others lean towards Biden because they believe tax increases should primarily target the wealthy and not burden the middle class.
-Additionally, educated and liberal-leaning working professionals may prioritize issues such as healthcare, climate change, and social justice, aligning them with Biden's platform. 
 
 
 
@@ -356,24 +397,8 @@ model_plot + xlim(-10, 10) +  # Adjust the limits as needed
   labs(x = "90% Credibility Interval")
 
 ```
-```{r}
-# We could use posterior predictive checks, introduced in Section 12.4, to show that the logistic regression approach is a good choice for this circumstance.
 
-pp_check(political_preferences1) +
-  theme(legend.position = "bottom")
-```
-```{r}
 
-# marginal effect -- ?
-
-slopes(political_preferences1) |>
-  summary() |>
-  select(-term) |>
-  kable(
-    col.names = c("Compare department", "Estimate", "2.5%", "97.5%"),
-    digits = 2, booktabs = TRUE, linesep = ""
-  )
-```
 
 # Discussion
 
