@@ -27,17 +27,25 @@ library(ggplot2)
 library(knitr)
 library(marginaleffects)
 library(plotly)
+<<<<<<< HEAD
 library(tibble)
 library(margins)
 
+=======
+>>>>>>> 0c4a0987843cbe1b706314da5ec2245a80058497
 ```
 
 
 # Introduction
+Four years ago, the United States once again was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Republican parties are represented by Donald Trump and Joe Biden respectively. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton. His winning was surprising and it led people to challenge the preconceived notions and reliability of pre-election polling data [citation needed]. On the other hand, Joe Biden, the former vice-president under Barack Obama's administration from 2008 to 2016, led the Democratic campaign [citation needed]. He aimed to regain control from the Republican party. In the end, Biden won the election by 51.3% majority votes [citation needed]. It is important for us to understand how various demographic, economic, and social factors may influence individuals' voting decisions, which is why we decide to analyze the 2020 election data set and build a prediction model. This allows us to discover trends and address potential issues in society to better reflect the needs and preferences of diverse communities. 
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+In this paper, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study (CES)  [citation needed]. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES data set, which are race, region that they live, and employment status. 
 
-The remainder of this paper is structured as follows. @sec-data....
+**add： 4) what was done; 5) what was found after we finish the results section
+
+This report consists of four sections, not including the introduction. In Section 2, we look at the data used for our report and include some tables and graphs to illustrate the different groups of people in our data. In section 3, we build the model and discuss its justification and explanation. The results of our predictions is highlighted in the Section 4 using tables and graphs. Lastly, discussions are conducted based on the findings, which addresses the voting prediction results based on race, region, and employment status. 
+
+In this report, R statistical programming language is used, with R packages: [a lot of citations needed]
 
 ## Estimand
 
@@ -139,6 +147,7 @@ Alternative modeling approaches, such as machine learning algorithms, were also 
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model.Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see Appendix A).
 
+
 ### Model justification
 
 We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall. These groups are more likely to align with Biden's policies, which prioritize inclusivity and diversity. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
@@ -163,7 +172,7 @@ pp_check(political_preferences1) +
 # Results
 
 ## Data Result
-@fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across various racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
+@fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
 ```{r}
 #| label: fig-race_region
 #| fig-cap: The distribution of presidential preferences, by region and race
@@ -183,7 +192,7 @@ ces2020 |>
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
 ```
-@fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Yet, among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain groups in the South.
+@fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
 
 ```{r}
 #| label: fig-race_employ
@@ -204,35 +213,46 @@ ces2020 |>
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
 ```
+# ```{r}
+# #| label: fig-race_employ_white
+# #| fig-cap: The distribution of presidential preferences, by region and employment status, only white people
+# #| echo: false
+# 
+# ces2020_selected_data <- ces2020[ces2020$race == "White", ]
+# 
+# ces2020_selected_data |>
+#   ggplot(aes(x = employ, fill = voted_for)) +
+#   stat_count(position = "dodge") +
+#   facet_wrap(facets = vars(region)) +
+#   theme_minimal() +
+#   labs(
+#     x = "Employment status",
+#     y = "Number of respondents",
+#     fill = "Voted for"
+#   ) +
+#   coord_flip() +
+#   scale_fill_brewer(palette = "Set1") +
+#   theme(legend.position = "bottom")
+# ```
+
+
+This bubble plot illustrates four variables: race, region, employment status, and voting preference. Darker dots indicate a higher number of people, with red representing Trump supporters and blue for Biden supporters. Purple dots suggest similar support rates for both candidates, since blue and red makes purple in a 1:1 ratio. We can see that the darker dots are mostly in White, Black, Hispanic communities for full-time, part-time, or retired individuals. The darker dots are all blue, which indicates stronger support for Biden. It can also be noted that there are very few entirely red dots, which means that there is no significant disparities in voting percentages between Trump and Biden even among those groups which partially supported Trump. In those purple dots, we found that mostly are from people who are either Native American or from the South.
 ```{r}
-#| label: fig-race_employ_white
-#| fig-cap: The distribution of presidential preferences, by region and employment status, only white people
+#| label: fig-race_employ_region
+#| fig-cap: The distribution of presidential preferences, by race, region and employment status
 #| echo: false
 
-ces2020_selected_data <- ces2020[ces2020$race == "White", ]
 
-ces2020_selected_data |>
-  ggplot(aes(x = employ, fill = voted_for)) +
-  stat_count(position = "dodge") +
-  facet_wrap(facets = vars(region)) +
-  theme_minimal() +
-  labs(
-    x = "Employment status",
-    y = "Number of respondents",
-    fill = "Voted for"
-  ) +
-  coord_flip() +
-  scale_fill_brewer(palette = "Set1") +
-  theme(legend.position = "bottom")
-```
-
-```{r}
-library(plotly)
-plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("blue", "red")) %>% 
-  add_markers(color = ces2020$voted_for, opacity = 0.1)
+plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("red", "blue")) %>% 
+  add_markers(color = ces2020$voted_for, opacity = 0.03, size = 0.4) %>%
+  layout(xaxis = list(title = 'Race'), yaxis = list(title = 'Region'), zaxis = list(title = 'Employment Status')) %>%
+  layout(xaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
+         yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
+         zaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))
 ```
 
 
+## Model Results
 
 ```{r prediction, echo=F, warning=F, message=F}
 
