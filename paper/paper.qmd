@@ -27,12 +27,9 @@ library(ggplot2)
 library(knitr)
 library(marginaleffects)
 library(plotly)
-<<<<<<< HEAD
 library(tibble)
 library(margins)
 
-=======
->>>>>>> 0c4a0987843cbe1b706314da5ec2245a80058497
 ```
 
 
@@ -137,13 +134,13 @@ y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
 \beta_2 &\sim \mbox{Normal}(0, 2.5)
 \end{align}
 
-In this model, $y_i$ represents the binary outcome variable indicating whether an individual voted for a particular candidate (e.g., Biden or Trump). The probability of voting for the candidate ($\pi_i$) is modeled using a logistic link function (\text{logit}($\pi_i$)), which is a linear combination of the intercept ($\alpha$) and the coefficients ($\beta_1$, $\beta_2$, $\beta_3$)) corresponding to the predictor variables race, region, and employment status, respectively. These predictor variables are denoted as \text{race}_i, \text{region}_i, and \text{employ}_i, where $i$ indexes the individuals in the dataset.
+In this model, $y_i$ represents the binary outcome variable indicating whether an individual voted Biden (as opposed to Trump). The probability of voting for the Biden ($\pi_i$) is modeled using a logistic link function (\text{logit}($\pi_i$)), which is a linear combination of the intercept ($\alpha$) and the coefficients ($\beta_1$, $\beta_2$, $\beta_3$)) corresponding to the predictor variables race, region, and employment status, respectively. These predictor variables are denoted as \text{race}_i, \text{region}_i, and \text{employ}_i, where $i$ indexes the individuals in the dataset.
 
 The intercept ($\alpha$) and coefficients ($\beta_1$, $\beta_2$, $\beta_3$) are assigned informative prior distributions to regularize the model. Specifically, we assume a normal distribution with a mean of 0 and a standard deviation of 2.5 for each parameter.
 
 We chose this modeling approach for several reasons. Firstly, logistic regression is well-suited for binary outcome variables, making it appropriate for analyzing voting behavior. Additionally, Bayesian methods allow us to incorporate prior knowledge and uncertainty into our analysis, providing more robust estimates of the model parameters.
 
-Alternative modeling approaches, such as machine learning algorithms, were also considered. However, we chose Bayesian logistic regression for its flexibility, interpretability, and ability to handle uncertainty.
+Alternative modeling approaches, such as linear regression models, were also considered. However, we chose Bayesian logistic regression because our result is a binary variable of voter's decision.
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model.Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see Appendix A).
 
@@ -213,7 +210,8 @@ ces2020 |>
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
 ```
-# ```{r}
+
+```{r}
 # #| label: fig-race_employ_white
 # #| fig-cap: The distribution of presidential preferences, by region and employment status, only white people
 # #| echo: false
@@ -233,7 +231,7 @@ ces2020 |>
 #   coord_flip() +
 #   scale_fill_brewer(palette = "Set1") +
 #   theme(legend.position = "bottom")
-# ```
+```
 
 
 This bubble plot illustrates four variables: race, region, employment status, and voting preference. Darker dots indicate a higher number of people, with red representing Trump supporters and blue for Biden supporters. Purple dots suggest similar support rates for both candidates, since blue and red makes purple in a 1:1 ratio. We can see that the darker dots are mostly in White, Black, Hispanic communities for full-time, part-time, or retired individuals. The darker dots are all blue, which indicates stronger support for Biden. It can also be noted that there are very few entirely red dots, which means that there is no significant disparities in voting percentages between Trump and Biden even among those groups which partially supported Trump. In those purple dots, we found that mostly are from people who are either Native American or from the South.
@@ -387,16 +385,11 @@ modelsummary(
   statistic = "mad"
   )
 ```
-# need to be fixed
-Our results generally matches our justification. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.
+Our results generally matches our justification. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
 
-The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
+Black individual's support for Biden is large. The estimated coefficient of 2.549 suggests that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group. Hispanic races on average are also more likely to vote for Biden. We observe an outlier, individuals with race "other" has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
 
-Black people's support for Biden is large. The estimated coefficient of 2.549 means that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group.
-
-Hispanic races on average are also more likely to vote for Biden. (not significant)
-We observe an outlier race other which has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
-
+Voters preference for candidates also vary by regions and their employment status. Biden has more supports in the Northeast and West region while Trump gains a majority of his votes from the South. As anticipated, students exhibit strong support for Biden. Additionally, individuals who are laid off, unemployed, or employed part-time, potentially reliant on social benefits, also prefer for Biden.
 
 
 
@@ -462,20 +455,36 @@ ggplot(draws, aes(x = raceBlack)) +
 
 
 ```
-Due to the fact that the credibility interval for race Other is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. That's why we created a second plot with the x axis limited from -10 to 10. 
+
+Figure # shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
+
+Combing figure # and figure #, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the interval is positive, the individual supports Biden, if negative, the individual supports Trump. 
 
 
 ```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| label: fig-modelresults1
+#| fig-cap: "Credible intervals for predictors of support for Biden 1"
+
 modelplot(political_preferences1, conf_level = 0.9) +
-  labs(x = "90 per cent credibility interval")
+  labs(x = "90% credibility interval")
 ```
 
 ```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| label: fig-modelresults1
+#| fig-cap: "Credible intervals for predictors of support for Biden 1"
 # Create the model plot
 model_plot <- modelplot(political_preferences1, conf_level = 0.9)
 
 # Modify the x-axis limits
-model_plot + xlim(-10, 10) +  # Adjust the limits as needed
+model_plot + xlim(-5, 5) +  # Adjust the limits as needed
   labs(x = "90% Credibility Interval")
 
 ```
@@ -495,7 +504,12 @@ We observe
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
+add more weakness about the data, graphs, etc.
+
+One weakness of using a logistic regression model is its inability to predict voting turnout for candidates beyond the Biden or Trump. Expanding the analysis to include other candidates would enhance its comprehensiveness. Furthermore, the reliability of our findings is contingent upon the accuracy of the survey data. Respondents may provide inaccurate or misleading information, intentionally or unintentionally, leading to biased estimates and unreliable predictions. Additionally, missing data (N/As) can introduce further challenges, as logistic regression requires complete data for accurate modeling.
+
+
+
 
 \newpage
 
