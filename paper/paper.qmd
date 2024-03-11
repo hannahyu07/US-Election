@@ -160,6 +160,8 @@ Additionally, educated and liberal-leaning working professionals may prioritize 
 -------------------------------needs some explanation
 ```{r}
 # We could use posterior predictive checks, introduced in Section 12.4, to show that the logistic regression approach is a good choice for this circumstance.
+political_preferences1 <-
+  readRDS(file = here::here("models/political_preferences1.rds"))
 
 pp_check(political_preferences1) +
   theme(legend.position = "bottom")
@@ -254,70 +256,70 @@ plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("red", "b
 
 ```{r prediction, echo=F, warning=F, message=F}
 
-# generate predictions for each of our grouped cells
-props$estimate <- predict.glm(political_preferences1, newdata = props,
-                          type = "response")
-
-# create a new column with number of voters from each cell voting Biden
-props <- props %>% mutate(num_voters = n*estimate)
-
-# get errors for our prediction
-errors <- predict.glm(model, newdata = props,
-                      type = "response", se.fit = T)
-lower <- errors$fit - errors$se.fit
-upper <- errors$fit + errors$se.fit
-
-
-# combine the proportions and the errors we generated
-props_error <- cbind(props, lower, upper)
-props_error <- props_error %>% 
-  rename("lower" = ...11,
-         "upper" = ...12)
-
-# create a new column with number of voters from each cell voting Biden
-props_error <- props_error %>% mutate(num_voters_lower = n*lower,
-                                num_voters_upper = n*upper)
-
-# create a new dataset which contains upper and lower estimates for proportions
-# of votes for each state
-voting_biden <- props_error %>% mutate(biden_predict_prop=estimate*prop,
-                                       biden_predict_prop_lower = lower*prop,
-                                       biden_predict_prop_upper = upper*prop) %>%
-  group_by(stateicp) %>%
-  summarise(biden_predict = sum(biden_predict_prop),
-            biden_predict_lower = sum(biden_predict_prop_lower),
-            biden_predict_upper = sum(biden_predict_prop_upper))
+# # generate predictions for each of our grouped cells
+# props$estimate <- predict.glm(political_preferences1, newdata = props,
+#                           type = "response")
+# 
+# # create a new column with number of voters from each cell voting Biden
+# props <- props %>% mutate(num_voters = n*estimate)
+# 
+# # get errors for our prediction
+# errors <- predict.glm(model, newdata = props,
+#                       type = "response", se.fit = T)
+# lower <- errors$fit - errors$se.fit
+# upper <- errors$fit + errors$se.fit
+# 
+# 
+# # combine the proportions and the errors we generated
+# props_error <- cbind(props, lower, upper)
+# props_error <- props_error %>% 
+#   rename("lower" = ...11,
+#          "upper" = ...12)
+# 
+# # create a new column with number of voters from each cell voting Biden
+# props_error <- props_error %>% mutate(num_voters_lower = n*lower,
+#                                 num_voters_upper = n*upper)
+# 
+# # create a new dataset which contains upper and lower estimates for proportions
+# # of votes for each state
+# voting_biden <- props_error %>% mutate(biden_predict_prop=estimate*prop,
+#                                        biden_predict_prop_lower = lower*prop,
+#                                        biden_predict_prop_upper = upper*prop) %>%
+#   group_by(stateicp) %>%
+#   summarise(biden_predict = sum(biden_predict_prop),
+#             biden_predict_lower = sum(biden_predict_prop_lower),
+#             biden_predict_upper = sum(biden_predict_prop_upper))
 ```
 
 ```{r stateplot, echo=F, message=F, warning=F, fig.cap="Proportion of each State Voting for Biden"}
-# get state by state proportions for our polling data
-polling_props <- polling %>% 
-  group_by(stateicp, vote_biden) %>% 
-  summarise(n = n()) %>% 
-  mutate(prop = n/sum(n)) 
-
-# combine the polling data proportions with the post-stratification data
-poll_post_biden <- inner_join(polling_props, voting_biden, by = "stateicp")
-poll_post_biden <- poll_post_biden %>% 
-  filter(vote_biden == 1)
-
-# plot for predictions
-
-poll_post_biden %>% 
-  ggplot(aes(x = employ, y = biden_predict)) +
-  geom_point(aes(color = "black")) +
-  geom_line(aes(group = 1)) +
-  scale_y_continuous(labels = scales::percent) +
-  theme(axis.text.x = element_text(angle = 70, size = 6, hjust = 1)) +
-  geom_ribbon(aes(group = 1, ymin=biden_predict_lower, ymax=biden_predict_upper), 
-              alpha = 0.2, fill = "red") +
-  geom_line(data = poll_post_biden, aes(x=stateicp, y=prop, group = 2), 
-            linetype = "twodash") +
-  geom_point(data = poll_post_biden, aes(x=stateicp, y=prop, colour = "red")) +
-  geom_hline(aes(yintercept = 0.5), alpha = 0.5) +
-  scale_color_discrete(name = "Data", labels = c("Population", "Sample")) +
-  labs(title = "Proportion of People voting for Joe Biden by State",
-       x = "State", y = "Percentage Voting Biden")
+# # get state by state proportions for our polling data
+# polling_props <- polling %>% 
+#   group_by(stateicp, vote_biden) %>% 
+#   summarise(n = n()) %>% 
+#   mutate(prop = n/sum(n)) 
+# 
+# # combine the polling data proportions with the post-stratification data
+# poll_post_biden <- inner_join(polling_props, voting_biden, by = "stateicp")
+# poll_post_biden <- poll_post_biden %>% 
+#   filter(vote_biden == 1)
+# 
+# # plot for predictions
+# 
+# poll_post_biden %>% 
+#   ggplot(aes(x = employ, y = biden_predict)) +
+#   geom_point(aes(color = "black")) +
+#   geom_line(aes(group = 1)) +
+#   scale_y_continuous(labels = scales::percent) +
+#   theme(axis.text.x = element_text(angle = 70, size = 6, hjust = 1)) +
+#   geom_ribbon(aes(group = 1, ymin=biden_predict_lower, ymax=biden_predict_upper), 
+#               alpha = 0.2, fill = "red") +
+#   geom_line(data = poll_post_biden, aes(x=stateicp, y=prop, group = 2), 
+#             linetype = "twodash") +
+#   geom_point(data = poll_post_biden, aes(x=stateicp, y=prop, colour = "red")) +
+#   geom_hline(aes(yintercept = 0.5), alpha = 0.5) +
+#   scale_color_discrete(name = "Data", labels = c("Population", "Sample")) +
+#   labs(title = "Proportion of People voting for Joe Biden by State",
+#        x = "State", y = "Percentage Voting Biden")
 ```
 
 
@@ -327,32 +329,32 @@ Our results are summarized in @tbl-modelresults.
 
 ```{r}
 
-# Marginal Effect 
-political_preferences_predictions <- predictions(political_preferences1) |>
-  as_tibble()
-
-political_preferences_predictions
+# # Marginal Effect 
+# political_preferences_predictions <- predictions(political_preferences1) |>
+#   as_tibble()
+# 
+# political_preferences_predictions
 
 ```
 
 
 ```{r}
-library(margins)
-
-# Marginal effects for each predictor variable
-marginal_effects <- margins(political_preferences1)
-
-# Plotting marginal effects for race
-race_effects <- dyplot(marginal_effects, variables = "race")
-race_effects
-
-# Plotting marginal effects for region
-region_effects <- dyplot(marginal_effects, variables = "region")
-region_effects
-
-# Plotting marginal effects for employ
-employ_effects <- dyplot(marginal_effects, variables = "employ")
-employ_effects
+# library(margins)
+# 
+# # Marginal effects for each predictor variable
+# marginal_effects <- margins(political_preferences1)
+# 
+# # Plotting marginal effects for race
+# race_effects <- dyplot(marginal_effects, variables = "race")
+# race_effects
+# 
+# # Plotting marginal effects for region
+# region_effects <- dyplot(marginal_effects, variables = "region")
+# region_effects
+# 
+# # Plotting marginal effects for employ
+# employ_effects <- dyplot(marginal_effects, variables = "employ")
+# employ_effects
 
 ```
 
@@ -394,39 +396,39 @@ Voters preference for candidates also vary by regions and their employment statu
 
 
 ```{r}
-# Load required libraries
-library(bayestestR)
-
-# Extract posterior draws from the model object
-posterior_draws <- as.matrix(political_preferences1)
-
-# Define the predictor variables for which you want to compute marginal effects
-predictor_variables <- c("Black", "Hispanic", "Middle Eastern", "Native American", 
-                         "Other race", "Two or more races", "White", "Northeast", 
-                         "South", "West", "Homemaker", "Other employment", 
-                         "Part-time", "Permanently disabled", "Retired", 
-                         "Student", "Temporarily laid off", "Unemployed")
-
-# Compute marginal effects
-marginal_effects <- marginal_effects(posterior_draws, variables = predictor_variables)
-
-# Summary of marginal effects
-summary(marginal_effects)
+# # Load required libraries
+# library(bayestestR)
+# 
+# # Extract posterior draws from the model object
+# posterior_draws <- as.matrix(political_preferences1)
+# 
+# # Define the predictor variables for which you want to compute marginal effects
+# predictor_variables <- c("Black", "Hispanic", "Middle Eastern", "Native American", 
+#                          "Other race", "Two or more races", "White", "Northeast", 
+#                          "South", "West", "Homemaker", "Other employment", 
+#                          "Part-time", "Permanently disabled", "Retired", 
+#                          "Student", "Temporarily laid off", "Unemployed")
+# 
+# # Compute marginal effects
+# marginal_effects <- marginal_effects(posterior_draws, variables = predictor_variables)
+# 
+# # Summary of marginal effects
+# summary(marginal_effects)
 
 
 
 ```
 
 ```{r}
-library(tidybayes)
-
-# Extract draws from the Bayesian model
-draws <- spread_draws(political_preferences1)
-
-# Plot the posterior distribution of a predictor variable
-ggplot(draws, aes(x = raceBlack)) +
-  geom_density(fill = "skyblue", color = "black") +
-  labs(x = "Black", y = "Density", title = "Posterior Distribution of Black Variable")
+# library(tidybayes)
+# 
+# # Extract draws from the Bayesian model
+# draws <- spread_draws(political_preferences1)
+# 
+# # Plot the posterior distribution of a predictor variable
+# ggplot(draws, aes(x = raceBlack)) +
+#   geom_density(fill = "skyblue", color = "black") +
+#   labs(x = "Black", y = "Density", title = "Posterior Distribution of Black Variable")
 
 ```
 
@@ -478,8 +480,8 @@ modelplot(political_preferences1, conf_level = 0.9) +
 #| eval: true
 #| warning: false
 #| message: false
-#| label: fig-modelresults1
-#| fig-cap: "Credible intervals for predictors of support for Biden 1"
+#| label: fig-modelresults2
+#| fig-cap: "Credible intervals for predictors of support for Biden 2"
 # Create the model plot
 model_plot <- modelplot(political_preferences1, conf_level = 0.9)
 
@@ -497,8 +499,7 @@ model_plot + xlim(-5, 5) +  # Adjust the limits as needed
 
 maybe talk about race?
 
-## Second discussion point
-
+## Regional Variations
 
 Our analysis highlights regional voting variations, with the Northeast, West, and Midwest favoring Biden, while the South supports Trump. These differences stem from diverse cultural, family, religious, and social perspectives.
 
@@ -517,8 +518,11 @@ Southern states, such as Alabama, Mississippi, and South Carolina with a large a
 
 maybe talk about employment?
 
-## Talk about mail-in ballots AND Trump's later reaction to losing
+## COVID and Mail-in Ballots
 
+Other than race, region, employment, and other usual socioeconomical factors, the special situation of COVID-19 and mail-in-ballots also heavily contributed to the election turnout, leading to Biden's victory.  Many Republican's shift from Trump to Biden is attributed to Trump's poor COVID responses and policies. 
+
+Mail-in-ballots also spanned many controversy over fraud election as Trump claims 
 
 ## Weaknesses and next steps
 
