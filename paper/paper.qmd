@@ -154,7 +154,7 @@ pp_check(political_preferences1) +
 ```
 
 
-
+# Results
 ```{r}
 #| label: fig-race_region
 #| fig-cap: The distribution of presidential preferences, by region and race
@@ -248,11 +248,6 @@ poll_post_biden %>%
 
 
 
-
-
-
-
-# Results
 
 Our results are summarized in @tbl-modelresults.
 
