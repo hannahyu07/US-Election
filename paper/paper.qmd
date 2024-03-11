@@ -160,6 +160,9 @@ pp_check(political_preferences1) +
 
 
 # Results
+
+## Data Result
+@fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across various racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
 ```{r}
 #| label: fig-race_region
 #| fig-cap: The distribution of presidential preferences, by region and race
@@ -179,6 +182,8 @@ ces2020 |>
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
 ```
+@fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Yet, among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain groups in the South.
+
 ```{r}
 #| label: fig-race_employ
 #| fig-cap: The distribution of presidential preferences, by region and employment status
@@ -220,6 +225,52 @@ ces2020_selected_data |>
   theme(legend.position = "bottom")
 ```
 
+```{r}
+library(plotly)
+plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("blue", "red")) %>% 
+  add_markers(color = ces2020$voted_for, opacity = 0.1)
+```
+
+
+
+
+```{r prediction, echo=F, warning=F, message=F}
+
+# generate predictions for each of our grouped cells
+props$estimate <- predict.glm(political_preferences1, newdata = props,
+                          type = "response")
+
+# create a new column with number of voters from each cell voting Biden
+props <- props %>% mutate(num_voters = n*estimate)
+
+# get errors for our prediction
+errors <- predict.glm(model, newdata = props,
+                      type = "response", se.fit = T)
+lower <- errors$fit - errors$se.fit
+upper <- errors$fit + errors$se.fit
+
+
+# combine the proportions and the errors we generated
+props_error <- cbind(props, lower, upper)
+props_error <- props_error %>% 
+  rename("lower" = ...11,
+         "upper" = ...12)
+
+# create a new column with number of voters from each cell voting Biden
+props_error <- props_error %>% mutate(num_voters_lower = n*lower,
+                                num_voters_upper = n*upper)
+
+# create a new dataset which contains upper and lower estimates for proportions
+# of votes for each state
+voting_biden <- props_error %>% mutate(biden_predict_prop=estimate*prop,
+                                       biden_predict_prop_lower = lower*prop,
+                                       biden_predict_prop_upper = upper*prop) %>%
+  group_by(stateicp) %>%
+  summarise(biden_predict = sum(biden_predict_prop),
+            biden_predict_lower = sum(biden_predict_prop_lower),
+            biden_predict_upper = sum(biden_predict_prop_upper))
+```
+
 ```{r stateplot, echo=F, message=F, warning=F, fig.cap="Proportion of each State Voting for Biden"}
 # get state by state proportions for our polling data
 polling_props <- polling %>% 
@@ -235,7 +286,7 @@ poll_post_biden <- poll_post_biden %>%
 # plot for predictions
 
 poll_post_biden %>% 
-  ggplot(aes(x = stateicp, y = biden_predict)) +
+  ggplot(aes(x = employ, y = biden_predict)) +
   geom_point(aes(color = "black")) +
   geom_line(aes(group = 1)) +
   scale_y_continuous(labels = scales::percent) +
