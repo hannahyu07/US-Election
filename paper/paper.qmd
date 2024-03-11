@@ -520,9 +520,9 @@ maybe talk about employment?
 
 ## COVID and Mail-in Ballots
 
-Other than race, region, employment, and other usual socioeconomical factors, the special situation of COVID-19 and mail-in-ballots also heavily contributed to the election turnout, leading to Biden's victory.  Many Republican's shift from Trump to Biden is attributed to Trump's poor COVID responses and policies. 
+In addition to traditional socio-economic factors like race, region, and employment, the unique circumstances surrounding the COVID-19 pandemic and the widespread use of mail-in ballots significantly influenced voter turnout and led to Biden's election victory. Trump's handling of the pandemic, including his skepticism towards mask-wearing and disagreements with public health guidance, drew many criticism [@pollitz_long_freed_2020]. Many dissatisfied Republican voters voted for Biden instead. 
 
-Mail-in-ballots also spanned many controversy over fraud election as Trump claims 
+Mail-in ballots also played a key role in shaping the election landscape. It increased voter participation, particularly among individuals who were reluctant to vote due to logistical constraints or health concerns amid the pandemic. Mail-in voting dynamics intensified as the election progressed. Initially, Trump led in some states, but as mail-in ballots were counted, the tide often turned in favor of Biden. Trump and his supporters raises concerns about fraudulent ballots. This controversy cast doubt on the validity of the election process, fueling Trump's claims of a "rigged" election.
 
 ## Weaknesses and next steps
 
