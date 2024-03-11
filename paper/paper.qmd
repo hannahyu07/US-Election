@@ -37,8 +37,7 @@ In this paper, a logistic regression model is used to forecast the outcome of th
 
 **add： 4) what was done; 5) what was found after we finish the results section
 
-This report consists of four sections, not including the introduction. In Section 2, we look at the data used for our report and include some tables and graphs to illustrate the different groups of people in our data. In section 3, we build the model and discuss its justification and explanation. The results of our predictions is highlighted in the Section 4 using tables and graphs. Lastly, discussions are conducted based on
-the findings, which addresses the voting prediction results based on race, region, and employment status. 
+This report consists of four sections, not including the introduction. In Section 2, we look at the data used for our report and include some tables and graphs to illustrate the different groups of people in our data. In section 3, we build the model and discuss its justification and explanation. The results of our predictions is highlighted in the Section 4 using tables and graphs. Lastly, discussions are conducted based on the findings, which addresses the voting prediction results based on race, region, and employment status. 
 
 In this report, R statistical programming language is used, with R packages: [a lot of citations needed]
 
@@ -143,7 +142,7 @@ Alternative modeling approaches, such as machine learning algorithms, were also 
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
 
-To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. 
+To avoid excessive runtime, we randomly sampled 1000 observations to fit the model. 
 
 ### Model justification
 
@@ -169,7 +168,7 @@ pp_check(political_preferences1) +
 # Results
 
 ## Data Result
-@fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across various racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
+@fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
 ```{r}
 #| label: fig-race_region
 #| fig-cap: The distribution of presidential preferences, by region and race
@@ -189,7 +188,7 @@ ces2020 |>
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
 ```
-@fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Yet, among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain groups in the South.
+@fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
 
 ```{r}
 #| label: fig-race_employ
@@ -232,14 +231,20 @@ ces2020 |>
 #   theme(legend.position = "bottom")
 # ```
 
+
+This bubble plot illustrates four variables: race, region, employment status, and voting preference. Darker dots indicate a higher number of people, with red representing Trump supporters and blue for Biden supporters. Purple dots suggest similar support rates for both candidates, since blue and red makes purple in a 1:1 ratio. We can see that the darker dots are mostly in White, Black, Hispanic communities for full-time, part-time, or retired individuals. The darker dots are all blue, which indicates stronger support for Biden. It can also be noted that there are very few entirely red dots, which means that there is no significant disparities in voting percentages between Trump and Biden even among those groups which partially supported Trump. In those purple dots, we found that mostly are from people who are either Native American or from the South.
 ```{r}
 #| label: fig-race_employ_region
 #| fig-cap: The distribution of presidential preferences, by race, region and employment status
 #| echo: false
 
 
-plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("blue", "red")) %>% 
-  add_markers(color = ces2020$voted_for, opacity = 0.1)
+plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("red", "blue")) %>% 
+  add_markers(color = ces2020$voted_for, opacity = 0.03, size = 0.4) %>%
+  layout(xaxis = list(title = 'Race'), yaxis = list(title = 'Region'), zaxis = list(title = 'Employment Status')) %>%
+  layout(xaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
+         yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
+         zaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))
 ```
 
 
