@@ -26,14 +26,17 @@ library(modelsummary)
 library(ggplot2)
 library(knitr)
 library(marginaleffects)
+library(plotly)
 ```
 
 
 # Introduction
+Three years ago, the United States once again was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Repulican parties are represented by Donald Trump and Joe Biden respectively. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton. His winning was surprising and it led people to challenge the preconceived notions and reliability of pre-election polling data [citation needed]. On the other hand, Joe Biden, the former vice-president under Barack Obama's administration from 2008 to 2016, led the Democratic campaign [citation needed]. He aimed to regain control from the Repulican party. In the end, Biden won the election by 51.3% majority votes [citation needed]. It is important for us to understand how various demographic, economic, and social factors may influence individuals' voting decisions, which is why we decide to analyze the 2020 election dataset and build a prediction model. This allows us to discover trends and address potential issues in society to better reflect the needs and preferences of diverse communities. 
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+In our analysis, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study (CES)  [citation needed]. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES dataset, which are race, region that they live, and employment status. 
 
-The remainder of this paper is structured as follows. @sec-data....
+Our report consists of four sections, not including the introduction. In Section 2, we look at the data we used for our report and include some tables and graphs to illustrate the different groups of people in our data. In section 3, we build the model and discuss its justification and explanation. The results of our predictions is highlighted in the Section 4 using tables and graphs. Lastly, discussions are conducted based on
+the findings, which addresses the voting prediction results based on race, region, and employment status. In this report, R statistical programming language is used, with R packages: [a lot of citations needed]
 
 ## Estimand
 
@@ -198,35 +201,40 @@ ces2020 |>
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
 ```
+# ```{r}
+# #| label: fig-race_employ_white
+# #| fig-cap: The distribution of presidential preferences, by region and employment status, only white people
+# #| echo: false
+# 
+# ces2020_selected_data <- ces2020[ces2020$race == "White", ]
+# 
+# ces2020_selected_data |>
+#   ggplot(aes(x = employ, fill = voted_for)) +
+#   stat_count(position = "dodge") +
+#   facet_wrap(facets = vars(region)) +
+#   theme_minimal() +
+#   labs(
+#     x = "Employment status",
+#     y = "Number of respondents",
+#     fill = "Voted for"
+#   ) +
+#   coord_flip() +
+#   scale_fill_brewer(palette = "Set1") +
+#   theme(legend.position = "bottom")
+# ```
+
 ```{r}
-#| label: fig-race_employ_white
-#| fig-cap: The distribution of presidential preferences, by region and employment status, only white people
+#| label: fig-race_employ_region
+#| fig-cap: The distribution of presidential preferences, by race, region and employment status
 #| echo: false
 
-ces2020_selected_data <- ces2020[ces2020$race == "White", ]
 
-ces2020_selected_data |>
-  ggplot(aes(x = employ, fill = voted_for)) +
-  stat_count(position = "dodge") +
-  facet_wrap(facets = vars(region)) +
-  theme_minimal() +
-  labs(
-    x = "Employment status",
-    y = "Number of respondents",
-    fill = "Voted for"
-  ) +
-  coord_flip() +
-  scale_fill_brewer(palette = "Set1") +
-  theme(legend.position = "bottom")
-```
-
-```{r}
-library(plotly)
 plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("blue", "red")) %>% 
   add_markers(color = ces2020$voted_for, opacity = 0.1)
 ```
 
 
+## Model Results
 
 
 ```{r prediction, echo=F, warning=F, message=F}
