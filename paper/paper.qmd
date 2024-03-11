@@ -24,6 +24,8 @@ library(here)
 library(rstanarm)
 library(modelsummary)
 library(ggplot2)
+library(knitr)
+library(marginaleffects)
 ```
 
 
@@ -164,28 +166,7 @@ ces2020_selected_data |>
   theme(legend.position = "bottom")
 ```
 
-Talk more about it.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-# analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-# 
-# analysis_data |> 
-#   ggplot(aes(x = width, y = length)) +
-#   geom_point(alpha = 0.8) +
-#   theme_minimal() +
-#   labs(x = "Wing width (mm)",
-#        y = "Wing length (mm)")
-```
-
-Talk way more about it. 
 
 
 
@@ -374,6 +355,24 @@ model_plot <- modelplot(political_preferences1, conf_level = 0.9)
 model_plot + xlim(-10, 10) +  # Adjust the limits as needed
   labs(x = "90% Credibility Interval")
 
+```
+```{r}
+# We could use posterior predictive checks, introduced in Section 12.4, to show that the logistic regression approach is a good choice for this circumstance.
+
+pp_check(political_preferences1) +
+  theme(legend.position = "bottom")
+```
+```{r}
+
+# marginal effect -- ?
+
+slopes(political_preferences1) |>
+  summary() |>
+  select(-term) |>
+  kable(
+    col.names = c("Compare department", "Estimate", "2.5%", "97.5%"),
+    digits = 2, booktabs = TRUE, linesep = ""
+  )
 ```
 
 # Discussion
