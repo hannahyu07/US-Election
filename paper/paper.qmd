@@ -115,9 +115,7 @@ Here we briefly describe the Bayesian analysis model used to investigate... Back
 
 ## Model set-up
 
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-
+In our analysis, we utilized a Bayesian logistic regression model to examine the relationship between voter preferences and various demographic and socioeconomic factors. The model is formulated as follows:
 
 \begin{align} 
 y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
@@ -127,6 +125,13 @@ y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
 \beta_2 &\sim \mbox{Normal}(0, 2.5)
 \end{align}
 
+In this model, $y_i$ represents the binary outcome variable indicating whether an individual voted for a particular candidate (e.g., Biden or Trump). The probability of voting for the candidate ($\pi_i$) is modeled using a logistic link function (\text{logit}($\pi_i$)), which is a linear combination of the intercept ($\alpha$) and the coefficients ($\beta_1$, $\beta_2$, $\beta_3$)) corresponding to the predictor variables race, region, and employment status, respectively. These predictor variables are denoted as \text{race}_i, \text{region}_i, and \text{employ}_i, where $i$ indexes the individuals in the dataset.
+
+The intercept ($\alpha$) and coefficients ($\beta_1$, $\beta_2$, $\beta_3$) are assigned informative prior distributions to regularize the model. Specifically, we assume a normal distribution with a mean of 0 and a standard deviation of 2.5 for each parameter.
+
+We chose this modeling approach for several reasons. Firstly, logistic regression is well-suited for binary outcome variables, making it appropriate for analyzing voting behavior. Additionally, Bayesian methods allow us to incorporate prior knowledge and uncertainty into our analysis, providing more robust estimates of the model parameters.
+
+Alternative modeling approaches, such as machine learning algorithms, were also considered. However, we chose Bayesian logistic regression for its flexibility, interpretability, and ability to handle uncertainty.
 
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
@@ -315,41 +320,6 @@ print(
 ```
 
 
-
-```{r}
-
-# Print the updated model summary with modified variable names
-print(
-  modelsummary(
-    list("Support Biden" = political_preferences1),
-    statistic = "mad",
-    coef_map = list(
-      Intercept = "Intercept",
-      raceBlack = "Black",
-      raceHispanic = "Hispanic",
-      raceMiddle_Eastern = "Middle Eastern",
-      raceNative_American = "Native American",
-      raceOther = "Other race",
-      `raceTwo or more races` = "Two or more races",
-      raceWhite = "White",
-      regionNortheast = "Northeast",
-      regionSouth = "South",
-      regionWest = "West",
-      employHomemaker = "Homemaker",
-      employOther = "Other employment",
-      employPart_time = "Part-time",
-      employPermanently_disabled = "Permanently disabled",
-      employRetired = "Retired",
-      employStudent = "Student",
-      `employTemporarily laid off` = "Temporarily laid off",
-      employUnemployed = "Unemployed"
-    )
-  )
-)
-
-
-
-```
 
 
 

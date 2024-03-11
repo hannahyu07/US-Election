@@ -1,11 +1,12 @@
 #### Preamble ####
 # Purpose: Models
-# Author: 
+# Author: Hannah Yu
 # Date: 07 March 2024
-# Contact: 
+# Contact: realhannah.yu@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: run 01-download_data.R and 02-data_cleaning.R first to 
+# get the cleaned dataset
+# Any other information needed?
 
 
 #### Workspace setup ####
