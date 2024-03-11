@@ -19,7 +19,6 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
 library(here)
 library(rstanarm)
 library(modelsummary)
@@ -29,7 +28,7 @@ library(marginaleffects)
 library(plotly)
 library(tibble)
 library(margins)
-
+library(kableExtra)
 ```
 
 
@@ -40,9 +39,8 @@ In this paper, a logistic regression model is used to forecast the outcome of th
 
 **add： 4) what was done; 5) what was found after we finish the results section
 
-This report consists of four sections, not including the introduction. In Section 2, we look at the data used for our report and include some tables and graphs to illustrate the different groups of people in our data. In section 3, we build the model and discuss its justification and explanation. The results of our predictions is highlighted in the Section 4 using tables and graphs. Lastly, discussions are conducted based on the findings, which addresses the voting prediction results based on race, region, and employment status. 
+This report consists of four sections, not including the introduction. In @sec-data, we look at the data used for our report and include some tables and graphs to illustrate the different groups of people in our data. In @sec-model, we build the model and discuss its justification and explanation. The results of our predictions is highlighted in @sec-result using tables and graphs. Lastly, discussions are conducted based on the findings, which addresses the voting prediction results based on race, region, and employment status. 
 
-In this report, R statistical programming language is used, with R packages: [a lot of citations needed]
 
 ## Estimand
 
@@ -50,24 +48,65 @@ In this report, R statistical programming language is used, with R packages: [a 
 
 # Data {#sec-data}
 
-
+## Data Source
+In this report, we use the 2020 Cooperative Election Study (CES) (@citeCes2020) as out primary dataset. This is a long-established annual political survey of US. CES contains information about how Americans view Congress and hold their representatives accountable in elections, how they vote and their electoral experiences, and how their behaviors and experiences vary with political geography and social context. In 2020, there were 61,000 American adults completed the survey.
 
 ## Data Measurement
 
 
 
-## Summary Statistics
+## Features
+The original CES 2020 dataset, which shows in @tbl-raw, contains 61000 observations and 5 variables, which are "votereg", "CC20_410", "race", "region", "employ".
 
+1. votereg: whether the respondent is registered to vote.
 
+2. CC20_410: the person that respondent vote for President of the United States.
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+3. race: the census region where the respondent lives.
+
+4. region: the racial or ethnic group of the respondent.
+
+5. employ: the current employment status of the respondent.
 
 ```{r}
-# read in data
+#| include: false
+#| warning: false
+#| message: false
+
+# read in raw data
+raw_ces2020 <-  read_csv(here::here("data/raw_data/ces2020.csv"))
+```
+
+```{r}
+#| label: tbl-raw
+#| tbl-cap: "Preview of the raw 2020 US Cooperative Election Study (CES) dataset"
+#| message: false
+#| echo: false
+
+raw_ces2020[1:5, 1:5] |>
+  kable()
+```
+
+
+## Methodology
+Since it is difficult to observe through 61000 rows with 5 variables, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the person that respondent vote for President of the United States. This paper will only analyze respondents who are registered to vote and focus on only two voting options, Biden and Trump. 
+
+The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset. @tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset.
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+# read in cleaned data
 ces2020 <-  read_csv(here::here("data/analysis_data/cleaned_ces2020.csv"))
 ```
 
 ```{r}
+#| include: false
+#| warning: false
+#| message: false
+
 # change column type to factor
 ces2020 <-
   ces2020 |>
@@ -113,8 +152,28 @@ ces2020 <-
   select(voted_for, race, region, employ)
 ```
 
+```{r}
+#| label: tbl-clean-data
+#| tbl-cap: "Preview of the cleaned 2020 CES dataset"
+#| message: false
+#| echo: false
 
-# Model
+ces2020[1:5, 1:4] |>
+  kable()
+```
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Statistics summary of the cleaned 2020 CES dataset"
+#| message: false
+#| echo: false
+
+ces2020 |>
+  summary()
+```
+
+
+# Model {#sec-model}
 
 The goal of our modelling strategy is twofold. Firstly,...
 
@@ -166,7 +225,7 @@ pp_check(political_preferences1) +
 ```
 
 
-# Results
+# Results {#sec-result}
 
 ## Data Result
 @fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
@@ -478,7 +537,7 @@ modelplot(political_preferences1, conf_level = 0.9) +
 #| eval: true
 #| warning: false
 #| message: false
-#| label: fig-modelresults1
+#| label: fig-modelresults2
 #| fig-cap: "Credible intervals for predictors of support for Biden 1"
 # Create the model plot
 model_plot <- modelplot(political_preferences1, conf_level = 0.9)
