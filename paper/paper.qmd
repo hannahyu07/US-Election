@@ -26,6 +26,10 @@ library(modelsummary)
 library(ggplot2)
 library(knitr)
 library(marginaleffects)
+library(plotly)
+library(tibble)
+library(margins)
+
 ```
 
 
@@ -133,10 +137,7 @@ We chose this modeling approach for several reasons. Firstly, logistic regressio
 
 Alternative modeling approaches, such as machine learning algorithms, were also considered. However, we chose Bayesian logistic regression for its flexibility, interpretability, and ability to handle uncertainty.
 
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. 
+We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model.Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see Appendix A).
 
 ### Model justification
 
@@ -233,7 +234,6 @@ plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("blue", "
 
 
 
-
 ```{r prediction, echo=F, warning=F, message=F}
 
 # generate predictions for each of our grouped cells
@@ -307,6 +307,38 @@ poll_post_biden %>%
 
 Our results are summarized in @tbl-modelresults.
 
+```{r}
+
+# Marginal Effect 
+political_preferences_predictions <- predictions(political_preferences1) |>
+  as_tibble()
+
+political_preferences_predictions
+
+```
+
+
+```{r}
+library(margins)
+
+# Marginal effects for each predictor variable
+marginal_effects <- margins(political_preferences1)
+
+# Plotting marginal effects for race
+race_effects <- dyplot(marginal_effects, variables = "race")
+race_effects
+
+# Plotting marginal effects for region
+region_effects <- dyplot(marginal_effects, variables = "region")
+region_effects
+
+# Plotting marginal effects for employ
+employ_effects <- dyplot(marginal_effects, variables = "employ")
+employ_effects
+
+```
+
+
 
 ```{r}
 #| echo: false
@@ -346,30 +378,44 @@ Hispanic races on average are also more likely to vote for Biden. (not significa
 We observe an outlier race other which has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
 
 
+
+
 ```{r}
+# Load required libraries
+library(bayestestR)
 
-# Define the updated variable names
-new_coef_names <- c(
-  "Intercept", "Black", "Hispanic", "Middle Eastern", "Native American", 
-  "Other race", "Two or more races", "White", "Northeast", "South", "West",
-  "Homemaker", "Other employment", "Part-time", "Permanently disabled", 
-  "Retired", "Student", "Temporarily laid off", "Unemployed"
-)
+# Extract posterior draws from the model object
+posterior_draws <- as.matrix(political_preferences1)
 
-# Update variable names in the model object
-names(political_preferences1$coefficients) <- new_coef_names
+# Define the predictor variables for which you want to compute marginal effects
+predictor_variables <- c("Black", "Hispanic", "Middle Eastern", "Native American", 
+                         "Other race", "Two or more races", "White", "Northeast", 
+                         "South", "West", "Homemaker", "Other employment", 
+                         "Part-time", "Permanently disabled", "Retired", 
+                         "Student", "Temporarily laid off", "Unemployed")
 
-# Print the updated model summary
-print(
-  modelsummary(
-    list("Support Biden" = political_preferences1),
-    statistic = "mad"
-  )
-)
+# Compute marginal effects
+marginal_effects <- marginal_effects(posterior_draws, variables = predictor_variables)
+
+# Summary of marginal effects
+summary(marginal_effects)
+
 
 
 ```
 
+```{r}
+library(tidybayes)
+
+# Extract draws from the Bayesian model
+draws <- spread_draws(political_preferences1)
+
+# Plot the posterior distribution of a predictor variable
+ggplot(draws, aes(x = raceBlack)) +
+  geom_density(fill = "skyblue", color = "black") +
+  labs(x = "Black", y = "Density", title = "Posterior Distribution of Black Variable")
+
+```
 
 
 
@@ -420,9 +466,10 @@ model_plot + xlim(-10, 10) +  # Adjust the limits as needed
 
 ## First discussion point {#sec-first-point}
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
 
 ## Second discussion point
+
+We observe
 
 ## Third discussion point
 
