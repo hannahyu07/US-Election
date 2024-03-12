@@ -93,7 +93,7 @@ raw_ces2020[1:5, 1:5] |>
 ## Methodology
 Since it is difficult to observe such as large dataset, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the presidential candidate the respondent voted for. This paper will only analyze respondents who are registered to vote and focus on the outcome of two candidates, Joe Biden representing the Democratic party and Donald Trump representing the Republican party. 
 
-The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. After []
+The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. After cleaning, 43534 rows of data and 4 variables remain.
 
 The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset.
 
@@ -166,7 +166,7 @@ ces2020[1:5, 1:4] |>
   kable()
 ```
 
-@tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset. ***add detail***
+@tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset. As we can see from the table, there are more people who support Biden. Respondents covered a wide range of races, with white people being the most heavily represented. Also, CES data came from a variety of locations, but the majority came from the southern region of the United States. The employment status of those who completed the survey varied, with most of them being full-time or retired.
 ```{r}
 #| label: tbl-summary
 #| tbl-cap: "Statistics summary of the cleaned 2020 CES dataset"
@@ -408,19 +408,7 @@ white
 - religion
 
 Biden: white, asian(trump covid), black, hispanic(trump建墙, no illegal immigration), other
-Trump: white, two or more races, 
-```{r}
-ces2020|>
-  filter(voted_for == "Biden") |>
-  select(race) |>
-  summary()
-```
-```{r}
-ces2020|>
-  filter(voted_for == "Trump") |>
-  select(race) |>
-  summary()
-```
+Trump: white, two or more races, Middle Eastern
 
 
 
