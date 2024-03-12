@@ -53,14 +53,16 @@ In this report, we use the 2020 Cooperative Election Study (CES) (@citeCes2020) 
 
 ## Data Measurement
 
+The transformation of real-world phenomena into quantifiable data points in our dataset is influenced by various factors, leading to inherent limitations in our measurements for our variables: "votereg", ", and political affiliation.
+
 
 
 ## Features
-The original CES 2020 dataset, which shows in @tbl-raw, contains 61000 observations and 5 variables, which are "votereg", "CC20_410", "race", "region", "employ".
+The original CES 2020 dataset, which shows in @tbl-raw, contains 61000 observations and many variables. We chose to feature these 5 variables: "votereg", "CC20_410", "race", "region", "employ", in our analysis. 
 
 1. votereg: whether the respondent is registered to vote.
 
-2. CC20_410: the person that respondent vote for President of the United States.
+2. CC20_410: the presidential candidate the respondent voted for.
 
 3. race: the census region where the respondent lives.
 
@@ -89,7 +91,7 @@ raw_ces2020[1:5, 1:5] |>
 
 
 ## Methodology
-Since it is difficult to observe through 61000 rows with 5 variables, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the person that respondent vote for President of the United States. This paper will only analyze respondents who are registered to vote and focus on only two voting options, Biden and Trump. 
+Since it is difficult to observe such as large dataset, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the presidential candidate the respondent voted for. This paper will only analyze respondents who are registered to vote and focus on the outcome of two candidates, Joe Biden representing the Democratic party and Donald Trump representing the Republican party. 
 
 The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. After []
 
