@@ -36,7 +36,7 @@ library(kableExtra)
 # Introduction
 Four years ago, the United States once again was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Republican parties are represented by Donald Trump and Joe Biden respectively. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton. On the other hand, Joe Biden, the former vice-president under Barack Obama's administration from 2008 to 2016, led the Democratic campaign. He aimed to regain control from the Republican party. In the end, Biden won the election by 51.3% majority votes (@cnn_2020), which Trump questioned its credibility. Due to the COVID-19 pandemic in 2020, the vote system changed to in-mail voting instead of in-person voting, which was why Trump believed that some votes were stolen (@trump_stolenvote). Therefore, it is important for us to analyze why people voted for Biden and Trump in 2020 election and how various demographic, economic, and social factors may influence individuals' voting decisions. Perhaps then we could see why Biden eventually won. We analyze the 2020 election data set from Cooperative Election Study (CES) (@citeCes2020) and build a prediction model for individual voting preference. This allows us to discover trends and address potential political, economic, and societal situations that may cause the eventual winning for Biden.
 
-In this paper, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES data set.We selected data features:race, region that they live, employment status, and who they voted for. The estimand in this paper is the number of people who support Trump and Biden in reality. However, it is difficult to measure the exact number of people who support Trump and Biden since there are millions of people in the United States and not all of them with the rights to vote would actually vote. Therefore, in this paper, we attempt to estimate the estimand using a logistic regression model which is trained using sample dataset from the 2020 election dataset from CES. 
+In this paper, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES data set.We selected data features: race, region that they live, employment status, and who they voted for. The estimand in this paper is the number of people who support Trump and Biden in reality. However, it is difficult to measure the exact number of people who support Trump and Biden since there are millions of people in the United States and not all of them with the rights to vote would actually vote. Therefore, in this paper, we attempt to estimate the estimand using a logistic regression model which is trained using sample dataset from the 2020 election dataset from CES. 
 
 The logistic regression model shows that in the 2020 presidential election, Biden has strong support from racial groups including black, Hispanic, and Asian populations. Geographically, Biden gains greater support in the Northeast and West regions, while Trump secured more votes in the South. Additionally, both full-time and part-time workers, as well as students and those facing unemployment or layoffs, lean towards Biden. 
 
@@ -78,8 +78,8 @@ raw_ces2020 <-  read_csv(here::here("data/raw_data/ces2020.csv"))
 #| message: false
 #| echo: false
 
-# raw_ces2020[1:5, 1:5] |>
-#   kable()
+raw_ces2020[1:5, 1:5] |>
+  kable()
 ```
 
 
@@ -214,7 +214,7 @@ Alternative modeling approaches, such as linear regression models, were also con
 We run the model in R [@citeR] using the `rstanarm` package of @citeRstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see -@sec-model-details).
 
 
-### Model Justification
+## Model Justification
 
 We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall. These groups are more likely to align with Biden's policies, which prioritize inclusivity and diversity. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
 
@@ -229,7 +229,7 @@ Additionally, educated and liberal-leaning working professionals may prioritize 
 ## Model Implication
 In @fig-post_dist, the great fit of the posterior distribution from our logistic regression model with actual voting data suggests accurate capture of voting patterns. This indicates the accuracy of our model's voting preference prediction to the 2020 election data. Also, @fig-post_prior compares the posterior to the prior, which shows minimal parameter changes except for the parameter "raceOther". The discrepancy for the parameter "raceOther" is not critical due to the low representation of "raceOther" in the dataset. 
 
-The trace plot in @fig-mcmc-1 does not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-mcmc-2), we can observe that everything is close to 1, and no more than 1.05. 
+The trace plot in @fig-trace does not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-rhat), we can observe that everything is close to 1, and no more than 1.05. 
 
 
 # Results {#sec-result}
@@ -550,7 +550,7 @@ model_plot + xlim(-5, 5) +  # Adjust the limits as needed
 ```
 
 
-## Diagnostics
+## Markov chain Monte Carlo Convergence Check
 
 @fig-trace is a trace plot. It shows if there is existence of signs that the our model runs into issues. We observe lines that are horizontal and oscillating, and have overlaps between the chains. This suggests that there is nothing strange in this trace plot.
 
