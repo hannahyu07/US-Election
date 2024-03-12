@@ -7,8 +7,9 @@ author:
 thanks: "Code and data are available at: https://github.com/hannahyu07/US-Election"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This paper delves into the dynamics of voter turnout of the 2020 United States presidential election. Utilizing dataset from the Cooperate Election Study (CES2020), we employ logistic regression analysis to explore the influence of the voter's race, region, and employment on their vote for presidential candidate. Our findings reveal distinct voting patterns among different demographic groups, with minorities showing strong support for Biden, the South predominantly favored Trump, and individuals reliant on unemployment benefits preferred Biden. These insights stress the need for customized outreach and policies to enhance voter engagement across diverse U.S. communities."
 format: pdf
+toc: true
 number-sections: true
 bibliography: references.bib
 ---
@@ -95,7 +96,6 @@ In the case of "region," which represents the census region where the respondent
 
 The "region" variable categorizes respondents based on their geographical location into four census regions: Northeast, Midwest, South, and West. However, regional boundaries can be arbitrary, and individuals living in bordering areas may have affiliations with multiple regions or identify more strongly with a neighboring region. For instance, states like Missouri and Kentucky are often considered part of the Midwest but also share cultural and economic ties with the South. This complexity can make individuals accurately reporting thier region challenging.
 
-
 Finally, for "employ", indicating the respondent's self-reporting employment status, can be influenced by various factors such as job changes, seasonal work, and personal circumstances. In addition, individuals may intentionally misreport their employment status due to societal pressures or to access benefits. For instance, some may falsely claim employment to avoid stigma, while others may report unemployment to qualify for unemployment benefits. Additionally, students working part-time jobs may selectively report their status based on their perceived benefit. These discrepancies can introduce bias and inaccuracies into the data, impacting the reliability of our analyses.
 
 ## Methodology
@@ -103,7 +103,7 @@ Since it is difficult to observe such as large dataset, this report will only ex
 
 The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. After []
 
-The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset.
+The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), `testthat` (@citetestthat) and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset.
 
 ```{r}
 #| include: false
@@ -189,7 +189,7 @@ ces2020 |>
 
 # Model {#sec-model}
 
-## Model set-up
+## Model Set-up
 
 In our analysis, we utilized a Bayesian logistic regression model to examine the relationship between voter preferences and various demographic and socioeconomic factors. The model is formulated as follows:
 
@@ -212,7 +212,7 @@ Alternative modeling approaches, such as linear regression models, were also con
 We run the model in R [@citeR] using the `rstanarm` package of @citeRstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see -@sec-model-details).
 
 
-### Model justification
+### Model Justification
 
 We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall. These groups are more likely to align with Biden's policies, which prioritize inclusivity and diversity. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
 
@@ -309,12 +309,10 @@ ces2020 |>
 #          yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
 #          zaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))
 ```
-This bubble plot (@fig-race_employ_region) illustrates four variables: race, region, employment status, and voting preference. Darker dots indicate a higher number of people, with red representing Trump supporters and blue for Biden supporters. Purple dots suggest similar support rates for both candidates, since blue and red makes purple in a 1:1 ratio. We can see that the darker dots are mostly in White, Black, Hispanic communities for full-time, part-time, or retired individuals. The darker dots are all blue, which indicates stronger support for Biden. It can also be noted that there are very few entirely red dots, which means that there is no significant disparities in voting percentages between Trump and Biden even among those groups which partially supported Trump. In those purple dots, we found that mostly are from people who are either Native American or from the South.
 
 
 ## Model Results
 
-Our results are summarized in @tbl-modelresults.
 
 ```{r}
 #| echo: false
@@ -343,7 +341,7 @@ modelsummary(
   statistic = "mad"
   )
 ```
-Our results generally matches our justification. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
+Our results are summarized in @tbl-modelresults1.Our results generally matches our justification. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
 
 Black individual's support for Biden is large. The estimated coefficient of 2.549 suggests that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group. Hispanic races on average are also more likely to vote for Biden. We observe an outlier, individuals with race "other" has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
 
@@ -374,9 +372,9 @@ Voters preference for candidates also vary by regions and their employment statu
 
 ```
 
-Figure # shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
+@fig-modelresults1 shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
 
-Combing figure # and figure #, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
+Combing @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
 
 
 ```{r}
@@ -458,7 +456,7 @@ In addition to traditional socio-economic factors like race, region, and employm
 
 Mail-in ballots also played a key role in shaping the election landscape. It increased voter participation, particularly among individuals who were reluctant to vote due to logistical constraints or health concerns amid the pandemic [@amlani_collitt_2022]. Mail-in ballots raised many election controversies. Initially, Trump led in some states, but as mail-in ballots were counted, the tide often turned in favor of Biden. Trump and his supporters raises concerns about the legitimacy of the  ballots and claimed the election is "rigged" [@axelrod_2022]. However, there is no solid proof that the election is "rigged".
 
-## Weaknesses and next steps
+## Weaknesses and Next Steps
 
 One weakness of using a logistic regression model is its inability to predict voting turnout for candidates beyond the Biden or Trump. Expanding the analysis to include other candidates would enhance its comprehensiveness. Furthermore, the reliability of our findings is based on the accuracy of the survey data. Respondents may provide inaccurate or misleading information, intentionally or unintentionally, leading to biased estimates and unreliable predictions. Due to many controversial opinions and actions of Trump and his supporters, many Republican who voted for him might be reluctant to admit their voting in the survey. Additionally, missing data (N/As) can introduce further challenges, as logistic regression requires complete data for accurate modeling.
 
