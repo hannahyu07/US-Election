@@ -226,20 +226,11 @@ The voting behavior of employed individuals is harder to distinguish. Some worki
 Additionally, educated and liberal-leaning working professionals may prioritize issues such as healthcare, climate change, and social justice, aligning them with Biden's platform. 
 
 
-<<<<<<< HEAD
 ## Model Implication
 In @fig-post_dist, the great fit of the posterior distribution from our logistic regression model with actual voting data suggests accurate capture of voting patterns. This indicates the accuracy of our model's voting preference prediction to the 2020 election data. Also, @fig-post_prior compares the posterior to the prior, which shows minimal parameter changes except for the parameter "raceOther". The discrepancy for the parameter "raceOther" is not critical due to the low representation of "raceOther" in the dataset. 
 
-
-Figure # shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
-
-Combining figure # and figure #, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
-
 The trace plot in @fig-mcmc-1 does not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-mcmc-2), we can observe that everything is close to 1, and no more than 1.05. 
 
-
-=======
->>>>>>> f4f3b83feef8933303ff6add8ce0a1953830e9bb
 
 # Results {#sec-result}
 
@@ -412,9 +403,9 @@ Voters preference for candidates also vary by regions and their employment statu
 
 ```
 
-@fig-modelresults1 (see @sec-credibility-interval) inshows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
+@fig-modelresults1 (see @sec-credibility-interval) shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
 
-Combing @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
+Combining @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
 
 
 
@@ -450,8 +441,7 @@ Southern states, such as Alabama, Mississippi, and South Carolina with a large a
 
 ## Employment Variations
 
-maybe talk about employment?
-tax
+will write later
 
 
 ## COVID and Mail-in Ballots
@@ -527,38 +517,9 @@ posterior_vs_prior(political_preferences1) +
   coord_flip()
 ```
 
-## Credibility interval
 
-```{r}
-#| label: fig-conf
-#| fig-cap: Comparing the posterior with the prior 
-#| echo: false
-#| warning: false
-#| message: false
-plot(
-  political_preferences1,
-  "areas"
-)
-```
-```{r}
-#| label: fig-conf_lim
-#| fig-cap: Comparing the posterior with the prior 
-#| echo: false
-#| warning: false
-#| message: false
-#| 
-model_plot <- plot(
-  political_preferences1,
-  "areas"
-)
-# Modify the x-axis limits
-model_plot + xlim(-10, 10) +  # Adjust the limits as needed
-  labs(x = "90% Credibility Interval")
-```
-<<<<<<< HEAD
-=======
 ## Credibility Interval {#sec-credibility-interval}
->>>>>>> f4f3b83feef8933303ff6add8ce0a1953830e9bb
+
 
 ```{r}
 #| echo: false
@@ -568,17 +529,12 @@ model_plot + xlim(-10, 10) +  # Adjust the limits as needed
 #| label: fig-modelresults1
 #| fig-cap: "Credible intervals for predictors of support for Biden 1"
 
-modelplot(political_preferences1, conf_level = 0.95, size = 0.1) +
-<<<<<<< HEAD
+modelplot(political_preferences1, conf_level = 0.90, size = 0.1) +
   labs(x = "90% credibility interval")
-=======
- labs(x = "90% credibility interval")
->>>>>>> f4f3b83feef8933303ff6add8ce0a1953830e9bb
 ```
 
 
 ```{r}
-<<<<<<< HEAD
 #| echo: false
 #| eval: true
 #| warning: false
@@ -591,21 +547,8 @@ model_plot <- modelplot(political_preferences1, conf_level = 0.9)
 # Modify the x-axis limits
 model_plot + xlim(-5, 5) +  # Adjust the limits as needed
   labs(x = "90% Credibility Interval")
-=======
- #| echo: false
- #| eval: true
- #| warning: false
- #| message: false
- #| label: fig-modelresults2
- #| fig-cap: "Credible intervals for predictors of support for Biden 2"
- # Create the model plot
- model_plot <- modelplot(political_preferences1, conf_level = 0.9)
-
- # Modify the x-axis limits
- model_plot + xlim(-10, 10) +  # Adjust the limits as needed
-   labs(x = "90% Credibility Interval")
->>>>>>> f4f3b83feef8933303ff6add8ce0a1953830e9bb
 ```
+
 
 ## Diagnostics
 
