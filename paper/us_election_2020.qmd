@@ -34,12 +34,11 @@ library(kableExtra)
 
 
 # Introduction
-Four years ago, the United States once again was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Republican parties are represented by Donald Trump and Joe Biden respectively. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton. On the other hand, Joe Biden, the former vice-president under Barack Obama's administration from 2008 to 2016, led the Democratic campaign. He aimed to regain control from the Republican party. In the end, Biden won the election by 51.3% majority votes (@cnn_2020), which Trump questioned its credibility. Due to the COVID-19 pandemic in 2020, the vote system changed to in-mail voting instead of in-person voting, which was why Trump believed that some votes were stolen (@trump_stolenvote). Therefore, it is important for us to analyze why people voted for Biden and Trump in 2020 election and how various demographic, economic, and social factors may influence individuals' voting decisions. Perhaps then we could see why Biden eventually won. We analyze the 2020 election data set from Cooperative Election Study (CES) [citation needed] and build a prediction model for individual voting preference. This allows us to discover trends and address potential political, economic, and societal issues to better reflect the needs and preferences of diverse communities. 
+Four years ago, the United States once again was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Republican parties are represented by Donald Trump and Joe Biden respectively. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton. On the other hand, Joe Biden, the former vice-president under Barack Obama's administration from 2008 to 2016, led the Democratic campaign. He aimed to regain control from the Republican party. In the end, Biden won the election by 51.3% majority votes (@cnn_2020), which Trump questioned its credibility. Due to the COVID-19 pandemic in 2020, the vote system changed to in-mail voting instead of in-person voting, which was why Trump believed that some votes were stolen (@trump_stolenvote). Therefore, it is important for us to analyze why people voted for Biden and Trump in 2020 election and how various demographic, economic, and social factors may influence individuals' voting decisions. Perhaps then we could see why Biden eventually won. We analyze the 2020 election data set from Cooperative Election Study (CES) (@citeCes2020) and build a prediction model for individual voting preference. This allows us to discover trends and address potential political, economic, and societal situations that may cause the eventual winning for Biden.
 
-In this paper, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES data set, which are race, region that they live, and employment status. The estimand in this paper is the number of people who support Trump and Biden in reality. However, it is difficult to measure the exact number of people who support Trump and Biden since there are millions of people in the United States and not all of them with the rights to vote would actually vote. Therefore, in this paper, we attempt to estimate the estimand using a logistic regression model which is trained using 2020 election data set from CES.
+In this paper, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES data set.We selected data features:race, region that they live, employment status, and who they voted for. The estimand in this paper is the number of people who support Trump and Biden in reality. However, it is difficult to measure the exact number of people who support Trump and Biden since there are millions of people in the United States and not all of them with the rights to vote would actually vote. Therefore, in this paper, we attempt to estimate the estimand using a logistic regression model which is trained using sample dataset from the 2020 election dataset from CES. 
 
-We found that in the 2020 presidential election, Biden had strong support from racial groups including black, Hispanic, and Asian populations. Geographically, Biden gained greater support in the Northeast and West regions, while Trump secured more votes in the South. Additionally, both full-time and part-time workers, as well as students and those facing unemployment or layoffs, leaned towards Biden. 
-
+The logistic regression model shows that in the 2020 presidential election, Biden has strong support from racial groups including black, Hispanic, and Asian populations. Geographically, Biden gains greater support in the Northeast and West regions, while Trump secured more votes in the South. Additionally, both full-time and part-time workers, as well as students and those facing unemployment or layoffs, lean towards Biden. 
 
 The remainder of this paper is structured into different sections. @sec-data demonstrates the data used for our report and includes some tables and graphs to illustrate the different groups of people in our data. @sec-model builds the model and discusses its justification and explanation. @sec-result highlights the results of the predictions using tables and graphs. @sec-discussion contains discussions that conducted based on the findings, which addresses the voting prediction results based on race, region, employment status, and the influence of COVID-19 and in-mail voting systems. 
 
@@ -48,7 +47,7 @@ The remainder of this paper is structured into different sections. @sec-data dem
 # Data {#sec-data}
 
 ## Data Source
-In this report, we use the 2020 Cooperative Election Study (CES) (@citeCes2020) as out primary dataset. This is a long-established annual political survey of US. CES contains information about how Americans view Congress and hold their representatives accountable in elections, how they vote and their electoral experiences, and how their behaviors and experiences vary with political geography and social context. In 2020, there were 61,000 American adults completed the survey.
+In this report, we use the 2020 Cooperative Election Study (CES) (@citeCes2020) as our primary dataset. This is a long-established annual political survey of US. CES contains information about how Americans view Congress and hold their representatives accountable in elections, how they vote and their electoral experiences, and how their behaviors and experiences vary with political geography and social context. In 2020, there were 61,000 American adults completed the survey.
 
 
 ## Features
@@ -79,29 +78,32 @@ raw_ces2020 <-  read_csv(here::here("data/raw_data/ces2020.csv"))
 #| message: false
 #| echo: false
 
-raw_ces2020[1:5, 1:5] |>
-  kable()
+# raw_ces2020[1:5, 1:5] |>
+#   kable()
 ```
+
+
 ## Data Measurement
 
 Our dataset's quantitative representation of real-world phenomena is influenced by several factors, which inherently limit the accuracy of our measurements for the five variables.
 
-Firstly, for the variable "votereg" indicating whether a respondent is registered to vote, the measurement process involves relying on self-reported information from survey respondents. The US voter registration system is known to be inaccurate and inefficient.While efforts are made to ensure accuracy, there may be instances of misreporting or misunderstanding of voter registration status, leading to potential inaccuracies in the data. According to [@inaccurate], there are millions of voter registrations that are no longer valid or inaccurate. There may also be cases when individuals falsely believed they are registered to vote because they reached the voting age but did not actually register at their local office. 
+Firstly, for the variable "votereg" indicating whether a respondent is registered to vote, the measurement process involves relying on self-reported information from survey respondents. The US voter registration system is known to be inaccurate and inefficient. While efforts are made to ensure accuracy, there may be instances of misreporting or misunderstanding of voter registration status, leading to potential inaccuracies in the data. According to [@inaccurate], there are millions of voter registrations that are no longer valid or inaccurate. There may also be cases when individuals falsely believed they are registered to vote because they reached the voting age but did not actually register at their local office. 
 
-Regarding "CC20_410," representing the presidential candidate the respondent voted for, data collection relies on self-reporting, which is subject to recall bias and social desirability bias. While the data collection occurred before the notorious January 6, 2021 United States Capitol Attack that resulted in international criticism and increased the unpopularity of Trump in mainstream media, Trump had made many speeches and taken actions throughout his presidency that contributed to his polarizing image. Among many voters, voting for Trump became associated with characteristics such as being uneducated, backward-thinking, and anti-science. As a result, individuals who voted for him may have felt social pressure to conceal or lie about their support, potentially leading to underreporting of votes for Trump in the survey data.
+Regarding "CC20_410," representing the presidential candidate the respondent voted for, data collection relies on self-reporting, which is subject to recall bias and social desirability bias. While the data collection occurred before the notorious January 6, 2021 United States Capitol Attack that resulted in international criticism and increased the unpopularity of Trump in mainstream media, Trump had made many speeches and taken actions throughout his presidency that contributed to his polarizing image. Among many voters, voting for Trump became associated with characteristics such as being uneducated, backward-thinking, and anti-science. As a result, individuals who voted for him may have felt social pressure to conceal or lie about their support, potentially leading to under-reporting of votes for Trump in the survey data.
 
 For the variable "race," which denotes the racial or ethnic group of the respondent, categorization relies on self-identification. However, racial identity is complex and can be influenced by cultural, social, and historical factors. Mixed-race individuals, for instance, may choose to identify with one racial group over another based on social preferences or personal experiences. Moreover, the race variable includes a category for "two or more races" to classify individuals identifying with multiple racial backgrounds. While this acknowledges the diversity within the population, it may not capture the nuances of each individual's identity. Additionally, the absence of a distinct category for "Indians or South Asians" presents a limitation. While these individuals may technically fall under the category "Asian," many Indian and South Asian Americans may prefer to identify separately due to differences in appearance and cultural background. The term "Asians" are more generally associated with East Asians such as Chinese, Japanese, and Koreans. As a result, there's a potential for misclassification, with some individuals opting to report themselves as belonging to the "other" race category instead.
 
 In the case of "region," which represents the census region where the respondent lives, data collection relies on categorization based on geographical location. However, it's important to note that regional boundaries can sometimes be arbitrary and may not fully capture the diverse cultural, economic, and social affiliations of individuals. Additionally, people living in bordering states or areas near regional boundaries may have affiliations with multiple regions or may identify more strongly with a neighboring region. For example, states like Missouri and Kentucky are often considered part of the Midwest, but they also share cultural and economic ties with the South. This complexity can lead to challenges in accurately categorizing individuals based on their region of residence, potentially resulting in oversimplification or misrepresentation of regional identities and characteristics.
 
-The "region" variable categorizes respondents based on their geographical location into four census regions: Northeast, Midwest, South, and West. However, regional boundaries can be arbitrary, and individuals living in bordering areas may have affiliations with multiple regions or identify more strongly with a neighboring region. For instance, states like Missouri and Kentucky are often considered part of the Midwest but also share cultural and economic ties with the South. This complexity can make individuals accurately reporting thier region challenging.
+The "region" variable categorizes respondents based on their geographical location into four census regions: Northeast, Midwest, South, and West. However, regional boundaries can be arbitrary, and individuals living in bordering areas may have affiliations with multiple regions or identify more strongly with a neighboring region. For instance, states like Missouri and Kentucky are often considered part of the Midwest but also share cultural and economic ties with the South. This complexity can make individuals accurately reporting their region challenging.
 
 Finally, for "employ", indicating the respondent's self-reporting employment status, can be influenced by various factors such as job changes, seasonal work, and personal circumstances. In addition, individuals may intentionally misreport their employment status due to societal pressures or to access benefits. For instance, some may falsely claim employment to avoid stigma, while others may report unemployment to qualify for unemployment benefits. Additionally, students working part-time jobs may selectively report their status based on their perceived benefit. These discrepancies can introduce bias and inaccuracies into the data, impacting the reliability of our analyses.
 
-## Methodology
-Since it is difficult to observe such as large dataset, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the presidential candidate the respondent voted for. This paper will only analyze respondents who are registered to vote and focus on the outcome of two candidates, Joe Biden representing the Democratic party and Donald Trump representing the Republican party. 
 
-The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. After []
+## Methodology
+Since it is difficult to observe such as large dataset, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the presidential candidate the respondent voted for. This paper will only analyze respondents who are registered to vote and focus on the outcome of two candidates, Joe Biden representing the Democratic party and Donald Trump representing the Republican party.
+
+The dataset is cleaned by renaming the column names, specifying the class of the columns, and changing the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, NA employment status is removed in the cleaned data file since there are only 34 entries, which is a small amount of missing value compared with 61000 entries. After cleaning, 43534 rows of data with 4 data features remain.
 
 The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), `testthat` (@citetestthat) and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset.
 
@@ -174,7 +176,7 @@ ces2020[1:5, 1:4] |>
   kable()
 ```
 
-@tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset. ***add detail***
+@tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset. As we can see from the table, there are more people who support Biden. Respondents covered a wide range of races, with white people being the most heavily represented. Also, CES data came from a variety of locations, but the majority came from the southern region of the United States. The employment status of those who completed the survey varied, with most of them being full-time or retired.
 ```{r}
 #| label: tbl-summary
 #| tbl-cap: "Statistics summary of the cleaned 2020 CES dataset"
@@ -224,30 +226,40 @@ The voting behavior of employed individuals is harder to distinguish. Some worki
 Additionally, educated and liberal-leaning working professionals may prioritize issues such as healthcare, climate change, and social justice, aligning them with Biden's platform. 
 
 
--------------------------------needs some explanation
-```{r}
-# We could use posterior predictive checks, introduced in Section 12.4, to show that the logistic regression approach is a good choice for this circumstance.
-political_preferences1 <-
-  readRDS(file = here::here("models/political_preferences1.rds"))
+## Model Implication
+Figure # shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
 
-pp_check(political_preferences1) +
-  theme(legend.position = "bottom")
-```
+Combining figure # and figure #, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
+
 
 
 # Results {#sec-result}
 
 ## Data Result
 
-```{r}
+@fig-race shows the relationship between race and voting preference. Overall, Biden gets more support from most racial groups, except for Native Americans and people of "two or more races," who tend to support Trump slightly more. 
 
+```{r}
+#| label: fig-race
+#| fig-cap: The distribution of presidential preferences by race
+#| echo: false
+#| warning: false
+#| message: false
 ces2020 |>
   ggplot(aes(x = race, fill = voted_for)) +
-  geom_bar() +
-  coord_flip()
+  geom_bar(position = "dodge") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Race",
+    y = "Number of respondents",
+    fill = "Voted for"
+  )
 ```
 
-@fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
+@fig-race_region shows the more detailed relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
+
 ```{r}
 #| label: fig-race_region
 #| fig-cap: The distribution of presidential preferences, by region and race
@@ -270,10 +282,30 @@ ces2020 |>
   theme(legend.position = "bottom")
 ```
 
-@fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
+@fig-region shows the relationship between employment and voting preferences. Across various employment statuses, there is a consistent trend of higher support for Biden compared to Trump. It can be observed that individuals holding full-time jobs show the most disparity in support between the two candidates, with Biden gaining substantially more support than Trump. The support for Biden and Trump among those with other employment statuses is relatively similar, with the support for Biden slightly higher than for Trump.
+```{r}
+#| label: fig-region
+#| fig-cap: The distribution of presidential preferences by race
+#| echo: false
+#| warning: false
+#| message: false
+ces2020 |>
+  ggplot(aes(x = employ, fill = voted_for)) +
+  geom_bar(position = "dodge") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Employment status",
+    y = "Number of respondents",
+    fill = "Voted for"
+  )
+```
+
+@fig-region_employ illustrates a more detailed relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
 
 ```{r}
-#| label: fig-race_employ
+#| label: fig-region_employ
 #| fig-cap: The distribution of presidential preferences, by region and employment status
 #| echo: false
 #| warning: false
@@ -341,7 +373,7 @@ modelsummary(
   statistic = "mad"
   )
 ```
-Our results are summarized in @tbl-modelresults1.Our results generally matches our justification. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
+Our results are summarized in @tbl-modelresults1. Our results generally matches our expectation. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
 
 Black individual's support for Biden is large. The estimated coefficient of 2.549 suggests that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group. Hispanic races on average are also more likely to vote for Biden. We observe an outlier, individuals with race "other" has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
 
@@ -377,64 +409,29 @@ Voters preference for candidates also vary by regions and their employment statu
 Combing @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
 
 
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-#| label: fig-modelresults1
-#| fig-cap: "Credible intervals for predictors of support for Biden 1"
 
-modelplot(political_preferences1, conf_level = 0.9) +
-  labs(x = "90% credibility interval")
-```
 
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-#| label: fig-modelresults2
-#| fig-cap: "Credible intervals for predictors of support for Biden 2"
-# Create the model plot
-model_plot <- modelplot(political_preferences1, conf_level = 0.9)
 
-# Modify the x-axis limits
-model_plot + xlim(-5, 5) +  # Adjust the limits as needed
-  labs(x = "90% Credibility Interval")
-```
-
+\newpage
 
 
 # Discussion {#sec-discussion}
 
-## First discussion point
-race
-white
-- religion
+## Racial Variations
 
-Biden: white, asian(trump covid), black, hispanic(trump建墙, no illegal immigration), other
-Trump: white, two or more races, 
-```{r}
-ces2020|>
-  filter(voted_for == "Biden") |>
-  select(race) |>
-  summary()
-```
-```{r}
-ces2020|>
-  filter(voted_for == "Trump") |>
-  select(race) |>
-  summary()
-```
+In our analysis, respondents of different races show varying levels of support, with a majority of blacks, Hispanics, and Asians supporting Biden, and a majority of Native Americans and multi-racials supporting Trump. The results for whites are more evenly distributed, with about the same percentage supporting Biden and Trump.
 
+The reason for the majority of Hispanics supporting Biden may be due to the US-Mexico border wall that was built during Trump's reign. The wall was built over 452 miles, which replaced the old fence (@Rodriguez_2021). With this measure in place, Trump lost most of the Hispanic vote. Trump claims the wall reformed the immigration system and achieved the most secure southern border in US history. However, that wasn't true, and with it has come a surge in illegal border crossings. For Hispanics, Trump's long history of anti-immigrant rhetoric and this border wall have denied them the opportunity to seek asylum. While crossing the border illegally is not something to be promoted, it is the last hope for those living in dire straits.
 
+2020 is the age of pandemics, as Trump's phrase "Chinese virus" led to a large number of Asians starting to support Biden. This is an extremely anti-Asian statement: although COVID-19 was first found in China, but it does not mean that virus was from China. Trump's comments quickly festered in public opinion and led to a dramatic increase in hate incidents in the Asian American community (@Reja_2021). The repeated use of the "Chinese Virus" by a president of the country has contributed to an environment of racial discrimination and hatred against Asians, which has directly led to more Asians supporting Biden, whose policies are more open and democratic, and who values racial equality more.
+
+Most white people vote relatively evenly, due to the fact that they are not affected by immigration or other policies. Whites hold a major voice and position in the US, most of the ideas and policies Trump proposes are favorable to whites. Therefore, he can gain support from most whites. However, there are some whites who want a democratic and equal environment, and at the same time do not want to see racial discrimination and other phenomena, so they will choose to support Biden, who values equality.
 
 ## Regional Variations
 
 Our analysis highlights regional voting variations, with the Northeast, West, and Midwest favoring Biden, while the South supports Trump. These differences stem from diverse cultural, family, religious, and social perspectives.
 
-Biden's support base is concentrated in the Mid-Atlantic states, New England, the West Coast, Southwestern states, and certain regions around the Great Lakes. This support is particularly evident in notable cities within these regions, driven by various factors including liberal ideals and progressive policies. For instance, states like New York and Massachusetts support Biden due to their liberal-leaning populations, diverse demographics, and emphasis on social justices. Similarly, on the West Coast, states such as California and Washington are known for their progressive values and advocacy for issues like environmental conservation and LGBTQ+ rights, contributing to Biden's popularity in these areas. In the Southwest, states like Arizona and Nevada, with growing minority populations and concerns over immigration policies, also show significant support for Biden. Additionally, states around the Great Lakes, including Illinois and Michigan, align with Biden's platform due to their industrial heritage and strong labor unions.
+Biden's support base is concentrated in the Mid-Atlantic states, New England, the West Coast, Southwestern states, and certain regions around the Great Lakes. This support is particularly evident in cities within these regions, driven by various factors including liberal ideals and progressive policies. For instance, states like New York and Massachusetts support Biden due to their liberal-leaning populations, diverse demographics, and emphasis on social justices. Similarly, on the West Coast, states such as California and Washington are known for their progressive values and advocacy for issues like environmental conservation and LGBTQ+ rights, contributing to Biden's popularity in these areas. In the Southwest, states like Arizona and Nevada, with growing minority populations and concerns over immigration policies, also show significant support for Biden. Additionally, states around the Great Lakes, including Illinois and Michigan, align with Biden's platform due to their industrial heritage and strong labor unions.
 
 Voters favoring Biden are predominantly concentrated in big cities and large suburban regions, whereas Trump supporters are dispersed across rural areas with lower population density. Consequently, Trump secured victories in 2,588 counties, whereas Biden won over just 551 [@frey_2021]. Even in traditionally Republican states, major urban areas exhibit significant support for Biden. Notable examples include Charlotte, North Carolina; Salt Lake City, Utah; and Nashville and Memphis, Tennessee, among others [@cnn_2020]. 
 
@@ -445,9 +442,10 @@ The 2020 election witnessed intriguing shifts in traditionally conservative stat
 Southern states, such as Alabama, Mississippi, and South Carolina with a large amount of Christian population, strongly adhere to conservative principles. For example, these states have implemented strict anti-abortion law and advocated for tight immigration policies. Furthermore, these states have historically been less supportive of LGBTQ+ rights. As a result, voters in these Southern states typically align with the Republican party represented by Trump, which prioritizes pro-life initiatives and traditional Christian values.
 
 
-## Third discussion point
+## Employment Variations
 
 maybe talk about employment?
+tax
 
 
 ## COVID and Mail-in Ballots
@@ -477,30 +475,107 @@ For further studies, we could start by incorporating more socio-economical indic
 # Model details {#sec-model-details}
 
 ## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+In @fig-post_dist, we implement a posterior distribution. This compares who people voted for in reality with the prediction results from the posterior distribution from our logistic regression model. It can be observed that the posterior distribution fits perfectly with the actual data, it suggests that the model accurately captures the observed data patterns. So the posterior is able to generate simulated data that closely resembles the actual data (@bayes_post). This is a positive sign because it indicates that our logistic regression model is a good representation of the actual voting preferences in the 2020 election data.
 
 ```{r}
-#| eval: true
+#| label: fig-post_dist
+#| fig-cap: Posterior distribution for logistic regression model 
 #| echo: false
-#| message: false
 #| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+#| message: false
+
+pp_check(political_preferences1) +
+  theme(legend.position = "bottom")
+```
+
+@fig-post_prior compares the posterior with the prior. This compares the prior distribution of parameters with the posterior distribution of parameters in our logistic regression model. We can see that majority of the model parameters do not change even after data are taken into account. This shows that the observed data matches with our initial belief and expectation about the voting preferences for 2020 presidential election. However, for "raceOther", the posterior distribution shifts from its prior after we input observed data. This is likely suggesting that the observed data for "raceOther" strongly contradicts our initial belief. Yet, this is not a big problem since the percentage of the racial group "raceOther" is 0.86% (473/43534 from @tbl-summary) in our dataset.
+
+```{r}
+#| label: fig-post_prior
+#| fig-cap: Comparing the posterior with the prior 
+#| echo: false
+#| warning: false
+#| message: false
+
+#### Read data ####
+analysis_data <- read_csv(here::here("data/analysis_data/cleaned_ces2020.csv"))
+
+# Convert variables to factors
+analysis_data$race <- factor(analysis_data$race)
+analysis_data$region <- factor(analysis_data$region)
+analysis_data$employ <- factor(analysis_data$employ)
+
+# Create voted_for variable in binary form
+analysis_data$voted_for_binary <- ifelse(analysis_data$voted_for == "Biden", 1, 0)
+
+# Model 1 for n = 1000
+set.seed(123)
+
+ces2020_reduced <- 
+  analysis_data |> 
+  slice_sample(n = 1000)
+
+posterior_vs_prior(political_preferences1) +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  coord_flip()
+```
+
+## Credibility interval
+
+```{r}
+#| label: fig-conf
+#| fig-cap: Comparing the posterior with the prior 
+#| echo: false
+#| warning: false
+#| message: false
+plot(
+  political_preferences1,
+  "areas"
+)
+```
+```{r}
+#| label: fig-conf_lim
+#| fig-cap: Comparing the posterior with the prior 
+#| echo: false
+#| warning: false
+#| message: false
+#| 
+model_plot <- plot(
+  political_preferences1,
+  "areas"
+)
+# Modify the x-axis limits
+model_plot + xlim(-10, 10) +  # Adjust the limits as needed
+  labs(x = "90% Credibility Interval")
+```
+## Credibility Interval
+
+```{r}
+# #| echo: false
+# #| eval: true
+# #| warning: false
+# #| message: false
+# #| label: fig-modelresults1
+# #| fig-cap: "Credible intervals for predictors of support for Biden 1"
 # 
-# pp_check(first_model) +
-#   theme_classic() +
-#   theme(legend.position = "bottom")
+# modelplot(political_preferences1, conf_level = 0.95, size = 0.1) +
+#   labs(x = "90% credibility interval")
+```
+
+```{r}
+# #| echo: false
+# #| eval: true
+# #| warning: false
+# #| message: false
+# #| label: fig-modelresults2
+# #| fig-cap: "Credible intervals for predictors of support for Biden 2"
+# # Create the model plot
+# model_plot <- modelplot(political_preferences1, conf_level = 0.9)
 # 
-# posterior_vs_prior(first_model) +
-#   theme_minimal() +
-#   scale_color_brewer(palette = "Set1") +
-#   theme(legend.position = "bottom") +
-#   coord_flip()
+# # Modify the x-axis limits
+# model_plot + xlim(-5, 5) +  # Adjust the limits as needed
+#   labs(x = "90% Credibility Interval")
 ```
 
 ## Diagnostics
