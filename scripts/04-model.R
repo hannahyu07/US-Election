@@ -46,3 +46,7 @@ saveRDS(
   file = "models/political_preferences1.rds"
 )
 
+test_file("scripts/test_class.R")
+test_file("scripts/test_observations.R")
+test_file("scripts/test_coefficients.R")
+

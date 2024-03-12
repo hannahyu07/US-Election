@@ -7,8 +7,9 @@ author:
 thanks: "Code and data are available at: https://github.com/hannahyu07/US-Election"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This paper delves into the dynamics of voter turnout of the 2020 United States presidential election. Utilizing dataset from the Cooperate Election Study (CES2020), we employ logistic regression analysis to explore the influence of the voter's race, region, and employment on their vote for presidential candidate. Our findings reveal distinct voting patterns among different demographic groups, with minorities showing strong support for Biden, the South predominantly favored Trump, and individuals reliant on unemployment benefits preferred Biden. These insights stress the need for customized outreach and policies to enhance voter engagement across diverse U.S. communities."
 format: pdf
+toc: true
 number-sections: true
 bibliography: references.bib
 ---
@@ -104,7 +105,7 @@ Since it is difficult to observe such as large dataset, this report will only ex
 
 The dataset is cleaned by renaming the column names, specifying the class of the columns, and changing the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, NA employment status is removed in the cleaned data file since there are only 34 entries, which is a small amount of missing value compared with 61000 entries. After cleaning, 43534 rows of data with 4 data features remain.
 
-The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset.
+The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), `testthat` (@citetestthat) and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset.
 
 ```{r}
 #| include: false
@@ -190,7 +191,7 @@ ces2020 |>
 
 # Model {#sec-model}
 
-## Model set-up
+## Model Set-up
 
 In our analysis, we utilized a Bayesian logistic regression model to examine the relationship between voter preferences and various demographic and socioeconomic factors. The model is formulated as follows:
 
@@ -213,7 +214,7 @@ Alternative modeling approaches, such as linear regression models, were also con
 We run the model in R [@citeR] using the `rstanarm` package of @citeRstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see -@sec-model-details).
 
 
-### Model justification
+### Model Justification
 
 We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall. These groups are more likely to align with Biden's policies, which prioritize inclusivity and diversity. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
 
@@ -225,6 +226,7 @@ The voting behavior of employed individuals is harder to distinguish. Some worki
 Additionally, educated and liberal-leaning working professionals may prioritize issues such as healthcare, climate change, and social justice, aligning them with Biden's platform. 
 
 
+<<<<<<< HEAD
 ## Model Implication
 In @fig-post_dist, the great fit of the posterior distribution from our logistic regression model with actual voting data suggests accurate capture of voting patterns. This indicates the accuracy of our model's voting preference prediction to the 2020 election data. Also, @fig-post_prior compares the posterior to the prior, which shows minimal parameter changes except for the parameter "raceOther". The discrepancy for the parameter "raceOther" is not critical due to the low representation of "raceOther" in the dataset. 
 
@@ -236,6 +238,8 @@ Combining figure # and figure #, we observe statistical significance for the coe
 The trace plot in @fig-mcmc-1 does not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-mcmc-2), we can observe that everything is close to 1, and no more than 1.05. 
 
 
+=======
+>>>>>>> f4f3b83feef8933303ff6add8ce0a1953830e9bb
 
 # Results {#sec-result}
 
@@ -349,7 +353,6 @@ ces2020 |>
 
 ## Model Results
 
-Our results are summarized in @tbl-modelresults1.
 
 ```{r}
 #| echo: false
@@ -378,7 +381,7 @@ modelsummary(
   statistic = "mad"
   )
 ```
-Our results generally matches our expectation To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
+Our results are summarized in @tbl-modelresults1. Our results generally matches our expectation. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
 
 Black individual's support for Biden is large. The estimated coefficient of 2.549 suggests that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group. Hispanic races on average are also more likely to vote for Biden. We observe an outlier, individuals with race "other" has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
 
@@ -409,8 +412,9 @@ Voters preference for candidates also vary by regions and their employment statu
 
 ```
 
+@fig-modelresults1 (see @sec-credibility-interval) inshows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
 
-
+Combing @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
 
 
 
@@ -419,7 +423,7 @@ Voters preference for candidates also vary by regions and their employment statu
 
 # Discussion {#sec-discussion}
 
-## First discussion point
+## Racial Variations
 
 In our analysis, respondents of different races show varying levels of support, with a majority of blacks, Hispanics, and Asians supporting Biden, and a majority of Native Americans and multi-racials supporting Trump. The results for whites are more evenly distributed, with about the same percentage supporting Biden and Trump.
 
@@ -444,7 +448,7 @@ The 2020 election witnessed intriguing shifts in traditionally conservative stat
 Southern states, such as Alabama, Mississippi, and South Carolina with a large amount of Christian population, strongly adhere to conservative principles. For example, these states have implemented strict anti-abortion law and advocated for tight immigration policies. Furthermore, these states have historically been less supportive of LGBTQ+ rights. As a result, voters in these Southern states typically align with the Republican party represented by Trump, which prioritizes pro-life initiatives and traditional Christian values.
 
 
-## Third discussion point
+## Employment Variations
 
 maybe talk about employment?
 tax
@@ -456,7 +460,7 @@ In addition to traditional socio-economic factors like race, region, and employm
 
 Mail-in ballots also played a key role in shaping the election landscape. It increased voter participation, particularly among individuals who were reluctant to vote due to logistical constraints or health concerns amid the pandemic [@amlani_collitt_2022]. Mail-in ballots raised many election controversies. Initially, Trump led in some states, but as mail-in ballots were counted, the tide often turned in favor of Biden. Trump and his supporters raises concerns about the legitimacy of the  ballots and claimed the election is "rigged" [@axelrod_2022]. However, there is no solid proof that the election is "rigged".
 
-## Weaknesses and next steps
+## Weaknesses and Next Steps
 
 One weakness of using a logistic regression model is its inability to predict voting turnout for candidates beyond the Biden or Trump. Expanding the analysis to include other candidates would enhance its comprehensiveness. Furthermore, the reliability of our findings is based on the accuracy of the survey data. Respondents may provide inaccurate or misleading information, intentionally or unintentionally, leading to biased estimates and unreliable predictions. Due to many controversial opinions and actions of Trump and his supporters, many Republican who voted for him might be reluctant to admit their voting in the survey. Additionally, missing data (N/As) can introduce further challenges, as logistic regression requires complete data for accurate modeling.
 
@@ -551,6 +555,10 @@ model_plot <- plot(
 model_plot + xlim(-10, 10) +  # Adjust the limits as needed
   labs(x = "90% Credibility Interval")
 ```
+<<<<<<< HEAD
+=======
+## Credibility Interval {#sec-credibility-interval}
+>>>>>>> f4f3b83feef8933303ff6add8ce0a1953830e9bb
 
 ```{r}
 #| echo: false
@@ -561,10 +569,16 @@ model_plot + xlim(-10, 10) +  # Adjust the limits as needed
 #| fig-cap: "Credible intervals for predictors of support for Biden 1"
 
 modelplot(political_preferences1, conf_level = 0.95, size = 0.1) +
+<<<<<<< HEAD
   labs(x = "90% credibility interval")
+=======
+ labs(x = "90% credibility interval")
+>>>>>>> f4f3b83feef8933303ff6add8ce0a1953830e9bb
 ```
 
+
 ```{r}
+<<<<<<< HEAD
 #| echo: false
 #| eval: true
 #| warning: false
@@ -577,6 +591,20 @@ model_plot <- modelplot(political_preferences1, conf_level = 0.9)
 # Modify the x-axis limits
 model_plot + xlim(-5, 5) +  # Adjust the limits as needed
   labs(x = "90% Credibility Interval")
+=======
+ #| echo: false
+ #| eval: true
+ #| warning: false
+ #| message: false
+ #| label: fig-modelresults2
+ #| fig-cap: "Credible intervals for predictors of support for Biden 2"
+ # Create the model plot
+ model_plot <- modelplot(political_preferences1, conf_level = 0.9)
+
+ # Modify the x-axis limits
+ model_plot + xlim(-10, 10) +  # Adjust the limits as needed
+   labs(x = "90% Credibility Interval")
+>>>>>>> f4f3b83feef8933303ff6add8ce0a1953830e9bb
 ```
 
 ## Diagnostics
