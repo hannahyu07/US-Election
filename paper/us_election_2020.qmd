@@ -33,17 +33,14 @@ library(kableExtra)
 
 
 # Introduction
-Four years ago, the United States once again was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Republican parties are represented by Donald Trump and Joe Biden respectively. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton. His winning was surprising and it led people to challenge the preconceived notions and reliability of pre-election polling data [citation needed]. On the other hand, Joe Biden, the former vice-president under Barack Obama's administration from 2008 to 2016, led the Democratic campaign [citation needed]. He aimed to regain control from the Republican party. In the end, Biden won the election by 51.3% majority votes [citation needed]. It is important for us to understand how various demographic, economic, and social factors may influence individuals' voting decisions, which is why we decide to analyze the 2020 election data set and build a prediction model. This allows us to discover trends and address potential issues in society to better reflect the needs and preferences of diverse communities. 
+Four years ago, the United States once again was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Republican parties are represented by Donald Trump and Joe Biden respectively. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton. On the other hand, Joe Biden, the former vice-president under Barack Obama's administration from 2008 to 2016, led the Democratic campaign. He aimed to regain control from the Republican party. In the end, Biden won the election by 51.3% majority votes (@cnn_2020), which Trump questioned its credibility. Due to the COVID-19 pandemic in 2020, the vote system changed to in-mail voting instead of in-person voting, which was why Trump believed that some votes were stolen (@trump_stolenvote). Therefore, it is important for us to analyze why people voted for Biden and Trump in 2020 election and how various demographic, economic, and social factors may influence individuals' voting decisions. Perhaps then we could see why Biden eventually won. We analyze the 2020 election data set from Cooperative Election Study (CES) [citation needed] and build a prediction model for individual voting preference. This allows us to discover trends and address potential political, economic, and societal situations that may cause the eventual winning for Biden.
 
-In this paper, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study (CES)  [citation needed]. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES data set, which are race, region that they live, and employment status. 
+In this paper, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES data set.We selected data features:race, region that they live, employment status, and who they voted for. The estimand in this paper is the number of people who support Trump and Biden in reality. However, it is difficult to measure the exact number of people who support Trump and Biden since there are millions of people in the United States and not all of them with the rights to vote would actually vote. Therefore, in this paper, we attempt to estimate the estimand using a logistic regression model which is trained using sample dataset from the 2020 election dataset from CES. 
 
-**add： 4) what was done; 5) what was found after we finish the results section
+The logistic regression model shows that in the 2020 presidential election, Biden has strong support from racial groups including black, Hispanic, and Asian populations. Geographically, Biden gains greater support in the Northeast and West regions, while Trump secured more votes in the South. Additionally, both full-time and part-time workers, as well as students and those facing unemployment or layoffs, lean towards Biden. 
 
-The remainder of this paper is structured into different sections. @sec-data demonstrates the data used for our report and includes some tables and graphs to illustrate the different groups of people in our data. @sec-model builds the model and discusses its justification and explanation. @sec-result highlights the results of the predictions using tables and graphs. @sec-discussion contains discussions that conducted based on the findings, which addresses the voting prediction results based on race, region, and employment status. 
+The remainder of this paper is structured into different sections. @sec-data demonstrates the data used for our report and includes some tables and graphs to illustrate the different groups of people in our data. @sec-model builds the model and discusses its justification and explanation. @sec-result highlights the results of the predictions using tables and graphs. @sec-discussion contains discussions that conducted based on the findings, which addresses the voting prediction results based on race, region, employment status, and the influence of COVID-19 and in-mail voting systems. 
 
-
-## Estimand
-real vote_for biden or trump
 
 
 # Data {#sec-data}
@@ -243,15 +240,29 @@ pp_check(political_preferences1) +
 
 ## Data Result
 
-```{r}
+@fig-race shows the relationship between race and voting preference. Overall, Biden gets more support from most racial groups, except for Native Americans and people of "two or more races," who tend to support Trump slightly more. 
 
+```{r}
+#| label: fig-race
+#| fig-cap: The distribution of presidential preferences by race
+#| echo: false
+#| warning: false
+#| message: false
 ces2020 |>
   ggplot(aes(x = race, fill = voted_for)) +
-  geom_bar() +
-  coord_flip()
+  geom_bar(position = "dodge2") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Race",
+    y = "Number of respondents",
+    fill = "Voted for"
+  )
 ```
 
-@fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
+@fig-race_region shows the more detailed relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
+
 ```{r}
 #| label: fig-race_region
 #| fig-cap: The distribution of presidential preferences, by region and race
@@ -274,10 +285,30 @@ ces2020 |>
   theme(legend.position = "bottom")
 ```
 
-@fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
+@fig-region shows the relationship between employment and voting preferences. Across various employment statuses, there is a consistent trend of higher support for Biden compared to Trump. It can be observed that individuals holding full-time jobs show the most disparity in support between the two candidates, with Biden gaining substantially more support than Trump. The support for Biden and Trump among those with other employment statuses is relatively similar, with the support for Biden slightly higher than for Trump.
+```{r}
+#| label: fig-region
+#| fig-cap: The distribution of presidential preferences by race
+#| echo: false
+#| warning: false
+#| message: false
+ces2020 |>
+  ggplot(aes(x = employ, fill = voted_for)) +
+  geom_bar(position = "dodge2") +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Employment status",
+    y = "Number of respondents",
+    fill = "Voted for"
+  )
+```
+
+@fig-region_employ illustrates a more detailed relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
 
 ```{r}
-#| label: fig-race_employ
+#| label: fig-region_employ
 #| fig-cap: The distribution of presidential preferences, by region and employment status
 #| echo: false
 #| warning: false
@@ -313,7 +344,7 @@ ces2020 |>
 #          yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
 #          zaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))
 ```
-This bubble plot (@fig-race_employ_region) illustrates four variables: race, region, employment status, and voting preference. Darker dots indicate a higher number of people, with red representing Trump supporters and blue for Biden supporters. Purple dots suggest similar support rates for both candidates, since blue and red makes purple in a 1:1 ratio. We can see that the darker dots are mostly in White, Black, Hispanic communities for full-time, part-time, or retired individuals. The darker dots are all blue, which indicates stronger support for Biden. It can also be noted that there are very few entirely red dots, which means that there is no significant disparities in voting percentages between Trump and Biden even among those groups which partially supported Trump. In those purple dots, we found that mostly are from people who are either Native American or from the South.
+<!-- This bubble plot (@fig-race_employ_region) illustrates four variables: race, region, employment status, and voting preference. Darker dots indicate a higher number of people, with red representing Trump supporters and blue for Biden supporters. Purple dots suggest similar support rates for both candidates, since blue and red makes purple in a 1:1 ratio. We can see that the darker dots are mostly in White, Black, Hispanic communities for full-time, part-time, or retired individuals. The darker dots are all blue, which indicates stronger support for Biden. It can also be noted that there are very few entirely red dots, which means that there is no significant disparities in voting percentages between Trump and Biden even among those groups which partially supported Trump. In those purple dots, we found that mostly are from people who are either Native American or from the South. -->
 
 
 ## Model Results
