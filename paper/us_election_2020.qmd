@@ -239,15 +239,28 @@ pp_check(political_preferences1) +
 
 ## Data Result
 
-```{r}
+@fig-race shows the relationship between race and voting preference. Overall, Biden gets more support from most racial groups, except for Native Americans and people of "two or more races," who tend to support Trump slightly more. 
 
+```{r}
+#| label: fig-race
+#| fig-cap: The distribution of presidential preferences by race
+#| echo: false
+#| warning: false
+#| message: false
 ces2020 |>
   ggplot(aes(x = race, fill = voted_for)) +
-  geom_bar() +
-  coord_flip()
+  geom_bar(position = "dodge2") +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    x = "Race",
+    y = "Number of respondents",
+    fill = "Voted for"
+  )
 ```
 
-@fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
+@fig-race_region shows the more detailed relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
+
 ```{r}
 #| label: fig-race_region
 #| fig-cap: The distribution of presidential preferences, by region and race
@@ -270,10 +283,29 @@ ces2020 |>
   theme(legend.position = "bottom")
 ```
 
-@fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
+@fig-region shows the relationship between employment and voting preferences. Across various employment statuses, there is a consistent trend of higher support for Biden compared to Trump. It can be observed that individuals holding full-time jobs show the most disparity in support between the two candidates, with Biden gaining substantially more support than Trump. The support for Biden and Trump among those with other employment statuses is relatively similar, with the support for Biden slightly higher than for Trump.
+```{r}
+#| label: fig-region
+#| fig-cap: The distribution of presidential preferences by race
+#| echo: false
+#| warning: false
+#| message: false
+ces2020 |>
+  ggplot(aes(x = employ, fill = voted_for)) +
+  geom_bar(position = "dodge2") +
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    x = "Employment status",
+    y = "Number of respondents",
+    fill = "Voted for"
+  )
+```
+
+@fig-region_employ illustrates a more detailed relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
 
 ```{r}
-#| label: fig-race_employ
+#| label: fig-region_employ
 #| fig-cap: The distribution of presidential preferences, by region and employment status
 #| echo: false
 #| warning: false
