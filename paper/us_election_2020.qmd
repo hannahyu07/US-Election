@@ -83,6 +83,8 @@ raw_ces2020 <-  read_csv(here::here("data/raw_data/ces2020.csv"))
 raw_ces2020[1:5, 1:5] |>
   kable()
 ```
+
+
 ## Data Measurement
 
 Our dataset's quantitative representation of real-world phenomena is influenced by several factors, which inherently limit the accuracy of our measurements for the five variables.
@@ -97,13 +99,13 @@ In the case of "region," which represents the census region where the respondent
 
 The "region" variable categorizes respondents based on their geographical location into four census regions: Northeast, Midwest, South, and West. However, regional boundaries can be arbitrary, and individuals living in bordering areas may have affiliations with multiple regions or identify more strongly with a neighboring region. For instance, states like Missouri and Kentucky are often considered part of the Midwest but also share cultural and economic ties with the South. This complexity can make individuals accurately reporting thier region challenging.
 
-
 Finally, for "employ", indicating the respondent's self-reporting employment status, can be influenced by various factors such as job changes, seasonal work, and personal circumstances. In addition, individuals may intentionally misreport their employment status due to societal pressures or to access benefits. For instance, some may falsely claim employment to avoid stigma, while others may report unemployment to qualify for unemployment benefits. Additionally, students working part-time jobs may selectively report their status based on their perceived benefit. These discrepancies can introduce bias and inaccuracies into the data, impacting the reliability of our analyses.
+
 
 ## Methodology
 Since it is difficult to observe such as large dataset, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the presidential candidate the respondent voted for. This paper will only analyze respondents who are registered to vote and focus on the outcome of two candidates, Joe Biden representing the Democratic party and Donald Trump representing the Republican party. 
 
-The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. After []
+The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. After cleaning, 43534 rows of data and 4 variables remain.
 
 The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset.
 
@@ -176,7 +178,7 @@ ces2020[1:5, 1:4] |>
   kable()
 ```
 
-@tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset. ***add detail***
+@tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset. As we can see from the table, there are more people who support Biden. Respondents covered a wide range of races, with white people being the most heavily represented. Also, CES data came from a variety of locations, but the majority came from the southern region of the United States. The employment status of those who completed the survey varied, with most of them being full-time or retired.
 ```{r}
 #| label: tbl-summary
 #| tbl-cap: "Statistics summary of the cleaned 2020 CES dataset"
@@ -413,26 +415,14 @@ model_plot + xlim(-5, 5) +  # Adjust the limits as needed
 # Discussion {#sec-discussion}
 
 ## First discussion point
-race
-white
-- religion
 
-Biden: white, asian(trump covid), black, hispanic(trump建墙, no illegal immigration), other
-Trump: white, two or more races, 
-```{r}
-ces2020|>
-  filter(voted_for == "Biden") |>
-  select(race) |>
-  summary()
-```
-```{r}
-ces2020|>
-  filter(voted_for == "Trump") |>
-  select(race) |>
-  summary()
-```
+In our analysis, respondents of different races show varying levels of support, with a majority of blacks, Hispanics, and Asians supporting Biden, and a majority of Middle Easterners and multiracials supporting Trump. The results for whites are more evenly distributed, with about the same percentage supporting Biden and Trump.
 
+The reason for the majority of Hispanics supporting Biden may be due to the US-Mexico border wall that was built during Trump's reign. The wall was built over 452 miles, which replaced the old fence (@Rodriguez_2021). With this measure in place, Trump lost most of the Hispanic vote. Trump claims the wall reformed the immigration system and achieved the most secure southern border in US history. However, that wasn't true, and with it has come a surge in illegal border crossings. For Hispanics, Trump's long history of anti-immigrant rhetoric and this border wall have denied them the opportunity to seek asylum. While crossing the border illegally is not something to be promoted, it is the last hope for those living in dire straits.
 
+2020 is the age of pandemics, as Trump's phrase "Chinese virus" led to a large number of Asians starting to support Biden. This is an extremely anti-Asian statement, although Covid was first found in China, but it does not mean that it is the Chinese virus. Trump's comments quickly festered in public opinion and led to a dramatic increase in hate incidents in the Asian American community (@Reja_2021). The repeated use of the "Chinese Virus" by a president of the country has contributed to an environment of racial discrimination and hatred against Asians, which has directly led to more Asians supporting Biden, whose policies are more open and democratic, and who values racial equality more.
+
+Most white people vote relatively evenly, due to the fact that they are not affected by immigration or other policies. Whites hold a major voice and position in the US, most of the ideas and policies Trump proposes are favorable to whites. Therefore, he can gain support from most whites. However, there are some whites who want a democratic and free environment, and at the same time do not want to see racial discrimination and other phenomena, so they will choose to support Biden, who values equality.
 
 ## Regional Variations
 
@@ -452,6 +442,7 @@ Southern states, such as Alabama, Mississippi, and South Carolina with a large a
 ## Third discussion point
 
 maybe talk about employment?
+tax
 
 
 ## COVID and Mail-in Ballots
