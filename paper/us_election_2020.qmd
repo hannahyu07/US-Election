@@ -1,9 +1,9 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Understanding the Socio-Economic Determinants of Voter Behavior: An Analysis of the 2020 U.S. Presidential Election"
 author: 
-  - First author
-  - Another author
+  - Hannah Yu
+  - Mary Cheng
+  - Yimiao Yuan
 thanks: "Code and data are available at: https://github.com/hannahyu07/US-Election"
 date: today
 date-format: long
@@ -43,7 +43,7 @@ The remainder of this paper is structured into different sections. @sec-data dem
 
 
 ## Estimand
-
+real vote_for biden or trump
 
 
 # Data {#sec-data}
@@ -91,7 +91,9 @@ raw_ces2020[1:5, 1:5] |>
 ## Methodology
 Since it is difficult to observe through 61000 rows with 5 variables, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the person that respondent vote for President of the United States. This paper will only analyze respondents who are registered to vote and focus on only two voting options, Biden and Trump. 
 
-The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset. @tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset.
+The dataset is cleaned by rename the column names, specify the class of the columns, and change the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, the cleaned data removes NA employment status since there are only 34 rows, which is a small amount of missing value compared with 61000 rows. After []
+
+The cleaned data will be analyzed and performed using R (@citeR) with `tidyverse` (@citeTidyverse), `here` (@citeHere), `rstanarm` (@citeRstanarm), `modelsummary` (@citeModleSummary), `ggplot2` (@citeGgplot2), `knitr` (@citeKnitr), `marginaleffects` (@citeMarginalEffects), `plotly` (@citePlotly), `tibble` (@citeTibble), `margins` (@citeMargins), and `kableExtra` (@citeKableExtra). @tbl-clean-data shows a preview of the cleaned dataset.
 
 ```{r}
 #| include: false
@@ -162,6 +164,7 @@ ces2020[1:5, 1:4] |>
   kable()
 ```
 
+@tbl-summary is a summary of the cleaned data, showing detailed statistics about the dataset. ***add detail***
 ```{r}
 #| label: tbl-summary
 #| tbl-cap: "Statistics summary of the cleaned 2020 CES dataset"
@@ -169,17 +172,12 @@ ces2020[1:5, 1:4] |>
 #| echo: false
 
 ces2020 |>
-  summary()
+  summary() |>
+  kable()
 ```
 
 
 # Model {#sec-model}
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in 
-
-[Appendix -@sec-model-details].
 
 ## Model set-up
 
@@ -201,7 +199,7 @@ We chose this modeling approach for several reasons. Firstly, logistic regressio
 
 Alternative modeling approaches, such as linear regression models, were also considered. However, we chose Bayesian logistic regression because our result is a binary variable of voter's decision.
 
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model.Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see Appendix A).
+We run the model in R [@citeR] using the `rstanarm` package of @citeRstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see -@sec-model-details).
 
 
 ### Model justification
@@ -230,11 +228,22 @@ pp_check(political_preferences1) +
 # Results {#sec-result}
 
 ## Data Result
+
+```{r}
+
+ces2020 |>
+  ggplot(aes(x = race, fill = voted_for)) +
+  geom_bar() +
+  coord_flip()
+```
+
 @fig-race_region shows the relationship between race, region, and voting preference. In the Northeast, Midwest, and West regions of the United States, there is a consistent pattern where individuals across almost all racial groups tend to show greater support for Biden over Trump. Conversely, in the South, there is a distinct divide, with White individuals predominantly favoring Trump, while almost all other racial groups support Biden more than Trump. Overall, the four subplots all illustrate that among Black, Asian, and Hispanic communities, the proportion of support for Biden exceeds that for Trump. However, it is evident that White individuals constitute a significantly larger portion of the population compared to other racial groups, thereby exerting a greater influence on voting outcomes.
 ```{r}
 #| label: fig-race_region
 #| fig-cap: The distribution of presidential preferences, by region and race
 #| echo: false
+#| warning: false
+#| message: false
 
 ces2020 |>
   ggplot(aes(x = race, fill = voted_for)) +
@@ -250,12 +259,15 @@ ces2020 |>
   scale_fill_brewer(palette = "Set1") +
   theme(legend.position = "bottom")
 ```
+
 @fig-race_employ illustrates the relationship between region, employment status, and voting preferences for Trump and Biden. Across all regions, people in full-time and part-time employment show a greater percentage of support for Biden than to Trump. Among retired people, support for Trump and Biden is roughly comparable: with a slight tilt towards Biden in the Northeast, Midwest, and West, and towards Trump in the South. In addition, people with other employment statuses generally favor Biden over Trump, except for certain group (Homemaker) in the South.
 
 ```{r}
 #| label: fig-race_employ
 #| fig-cap: The distribution of presidential preferences, by region and employment status
 #| echo: false
+#| warning: false
+#| message: false
 
 ces2020 |>
   ggplot(aes(x = employ, fill = voted_for)) +
@@ -273,151 +285,26 @@ ces2020 |>
 ```
 
 ```{r}
-# #| label: fig-race_employ_white
-# #| fig-cap: The distribution of presidential preferences, by region and employment status, only white people
-# #| echo: false
-# 
-# ces2020_selected_data <- ces2020[ces2020$race == "White", ]
-# 
-# ces2020_selected_data |>
-#   ggplot(aes(x = employ, fill = voted_for)) +
-#   stat_count(position = "dodge") +
-#   facet_wrap(facets = vars(region)) +
-#   theme_minimal() +
-#   labs(
-#     x = "Employment status",
-#     y = "Number of respondents",
-#     fill = "Voted for"
-#   ) +
-#   coord_flip() +
-#   scale_fill_brewer(palette = "Set1") +
-#   theme(legend.position = "bottom")
-```
-
-
-This bubble plot illustrates four variables: race, region, employment status, and voting preference. Darker dots indicate a higher number of people, with red representing Trump supporters and blue for Biden supporters. Purple dots suggest similar support rates for both candidates, since blue and red makes purple in a 1:1 ratio. We can see that the darker dots are mostly in White, Black, Hispanic communities for full-time, part-time, or retired individuals. The darker dots are all blue, which indicates stronger support for Biden. It can also be noted that there are very few entirely red dots, which means that there is no significant disparities in voting percentages between Trump and Biden even among those groups which partially supported Trump. In those purple dots, we found that mostly are from people who are either Native American or from the South.
-```{r}
 #| label: fig-race_employ_region
-#| fig-cap: The distribution of presidential preferences, by race, region and employment status
+#| fig-cap: "The distribution of presidential preferences, by race, region and employment status"
 #| echo: false
+#| warning: false
+#| message: false
+#| include: false
 
-
-plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("red", "blue")) %>% 
-  add_markers(color = ces2020$voted_for, opacity = 0.03, size = 0.4) %>%
-  layout(xaxis = list(title = 'Race'), yaxis = list(title = 'Region'), zaxis = list(title = 'Employment Status')) %>%
-  layout(xaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
-         yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
-         zaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))
+# plot_ly(x=ces2020$race, y=ces2020$region, z=ces2020$employ, colors = c("red", "blue")) %>% 
+#   add_markers(color = ces2020$voted_for, opacity = 0.03, size = 0.4) %>%
+#   layout(xaxis = list(title = 'Race'), yaxis = list(title = 'Region'), zaxis = list(title = 'Employment Status')) %>%
+#   layout(xaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
+#          yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
+#          zaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))
 ```
+This bubble plot (@fig-race_employ_region) illustrates four variables: race, region, employment status, and voting preference. Darker dots indicate a higher number of people, with red representing Trump supporters and blue for Biden supporters. Purple dots suggest similar support rates for both candidates, since blue and red makes purple in a 1:1 ratio. We can see that the darker dots are mostly in White, Black, Hispanic communities for full-time, part-time, or retired individuals. The darker dots are all blue, which indicates stronger support for Biden. It can also be noted that there are very few entirely red dots, which means that there is no significant disparities in voting percentages between Trump and Biden even among those groups which partially supported Trump. In those purple dots, we found that mostly are from people who are either Native American or from the South.
 
 
 ## Model Results
 
-```{r prediction, echo=F, warning=F, message=F}
-
-# # generate predictions for each of our grouped cells
-# props$estimate <- predict.glm(political_preferences1, newdata = props,
-#                           type = "response")
-# 
-# # create a new column with number of voters from each cell voting Biden
-# props <- props %>% mutate(num_voters = n*estimate)
-# 
-# # get errors for our prediction
-# errors <- predict.glm(model, newdata = props,
-#                       type = "response", se.fit = T)
-# lower <- errors$fit - errors$se.fit
-# upper <- errors$fit + errors$se.fit
-# 
-# 
-# # combine the proportions and the errors we generated
-# props_error <- cbind(props, lower, upper)
-# props_error <- props_error %>% 
-#   rename("lower" = ...11,
-#          "upper" = ...12)
-# 
-# # create a new column with number of voters from each cell voting Biden
-# props_error <- props_error %>% mutate(num_voters_lower = n*lower,
-#                                 num_voters_upper = n*upper)
-# 
-# # create a new dataset which contains upper and lower estimates for proportions
-# # of votes for each state
-# voting_biden <- props_error %>% mutate(biden_predict_prop=estimate*prop,
-#                                        biden_predict_prop_lower = lower*prop,
-#                                        biden_predict_prop_upper = upper*prop) %>%
-#   group_by(stateicp) %>%
-#   summarise(biden_predict = sum(biden_predict_prop),
-#             biden_predict_lower = sum(biden_predict_prop_lower),
-#             biden_predict_upper = sum(biden_predict_prop_upper))
-```
-
-```{r stateplot, echo=F, message=F, warning=F, fig.cap="Proportion of each State Voting for Biden"}
-# # get state by state proportions for our polling data
-# polling_props <- polling %>% 
-#   group_by(stateicp, vote_biden) %>% 
-#   summarise(n = n()) %>% 
-#   mutate(prop = n/sum(n)) 
-# 
-# # combine the polling data proportions with the post-stratification data
-# poll_post_biden <- inner_join(polling_props, voting_biden, by = "stateicp")
-# poll_post_biden <- poll_post_biden %>% 
-#   filter(vote_biden == 1)
-# 
-# # plot for predictions
-# 
-# poll_post_biden %>% 
-#   ggplot(aes(x = employ, y = biden_predict)) +
-#   geom_point(aes(color = "black")) +
-#   geom_line(aes(group = 1)) +
-#   scale_y_continuous(labels = scales::percent) +
-#   theme(axis.text.x = element_text(angle = 70, size = 6, hjust = 1)) +
-#   geom_ribbon(aes(group = 1, ymin=biden_predict_lower, ymax=biden_predict_upper), 
-#               alpha = 0.2, fill = "red") +
-#   geom_line(data = poll_post_biden, aes(x=stateicp, y=prop, group = 2), 
-#             linetype = "twodash") +
-#   geom_point(data = poll_post_biden, aes(x=stateicp, y=prop, colour = "red")) +
-#   geom_hline(aes(yintercept = 0.5), alpha = 0.5) +
-#   scale_color_discrete(name = "Data", labels = c("Population", "Sample")) +
-#   labs(title = "Proportion of People voting for Joe Biden by State",
-#        x = "State", y = "Percentage Voting Biden")
-```
-
-
-
-
 Our results are summarized in @tbl-modelresults.
-
-```{r}
-
-# # Marginal Effect 
-# political_preferences_predictions <- predictions(political_preferences1) |>
-#   as_tibble()
-# 
-# political_preferences_predictions
-
-```
-
-
-```{r}
-# library(margins)
-# 
-# # Marginal effects for each predictor variable
-# marginal_effects <- margins(political_preferences1)
-# 
-# # Plotting marginal effects for race
-# race_effects <- dyplot(marginal_effects, variables = "race")
-# race_effects
-# 
-# # Plotting marginal effects for region
-# region_effects <- dyplot(marginal_effects, variables = "region")
-# region_effects
-# 
-# # Plotting marginal effects for employ
-# employ_effects <- dyplot(marginal_effects, variables = "employ")
-# employ_effects
-
-```
-
-
 
 ```{r}
 #| echo: false
@@ -453,48 +340,8 @@ Black individual's support for Biden is large. The estimated coefficient of 2.54
 Voters preference for candidates also vary by regions and their employment status. Biden has more supports in the Northeast and West region while Trump gains a majority of his votes from the South. As anticipated, students exhibit strong support for Biden. Additionally, individuals who are laid off, unemployed, or employed part-time, potentially reliant on social benefits, also prefer for Biden.
 
 
-
 ```{r}
-# # Load required libraries
-# library(bayestestR)
-# 
-# # Extract posterior draws from the model object
-# posterior_draws <- as.matrix(political_preferences1)
-# 
-# # Define the predictor variables for which you want to compute marginal effects
-# predictor_variables <- c("Black", "Hispanic", "Middle Eastern", "Native American", 
-#                          "Other race", "Two or more races", "White", "Northeast", 
-#                          "South", "West", "Homemaker", "Other employment", 
-#                          "Part-time", "Permanently disabled", "Retired", 
-#                          "Student", "Temporarily laid off", "Unemployed")
-# 
-# # Compute marginal effects
-# marginal_effects <- marginal_effects(posterior_draws, variables = predictor_variables)
-# 
-# # Summary of marginal effects
-# summary(marginal_effects)
-
-
-
-```
-
-```{r}
-# library(tidybayes)
-# 
-# # Extract draws from the Bayesian model
-# draws <- spread_draws(political_preferences1)
-# 
-# # Plot the posterior distribution of a predictor variable
-# ggplot(draws, aes(x = raceBlack)) +
-#   geom_density(fill = "skyblue", color = "black") +
-#   labs(x = "Black", y = "Density", title = "Posterior Distribution of Black Variable")
-
-```
-
-
-
-
-```{r}
+#| include: false
 # Extract posterior samples
 # posterior_samples <- as.matrix(political_preferences)
 # 
@@ -553,9 +400,27 @@ model_plot + xlim(-5, 5) +  # Adjust the limits as needed
 
 # Discussion {#sec-discussion}
 
-## First discussion point {#sec-first-point}
+## First discussion point
+race
+white
+- religion
 
-maybe talk about race?
+Biden: white, asian(trump covid), black, hispanic(trump建墙, no illegal immigration), other
+Trump: white, two or more races, 
+```{r}
+ces2020|>
+  filter(voted_for == "Biden") |>
+  select(race) |>
+  summary()
+```
+```{r}
+ces2020|>
+  filter(voted_for == "Trump") |>
+  select(race) |>
+  summary()
+```
+
+
 
 ## Regional Variations
 
@@ -576,11 +441,12 @@ Southern states, such as Alabama, Mississippi, and South Carolina with a large a
 
 maybe talk about employment?
 
+
 ## COVID and Mail-in Ballots
 
 In addition to traditional socio-economic factors like race, region, and employment, the unique circumstances surrounding the COVID-19 pandemic and the widespread use of mail-in ballots significantly influenced voter turnout and led to Biden's election victory. Trump's handling of the pandemic, including his skepticism towards mask-wearing and vaccination and disagreements with public health guidance, drew many criticism [@pollitz_long_freed_2020]. Many dissatisfied Republican voters voted for Biden instead. 
 
-Mail-in ballots also played a key role in shaping the election landscape. It increased voter participation, particularly among individuals who were reluctant to vote due to logistical constraints or health concerns amid the pandemic [@amlani_collitt_2022]. Mail-in ballots raised many election controversies. Initially, Trump led in some states, but as mail-in ballots were counted, the tide often turned in favor of Biden. Trump and his supporters raises concerns about the legitimacy of the  ballots and claimed the election is "rigged" [@axelrod_2022]. However, there is no solid proof that the election is "rigged."
+Mail-in ballots also played a key role in shaping the election landscape. It increased voter participation, particularly among individuals who were reluctant to vote due to logistical constraints or health concerns amid the pandemic [@amlani_collitt_2022]. Mail-in ballots raised many election controversies. Initially, Trump led in some states, but as mail-in ballots were counted, the tide often turned in favor of Biden. Trump and his supporters raises concerns about the legitimacy of the  ballots and claimed the election is "rigged" [@axelrod_2022]. However, there is no solid proof that the election is "rigged".
 
 ## Weaknesses and next steps
 
@@ -588,7 +454,9 @@ One weakness of using a logistic regression model is its inability to predict vo
 
 Furthermore, it's important to recognize that our findings establish correlation, not causation. Because we only controlled few variables for election turnout, our results may lack essential variables and thus suffer from omitted variable bias. Critical factors such as the impact of mail-in ballots, the role of social media, and broader socio-political dynamics that may have impacted the election are not incorporated in the model.
 
-For further studies, we could start by incorporating more socio-economicalindicators such as income levels, education, and urbanization rate that attribute to the election turnout. Analyzing sentiment from social media platforms, news articles, and public forums could offer a real-time perspective on voter attitudes leading up to the election. We could also add in state dummies to observe for election turnouts by state. To infer causality, future research should employ advanced methodologies capable of addressing issues like selection bias and heterogeneity treatment bias. 
+For further studies, we could start by incorporating more socio-economical indicators such as income levels, education, and urbanization rate that attribute to the election turnout. Analyzing sentiment from social media platforms, news articles, and public forums could offer a real-time perspective on voter attitudes leading up to the election. We could also add in state dummies to observe for election turnouts by state. To infer causality, future research should employ advanced methodologies capable of addressing issues like selection bias and heterogeneity treatment bias. 
+
+
 \newpage
 
 \appendix
@@ -643,9 +511,9 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 #| fig-subcap: ["Trace plot", "Rhat plot"]
 #| layout-ncol: 2
 
-# plot(first_model, "trace")
-# 
-# plot(first_model, "rhat")
+ plot(political_preferences1, "trace")
+
+ plot(political_preferences1, "rhat")
 ```
 
 
