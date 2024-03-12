@@ -226,9 +226,14 @@ Additionally, educated and liberal-leaning working professionals may prioritize 
 
 
 ## Model Implication
+In @fig-post_dist, the great fit of the posterior distribution from our logistic regression model with actual voting data suggests accurate capture of voting patterns. This indicates the accuracy of our model's voting preference prediction to the 2020 election data. Also, @fig-post_prior compares the posterior to the prior, which shows minimal parameter changes except for the parameter "raceOther". The discrepancy for the parameter "raceOther" is not critical due to the low representation of "raceOther" in the dataset. 
+
+
 Figure # shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
 
 Combining figure # and figure #, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
+
+The trace plot in @fig-mcmc-1 does not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-mcmc-2), we can observe that everything is close to 1, and no more than 1.05. 
 
 
 
@@ -546,54 +551,62 @@ model_plot <- plot(
 model_plot + xlim(-10, 10) +  # Adjust the limits as needed
   labs(x = "90% Credibility Interval")
 ```
-## Credibility Interval
 
 ```{r}
-# #| echo: false
-# #| eval: true
-# #| warning: false
-# #| message: false
-# #| label: fig-modelresults1
-# #| fig-cap: "Credible intervals for predictors of support for Biden 1"
-# 
-# modelplot(political_preferences1, conf_level = 0.95, size = 0.1) +
-#   labs(x = "90% credibility interval")
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| label: fig-modelresults1
+#| fig-cap: "Credible intervals for predictors of support for Biden 1"
+
+modelplot(political_preferences1, conf_level = 0.95, size = 0.1) +
+  labs(x = "90% credibility interval")
 ```
 
 ```{r}
-# #| echo: false
-# #| eval: true
-# #| warning: false
-# #| message: false
-# #| label: fig-modelresults2
-# #| fig-cap: "Credible intervals for predictors of support for Biden 2"
-# # Create the model plot
-# model_plot <- modelplot(political_preferences1, conf_level = 0.9)
-# 
-# # Modify the x-axis limits
-# model_plot + xlim(-5, 5) +  # Adjust the limits as needed
-#   labs(x = "90% Credibility Interval")
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| label: fig-modelresults2
+#| fig-cap: "Credible intervals for predictors of support for Biden 2"
+# Create the model plot
+model_plot <- modelplot(political_preferences1, conf_level = 0.9)
+
+# Modify the x-axis limits
+model_plot + xlim(-5, 5) +  # Adjust the limits as needed
+  labs(x = "90% Credibility Interval")
 ```
 
 ## Diagnostics
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
+@fig-trace is a trace plot. It shows if there is existence of signs that the our model runs into issues. We observe lines that are horizontal and oscillating, and have overlaps between the chains. This suggests that there is nothing strange in this trace plot.
 
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+@fig-rhat is a Rhat plot. It compares the variability within each chain to the variability between chains in MCMC. Ideally, we want Rhat to be close to 1, which indicates that the chains have converged to the same distribution. We can observe that our Rhat plot are all close to 1, and no more than 1.05. This is a positive sign because it suggests that the MCMC algorithm has reached convergence for our model. 
+
 
 ```{r}
 #| echo: false
 #| eval: true
 #| message: false
 #| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
+#| label: fig-trace
+#| fig-cap: "Trace plot"
 
  plot(political_preferences1, "trace")
+```
 
- plot(political_preferences1, "rhat")
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-rhat
+#| fig-cap: "Rhat plot"
+
+plot(political_preferences1, "rhat")
 ```
 
 
