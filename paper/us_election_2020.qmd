@@ -7,7 +7,7 @@ author:
 thanks: "Code and data are available at: https://github.com/hannahyu07/US-Election"
 date: today
 date-format: long
-abstract: "This paper delves into the dynamics of voter turnout of the 2020 United States presidential election. Utilizing dataset from the Cooperate Election Study (CES2020), we employ logistic regression analysis to explore the influence of the voter's race, region, and employment on their vote for presidential candidate. Our findings reveal distinct voting patterns among different demographic groups, with minorities showing strong support for Biden, the South predominantly favored Trump, and individuals reliant on unemployment benefits preferred Biden. These insights stress the need for customized outreach and policies to enhance voter engagement across diverse U.S. communities."
+abstract: "This paper examines the dynamics of voter turnout of the 2020 United States presidential election. Utilizing dataset from the Cooperate Election Study (CES2020), we employ logistic regression analysis to explore the influence of the voter's race, region, and employment on their vote for presidential candidate. Our findings reveal distinct voting patterns among different demographic groups, with minorities showing strong support for Biden, the South predominantly favored Trump, and individuals reliant on unemployment benefits preferred Biden. These insights stress the need for customized outreach and policies to enhance voter engagement across diverse U.S. communities."
 format: pdf
 toc: true
 number-sections: true
@@ -440,7 +440,9 @@ Southern states, such as Alabama, Mississippi, and South Carolina with a large a
 
 ## Employment Variations
 
-will write later
+Individuals employed part-time, laid-off, or unemployed demonstrate a notable support towards Biden, a trend likely attributed to Biden's alignment with policies favoring these groups, such as enhanced benefits and support programs [@williams_2020]. For example, Biden and his party advocate for extending unemployment benefits, providing relief for laid-off workers, and bolstering job creation initiatives to address economic challenges faced by these individuals.
+
+Furthermore, students are strongly interested in Biden. The Democratic party's advocacy for liberal rights, racial equality, and healthcare reform resonate with many students' values and priorities [@hess_2020]. Biden's emphasis on addressing issues like student debt, access to affordable education, and healthcare affordability also appeals to students as these issues are highly related to them. Additionally, Biden's support for racial equality and social justice initiatives aligns with the progressive values often embraced by college students.
 
 
 ## COVID and Mail-in Ballots
