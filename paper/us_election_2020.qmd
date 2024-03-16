@@ -396,7 +396,10 @@ Combining @fig-modelresults1 and @fig-modelresults2, we observe statistical sign
 
 # Discussion {#sec-discussion}
 
+Our discussion is made based on @tbl-modelresults1 from our model, as well as background information on different presidential candidates and their different views of the world and divergent approaches to tackling some of the  issues in the United States.
+
 ## Racial Variations
+In the United States, race is always a sensitive topic. Many racist and discriminating events have happened in the past in this country that people in minority groups have to endure. As Trump and Biden have different ideology in guaranteeing racial equality [@biden_inclusion], it is obvious that being in different racial groups will influence people's decision in voting.
 
 In our analysis, respondents of different races show varying levels of support, with a majority of Black, Hispanic, and Asian people supporting Biden, and a majority of Native Americans and multi-racials supporting Trump. The results for Whites are more evenly distributed, with approximately similar percentage of people supporting Biden and Trump.
 
@@ -418,12 +421,12 @@ This trend reflects the impact of diverse demographics, progressive ideologies, 
 
 The 2020 election witnessed intriguing shifts in traditionally conservative states, turning them into battlegrounds. For instance, Texas, a Republican stronghold, saw unprecedented Democratic gains, though ultimately remaining red. Notably, the five largest cities in Texas—Houston, San Antonio, Dallas, Austin, and Fort Worth—all backed the Democratic party [@texas2020]. Similarly, Georgia, a Republican stronghold since 1992, voted for the Democratic party, reflecting evolving demographic and ideological shifts [@georgia2020].
 
-Southern states, such as Alabama, Mississippi, and South Carolina with a large amount of Christian population, strongly adhere to conservative principles. For example, these states have implemented strict anti-abortion law and advocated for tight immigration policies. Furthermore, these states have historically been less supportive of LGBTQ+ rights. As a result, voters in these Southern states typically align with the Republican party represented by Trump, which prioritizes pro-life initiatives and traditional Christian values.
+Southern states, such as Alabama, Mississippi, and South Carolina with a large amount of Christian population, strongly adhere to conservative principles. For example, these states have implemented strict anti-abortion law [@abortion] and advocated for tight immigration policies. Furthermore, these states have historically been less supportive of LGBTQ+ rights. As a result, voters in these Southern states typically align with the Republican party represented by Trump, which prioritizes pro-life initiatives and traditional Christian values.
 
 
 ## Employment Variations
 
-Individuals employed part-time, laid-off, or unemployed demonstrate a notable support towards Biden, a trend likely attributed to Biden's alignment with policies favoring these groups, such as enhanced benefits and support programs [@williams_2020]. For example, Biden and his party advocate for extending unemployment benefits, providing relief for laid-off workers, and bolstering job creation initiatives to address economic challenges faced by these individuals.
+Individuals employed full-time, part-time, laid-off, or unemployed demonstrate a notable support towards Biden, a trend likely attributed to Biden's alignment with policies favoring these groups, such as enhanced benefits and support programs [@williams_2020]. For example, Biden and his party advocate for extending unemployment benefits, providing relief for laid-off workers, and bolstering job creation initiatives to address economic challenges faced by these individuals.
 
 Furthermore, students are strongly interested in Biden. The Democratic party's advocacy for liberal rights, racial equality, and healthcare reform resonate with many students' values and priorities [@hess_2020]. Biden's emphasis on addressing issues like student debt, access to affordable education, and healthcare affordability also appeals to students as these issues are highly related to them. Additionally, Biden's support for racial equality and social justice initiatives aligns with the progressive values often embraced by college students.
 
