@@ -361,7 +361,6 @@ Voters preference for candidates also vary by regions. Biden has more supports i
 
 Individuals' employment statuses also have effects on voting preferences. As anticipated, students exhibit strong support for Biden. Additionally, individuals who are employed part-time, laid off, or unemployed who potentially may be reliant on social benefits, also prefer for Biden. 
 
-
 @fig-modelresults1 (see @sec-credibility-interval) shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created @fig-modelresults2 with the x axis limited from -10 to 10. 
 
 Combining @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump.
@@ -557,6 +556,10 @@ plot(political_preferences1, "rhat")
 
 ## Credibility Interval {#sec-credibility-interval}
 90% Credibility intervals graph are shown in @fig-modelresults1 and @fig-modelresults2.
+@fig-modelresults1 shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure @fig-modelresults2 with the x axis limited from -10 to 10. 
+
+Combing @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
+
 
 ```{r}
 #| echo: false
