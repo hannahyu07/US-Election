@@ -84,7 +84,7 @@ raw_ces2020[1:5, 1:5] |>
 
 ## Data Measurement
 
-Our dataset's quantitative representation of real-world phenomena is influenced by several factors, which inherently limit the accuracy of our measurements for the five variables.
+Because our dataset is survey-based, the measurement accuracy of our five variables might be influenced by many external factors. 
 
 Firstly, for the variable "votereg" indicating whether a respondent is registered to vote, the measurement process involves relying on self-reported information from survey respondents. The US voter registration system is known to be inaccurate and inefficient. While efforts are made to ensure accuracy, there may be instances of misreporting or misunderstanding of voter registration status, leading to potential inaccuracies in the data. According to [@inaccurate], there are millions of voter registrations that are no longer valid or inaccurate. There may also be cases when individuals falsely believed they are registered to vote because they reached the voting age but did not actually register at their local office. 
 
@@ -96,7 +96,7 @@ In the case of "region," which represents the census region where the respondent
 
 The "region" variable categorizes respondents based on their geographical location into four census regions: Northeast, Midwest, South, and West. However, regional boundaries can be arbitrary, and individuals living in bordering areas may have affiliations with multiple regions or identify more strongly with a neighboring region. For instance, states like Missouri and Kentucky are often considered part of the Midwest but also share cultural and economic ties with the South. This complexity can make individuals accurately reporting their region challenging.
 
-Finally, for "employ", indicating the respondent's self-reporting employment status, can be influenced by various factors such as job changes, seasonal work, and personal circumstances. In addition, individuals may intentionally misreport their employment status due to societal pressures or to access benefits. For instance, some may falsely claim employment to avoid stigma, while others may report unemployment to qualify for unemployment benefits. Additionally, students working part-time jobs may selectively report their status based on their perceived benefit. These discrepancies can introduce bias and inaccuracies into the data, impacting the reliability of our analyses.
+Finally, for "employ", indicating the respondent's self-reporting employment status, can be influenced by various factors such as job changes, seasonal work, and personal circumstances. In addition, individuals may intentionally misreport their employment status due to societal pressures or to access benefits. For instance, some may falsely claim employment to avoid stigma, while others may report unemployment to qualify for unemployment benefits. Additionally, students working part-time jobs may selectively report their status based on their perceived benefit. These inconsistencies can introduce bias and inaccuracies into the data, impacting the reliability of our analyses.
 
 
 ## Methodology
@@ -215,7 +215,7 @@ We run the model in R [@citeR] using the `rstanarm` package of @citeRstanarm. We
 
 We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and their support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall [@trump_wall]. These groups are more likely to align with Biden's policies, which prioritize inclusion and diversity [@biden_inclusion]. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
 
-Conversely, we anticipate a negative relationship between voters in the South and Midwest regions and support for Biden. These regions have a stronger conservative presence and a history of supporting Republican candidates like Trump. States such as Texas and Florida, which are known Republican strongholds, are located in the South. Therefore, individuals in these regions may be less inclined to support Biden's progressive agenda.
+Conversely, we anticipate a negative relationship between voters in the South and Midwest regions and support for Biden. These regions have a stronger conservative presence and a history of supporting Republican candidates like Trump. States, such as Texas, which are known Republican strongholds, are located in the South. Therefore, individuals in these regions may be less inclined to support Biden's progressive agenda.
 
 Regarding employment status, we expect students, unemployed individuals, and those temporarily laid off to be more inclined to support Biden. Students are often exposed to diverse perspectives and progressive ideas in educational settings, making them more likely to endorse Biden's platform. Unemployed and laid-off individuals may favor Biden due to the Democratic Party's advocacy for social welfare programs and support for workers' rights.
 
@@ -225,7 +225,7 @@ The voting behavior of employed individuals is harder to distinguish. Some worki
 ## Model Implication
 For posterior predictive checks, in @fig-post_dist, the great fit of the posterior distribution from our logistic regression model with actual voting data suggests accurate capture of voting patterns. This indicates the accuracy of our model's voting preference prediction to the 2020 election data. Also, @fig-post_prior compares the posterior to the prior, which shows minimal parameter changes except for the parameter "raceOther". The discrepancy for the parameter "raceOther" is not critical due to the low representation of "raceOther" in the dataset.
 
-The trace plot in @fig-trace does not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-rhat), we can observe that everything is close to 1, and no more than 1.05, which shows the great convergence of Markov chain Monte Carlo for our model.
+The trace plots in @fig-trace1, @fig-trace2, and @fig-trace3 do not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-rhat), we can observe that everything is close to 1, and no more than 1.05, which shows the great convergence of Markov chain Monte Carlo for our model.
 
 More detailed explanation of each plot can be found in Appendix @sec-model-details.
 
