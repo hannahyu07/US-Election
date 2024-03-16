@@ -452,9 +452,9 @@ For further studies, we could start by incorporating more socio-economical indic
 
 # Appendix {-}
 
-## Model details {#sec-model-details}
+# Model details {#sec-model-details}
 
-### Posterior predictive check
+## Posterior predictive check
 In @fig-post_dist, we implement a posterior distribution. This compares who people voted for in reality with the prediction results from the posterior distribution from our logistic regression model. It can be observed that the posterior distribution fits perfectly with the actual data, it suggests that the model accurately captures the observed data patterns. So the posterior is able to generate simulated data that closely resembles the actual data [@bayes_post]. This is a positive sign because it indicates that our logistic regression model is a good representation of the actual voting preferences in the 2020 election data.
 
 ```{r}
@@ -501,7 +501,7 @@ posterior_vs_prior(political_preferences1, size = 0.3) +
   coord_flip()
 ```
 
-### Markov chain Monte Carlo Convergence Check
+## Markov chain Monte Carlo Convergence Check
 
 @fig-trace is a trace plot. It shows if there is existence of signs that the our model runs into issues. We observe lines that are horizontal and oscillating, and have overlaps between the chains. This suggests that there is nothing strange in this trace plot.
 
@@ -531,7 +531,7 @@ posterior_vs_prior(political_preferences1, size = 0.3) +
 plot(political_preferences1, "rhat")
 ```
 
-### Credibility Interval {#sec-credibility-interval}
+## Credibility Interval {#sec-credibility-interval}
 90% Credibility intervals graph are shown in @fig-modelresults1 and @fig-modelresults2.
 
 ```{r}
