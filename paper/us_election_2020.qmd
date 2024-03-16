@@ -232,7 +232,7 @@ More detailed explanation of each plot can be found in Appendix @sec-model-detai
 
 # Results {#sec-result}
 
-## Data Result
+## Data Results
 
 @fig-race shows the relationship between race and voting preference. Overall, Biden gets more support from most racial groups, except for "Native Americans" and people of "two or more races," who tend to support Trump slightly more. 
 
@@ -353,7 +353,7 @@ modelsummary(
   statistic = "mad"
   )
 ```
-Our results are summarized in @tbl-modelresults1. Our results generally matches our expectation. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
+Our results are summarized in @tbl-modelresults1. Our results generally matches our expectation. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time. The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
 
 Black individual's support for Biden is large. The estimated coefficient of 2.549 suggests that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group. Hispanic races on average are also more likely to vote for Biden. We notice that Native Americans support Trump more with an estimated coefficient of -2.791. We observe an outlier, individuals with race "other" has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
 
@@ -361,30 +361,6 @@ Voters preference for candidates also vary by regions. Biden has more supports i
 
 Individuals' employment statuses also have effects on voting preferences. As anticipated, students exhibit strong support for Biden. Additionally, individuals who are employed part-time, laid off, or unemployed who potentially may be reliant on social benefits, also prefer for Biden. 
 
-
-```{r}
-#| include: false
-# Extract posterior samples
-# posterior_samples <- as.matrix(political_preferences)
-# 
-# # Calculate credible intervals (e.g., 95%)
-# credible_intervals <- apply(posterior_samples, 2, function(x) quantile(x, c(0.025, 0.975)))
-# 
-# # Extract coefficient names
-# coefficient_names <- colnames(posterior_samples)
-# 
-# # Create a data frame with coefficient names, coefficient estimates, and credible intervals
-# table_data <- data.frame(
-#   Posterior_Mean = colMeans(posterior_samples),
-#   Credible_Interval_Lower = credible_intervals[1, ],
-#   Credible_Interval_Upper = credible_intervals[2, ]
-# )
-# 
-# # Print the table
-# print(table_data)
-
-
-```
 
 @fig-modelresults1 (see @sec-credibility-interval) shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created @fig-modelresults2 with the x axis limited from -10 to 10. 
 
@@ -498,14 +474,16 @@ ces2020_reduced <-
 posterior_vs_prior(political_preferences1, size = 0.3) +
   theme_minimal() +
   theme(legend.position = "bottom") +
+  theme(axis.text.x=element_text(hjust=1, vjust=0.5),
+        text=element_text(size=8)) +
   coord_flip()
 ```
 
 ## Markov chain Monte Carlo Convergence Check
 
-@fig-trace is a trace plot. It shows if there is existence of signs that the our model runs into issues. We observe lines that are horizontal and oscillating, and have overlaps between the chains. This suggests that there is nothing strange in this trace plot.
+@fig-trace1, @fig-trace2, @fig-trace3 are the trace plot of the model. It shows if there is existence of signs that the our model runs into issues. We observe lines that are horizontal and oscillating, and have overlaps between the chains. This suggests that there is nothing strange in this trace plot.
 
-@fig-rhat is a Rhat plot. It compares the variability within each chain to the variability between chains in MCMC. Ideally, we want Rhat to be close to 1, which indicates that the chains have converged to the same distribution. We can observe that our Rhat plot are all close to 1, and no more than 1.05. This is a positive sign because it suggests that the MCMC algorithm has reached convergence for our model. 
+@fig-rhat is the Rhat plot of the model. It compares the variability within each chain to the variability between chains in MCMC. Ideally, we want Rhat to be close to 1, which indicates that the chains have converged to the same distribution. We can observe that our Rhat plot are all close to 1, and no more than 1.05. This is a positive sign because it suggests that the MCMC algorithm has reached convergence for our model. 
 
 
 ```{r}
@@ -513,10 +491,56 @@ posterior_vs_prior(political_preferences1, size = 0.3) +
 #| eval: true
 #| message: false
 #| warning: false
-#| label: fig-trace
-#| fig-cap: "Trace plot"
+#| label: fig-trace1
+#| fig-cap: "Trace plot of intercept and race"
+#| fig-subcap: ["Trace plot of Intercept", "Trace plot of race White", "Trace plot of race Black", "Trace plot of race Hispanic", "Trace plot of race Middle Eastern", "Trace plot of race Native American", "Trace plot of race Two or more races", "Trace plot of race Other"]
+#| layout-ncol: 2
 
- plot(political_preferences1, "trace")
+#plot(political_preferences1, "trace")
+plot(political_preferences1, "trace", "(Intercept)")
+
+plot(political_preferences1, "trace", "raceWhite")
+plot(political_preferences1, "trace", "raceBlack")
+plot(political_preferences1, "trace", "raceHispanic")
+plot(political_preferences1, "trace", "raceMiddle Eastern")
+plot(political_preferences1, "trace", "raceNative American")
+plot(political_preferences1, "trace", "raceTwo or more races")
+plot(political_preferences1, "trace", "raceOther")
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-trace2
+#| fig-cap: "Trace plot of region"
+#| fig-subcap: ["Trace plot of region Northeast", "Trace plot of region South", "Trace plot of region West"]
+#| layout-ncol: 2
+
+plot(political_preferences1, "trace", "regionNortheast")
+plot(political_preferences1, "trace", "regionSouth")
+plot(political_preferences1, "trace", "regionWest")
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-trace3
+#| fig-cap: "Trace plot of employ"
+#| fig-subcap: ["Trace plot of employ Homemaker", "Trace plot of employ Part-time", "Trace plot of employ Permanently disabled", "Trace plot of employ Retired", "Trace plot of employ Student", "Trace plot of employ Temporarily laid off", "Trace plot of employ Unemployed", "Trace plot of employ Other"]
+#| layout-ncol: 2
+
+plot(political_preferences1, "trace", "employHomemaker")
+plot(political_preferences1, "trace", "employPart-time")
+plot(political_preferences1, "trace", "employPermanently disabled")
+plot(political_preferences1, "trace", "employRetired")
+plot(political_preferences1, "trace", "employStudent")
+plot(political_preferences1, "trace", "employTemporarily laid off")
+plot(political_preferences1, "trace", "employUnemployed")
+plot(political_preferences1, "trace", "employOther")
 ```
 
 
