@@ -41,7 +41,7 @@ In this paper, a logistic regression model is used to forecast the outcome of th
 
 The logistic regression model shows that in the 2020 presidential election, Biden has strong support from minority racial groups including black, Hispanic, and Asian populations. Geographically, Biden gains greater support in the Northeast and West regions, while Trump secured more votes in the South. Additionally, both full-time and part-time workers, as well as students and those facing unemployment or layoffs, lean towards Biden. 
 
-The remainder of this paper is structured into different sections. @sec-data demonstrates the data used for our report and includes some tables and graphs to illustrate the different groups of people in our data. @sec-model builds the model and discusses its justification and explanation. @sec-result highlights the results of the predictions using tables and graphs. @sec-discussion contains discussions that conducted based on the findings, which addresses the voting prediction results based on race, region, employment status, and the influence of COVID-19 and in-mail voting systems. 
+The remainder of this paper is structured into different sections. @sec-data demonstrates the data used for our report and includes some tables and graphs to illustrate the different groups of people in our data. @sec-model builds the model and discusses its justification and explanation. @sec-result highlights the results of the predictions using tables and graphs. @sec-discussion contains discussions that conducted based on the findings, which addresses the voting prediction results based on race, region, employment status, and the influence of COVID-19 and in-mail voting systems. Statistical programming language R [@citeR] is used in this report, with packages `tidyverse` [@citeTidyverse], `here` [@citeHere], `rstanarm` [@citeRstanarm], `modelsummary` [@citeModleSummary], `ggplot2` [@citeGgplot2], `knitr` [@citeKnitr], `marginaleffects` [@citeMarginalEffects], `plotly` [@citePlotly], `tibble` [@citeTibble], `margins` [@citeMargins], `testthat` [@citetestthat] and `kableExtra` [@citeKableExtra].
 
 # Data {#sec-data}
 
@@ -52,15 +52,15 @@ In this report, we use the 2020 Cooperative Election Study (CES) [@citeCes2020] 
 ## Features
 The original CES 2020 dataset, which shows in @tbl-raw, contains 61000 observations and many variables. We chose to feature these 5 variables: "votereg", "CC20_410", "race", "region", "employ", in our analysis. 
 
-1. votereg: whether the respondent is registered to vote;
+1. votereg: whether the respondent is registered to vote; numeric numbers starting from 1 correspond to options "Yes", "No", and "Don't know", respectively.
 
-2. CC20_410: the presidential candidate the respondent voted for;
+2. CC20_410: the presidential candidate the respondent voted for; numeric numbers starting from 1 correspond to  options "Joe Biden (Democrat)", "Donald J. Trump (Republican)", "Other", "I did not vote in this race", "I did not vote", "Not sure", respectively.
 
-3. region: the census region where the respondent lives; options are "Northeast", "Midwest", "South", and "West".
+3. region: the census region where the respondent lives; numeric numbers starting from 1 correspond to options "Northeast", "Midwest", "South", and "West", respectively.
 
-4. race: the racial or ethnic group of the respondent; options are "White", "Black", "Hispanic", "Asian", "Native American", "Middle Eastern", "Two or more races", and "Other".
+4. race: the racial or ethnic group of the respondent; numeric numbers starting from 1 correspond to options "White", "Black", "Hispanic", "Asian", "Native American", "Middle Eastern", "Two or more races", and "Other", respectively.
 
-5. employ: the current employment status of the respondent; options are "Full-time", "Part-time", "Temporarily laid off", "Unemployed", "Retired", "Permanently disabled", "Homemaker", "Student", and "Other".
+5. employ: the current employment status of the respondent; numeric numbers starting from 1 correspond to options "Full-time", "Part-time", "Temporarily laid off", "Unemployed", "Retired", "Permanently disabled", "Homemaker", "Student", and "Other", respectively.
 
 ```{r}
 #| include: false
@@ -102,9 +102,7 @@ Finally, for "employ", indicating the respondent's self-reporting employment sta
 ## Methodology
 Since it is difficult to observe such as large dataset, this report will only explore and analyze through specific aspects. The original dataset contains respondent's voter registration status and the presidential candidate the respondent voted for. This paper will only analyze respondents who are registered to vote and focus on the outcome of two candidates, Joe Biden representing the Democratic party and Donald Trump representing the Republican party.
 
-The dataset is cleaned by renaming the column names, specifying the class of the columns, and changing the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, NA employment status is removed in the cleaned data file since there are only 34 entries, which is a small amount of missing value compared with 61000 entries. After cleaning, 43534 rows of data with 4 data features remain.
-
-The cleaned data will be analyzed and performed using R [@citeR] with `tidyverse` [@citeTidyverse], `here` [@citeHere], `rstanarm` [@citeRstanarm], `modelsummary` [@citeModleSummary], `ggplot2` [@citeGgplot2], `knitr` [@citeKnitr], `marginaleffects` [@citeMarginalEffects], `plotly` [@citePlotly], `tibble` [@citeTibble], `margins` [@citeMargins], `testthat` [@citetestthat] and `kableExtra` [@citeKableExtra]. @tbl-clean-data shows a preview of the cleaned dataset.
+The dataset is cleaned by renaming the column names, specifying the class of the columns, and changing the numbers in the table to the corresponding description in the codebook to improve the readability. In addition, NA employment status is removed in the cleaned data file since there are only 34 entries, which is a small amount of missing value compared with 61000 entries. After cleaning, 43534 rows of data with 4 data features remain. @tbl-clean-data shows a preview of the cleaned dataset.
 
 ```{r}
 #| include: false
