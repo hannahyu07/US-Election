@@ -213,27 +213,28 @@ We run the model in R [@citeR] using the `rstanarm` package of @citeRstanarm. We
 
 ## Model Justification
 
-We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall. These groups are more likely to align with Biden's policies, which prioritize inclusivity and diversity. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
+We expect a positive relationship between individuals of Black, Asian, and Hispanic ethnicities and their support for Biden. This expectation arises from Trump's history of spreading polarizing language and anti-immigrant sentiments, as well as his controversial plans such as building a border wall [@trump_wall]. These groups are more likely to align with Biden's policies, which prioritize inclusion and diversity [@biden_inclusion]. White individuals with traditional family values and conservative leanings tend to support Trump. They are drawn to his emphasis on preserving traditional values and promises to uphold conservative principles, especially regarding immigration, law and order, and gun rights.
 
 Conversely, we anticipate a negative relationship between voters in the South and Midwest regions and support for Biden. These regions have a stronger conservative presence and a history of supporting Republican candidates like Trump. States such as Texas and Florida, which are known Republican strongholds, are located in the South. Therefore, individuals in these regions may be less inclined to support Biden's progressive agenda.
 
 Regarding employment status, we expect students, unemployed individuals, and those temporarily laid off to be more inclined to support Biden. Students are often exposed to diverse perspectives and progressive ideas in educational settings, making them more likely to endorse Biden's platform. Unemployed and laid-off individuals may favor Biden due to the Democratic Party's advocacy for social welfare programs and support for workers' rights.
 
-The voting behavior of employed individuals is harder to distinguish. Some working individuals support Trump due to their opposition to higher taxes and prefer his promises of tax cuts and economic deregulation. Conversely, others lean towards Biden because they believe tax increases should primarily target the wealthy and not burden the middle class.
-Additionally, educated and liberal-leaning working professionals may prioritize issues such as healthcare, climate change, and social justice, aligning them with Biden's platform. 
+The voting behavior of employed individuals is harder to distinguish. Some working individuals support Trump due to their opposition to higher taxes and prefer his promises of tax cuts and economic deregulation. Conversely, others lean towards Biden because they believe tax increases should primarily target the wealthy and not burden the middle class. Additionally, educated and liberal-leaning working professionals may prioritize issues such as healthcare, climate change, and social justice, aligning them with Biden's platform. 
 
 
 ## Model Implication
-In @fig-post_dist in the Appendix, the great fit of the posterior distribution from our logistic regression model with actual voting data suggests accurate capture of voting patterns. This indicates the accuracy of our model's voting preference prediction to the 2020 election data. Also, @fig-post_prior compares the posterior to the prior, which shows minimal parameter changes except for the parameter "raceOther". The discrepancy for the parameter "raceOther" is not critical due to the low representation of "raceOther" in the dataset.
+For posterior predictive checks, in @fig-post_dist, the great fit of the posterior distribution from our logistic regression model with actual voting data suggests accurate capture of voting patterns. This indicates the accuracy of our model's voting preference prediction to the 2020 election data. Also, @fig-post_prior compares the posterior to the prior, which shows minimal parameter changes except for the parameter "raceOther". The discrepancy for the parameter "raceOther" is not critical due to the low representation of "raceOther" in the dataset.
 
 The trace plot in @fig-trace does not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-rhat), we can observe that everything is close to 1, and no more than 1.05, which shows the great convergence of Markov chain Monte Carlo for our model.
+
+More detailed explanation of each plot can be found in -@sec-model-details.
 
 
 # Results {#sec-result}
 
 ## Data Result
 
-@fig-race shows the relationship between race and voting preference. Overall, Biden gets more support from most racial groups, except for Native Americans and people of "two or more races," who tend to support Trump slightly more. 
+@fig-race shows the relationship between race and voting preference. Overall, Biden gets more support from most racial groups, except for "Native Americans" and people of "two or more races," who tend to support Trump slightly more. 
 
 ```{r}
 #| label: fig-race
@@ -354,9 +355,11 @@ modelsummary(
 ```
 Our results are summarized in @tbl-modelresults1. Our results generally matches our expectation. To avoid multicollinearity, the model excluded three variables from each category: race Asian, region Midwest, and employed full-time.The intercept represents the estimated log-odds of supporting Biden when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of supporting Biden for individuals who are Asian, live in the Midwest, and are employed full-time is 0.806. 
 
-Black individual's support for Biden is large. The estimated coefficient of 2.549 suggests that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group. Hispanic races on average are also more likely to vote for Biden. We observe an outlier, individuals with race "other" has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
+Black individual's support for Biden is large. The estimated coefficient of 2.549 suggests that, holding all other variables constant, Black individuals are estimated to have a 2.549 unit increase in the log-odds of supporting Biden compared to the reference group. Hispanic races on average are also more likely to vote for Biden. We notice that Native Americans support Trump more with an estimated coefficient of -2.791. We observe an outlier, individuals with race "other" has a 37.999 higher log-odds of supporting Biden compared to the reference group. 
 
-Voters preference for candidates also vary by regions and their employment status. Biden has more supports in the Northeast and West region while Trump gains a majority of his votes from the South. As anticipated, students exhibit strong support for Biden. Additionally, individuals who are laid off, unemployed, or employed part-time, potentially reliant on social benefits, also prefer for Biden.
+Voters preference for candidates also vary by regions. Biden has more supports in the Northeast (estimated coefficient of 0.436) and West region (estimated coefficient of 0.137) while Trump gains a majority of his votes from the South (estimated coefficient of -0.161). 
+
+Individuals' employment statuses also have effects on voting preferences. As anticipated, students exhibit strong support for Biden. Additionally, individuals who are employed part-time, laid off, or unemployed who potentially may be reliant on social benefits, also prefer for Biden. 
 
 
 ```{r}
@@ -383,9 +386,9 @@ Voters preference for candidates also vary by regions and their employment statu
 
 ```
 
-@fig-modelresults1 (see @sec-credibility-interval) shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created figure # with the x axis limited from -10 to 10. 
+@fig-modelresults1 (see @sec-credibility-interval) shows range of coefficient estimates of our model within the 90% probability. Due to the fact that the credibility interval for race "Other" is particularly large, we cannot observe the trend of the 90% credibility intervals of other variables. Therefore we created @fig-modelresults2 with the x axis limited from -10 to 10. 
 
-Combining @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump. 
+Combining @fig-modelresults1 and @fig-modelresults2, we observe statistical significance for the coefficient estimates for students, the Northeast region, individuals identifying with two or more races, individuals identifying with "Other" racial category, Native Americans, Black individuals, and the intercept, Asians in the Midwest region who are employed full-time. The estimates are significant if the intervals do not cross 0. The value for the estimates are in log-odds, indicating that if the coefficient is positive, the individual supports Biden, if negative, the individual supports Trump.
 
 
 \newpage
@@ -395,19 +398,19 @@ Combining @fig-modelresults1 and @fig-modelresults2, we observe statistical sign
 
 ## Racial Variations
 
-In our analysis, respondents of different races show varying levels of support, with a majority of blacks, Hispanics, and Asians supporting Biden, and a majority of Native Americans and multi-racials supporting Trump. The results for whites are more evenly distributed, with about the same percentage supporting Biden and Trump.
+In our analysis, respondents of different races show varying levels of support, with a majority of Black, Hispanic, and Asian people supporting Biden, and a majority of Native Americans and multi-racials supporting Trump. The results for Whites are more evenly distributed, with approximately similar percentage of people supporting Biden and Trump.
 
-The reason for the majority of Hispanics supporting Biden may be due to the US-Mexico border wall that was built during Trump's reign. The wall was built over 452 miles, which replaced the old fence [@Rodriguez_2021]. With this measure in place, Trump lost most of the Hispanic vote. Trump claims the wall reformed the immigration system and achieved the most secure southern border in US history. However, that wasn't true, and with it has come a surge in illegal border crossings. For Hispanics, Trump's long history of anti-immigrant rhetoric and this border wall have denied them the opportunity to seek asylum. While crossing the border illegally is not something to be promoted, it is the last hope for those living in dire straits.
+The reason for the majority of Hispanics supporting Biden may be due to the US-Mexico border wall that was built during Trump's reign. The wall was built over 452 miles, which replaced the old fence [@Rodriguez_2021]. With this measure in place, Trump lost most of the Hispanic votes. Trump claimed the wall reformed the immigration system and achieved the most secure southern border in US history. However, that was not true, and with it had come a surge in illegal border crossings [@trump_wall], which overall made Hispanic people dissatisfied with Trump's decisions and ruling.
 
-2020 is the age of pandemics, as Trump's phrase "Chinese virus" led to a large number of Asians starting to support Biden. This is an extremely anti-Asian statement: although COVID-19 was first found in China, but it does not mean that virus was from China. Trump's comments quickly festered in public opinion and led to a dramatic increase in hate incidents in the Asian American community [@Reja_2021]. The repeated use of the "Chinese Virus" by a president of the country has contributed to an environment of racial discrimination and hatred against Asians, which has directly led to more Asians supporting Biden, whose policies are more open and democratic, and who values racial equality more.
+As COVID-19 pandemics spreaded, Trump repeatedly called it "Chinese virus" [@trump_virus]. This obviously led to a large number of Asians, especially Chinese people, feel targeted becuase it is an extremely anti-Asian statement: although COVID-19 was first found in China, but it does not mean that virus was from China. Trump's comments quickly festered in public opinion and led to a dramatic increase in hate incidents in the Asian American community [@Reja_2021]. The repeated use of the "Chinese Virus" by a president of the country has contributed to an environment of racial discrimination and hatred against Asians. Therefore, they became dissatisfied with Trump and more supportive to Biden, whose policies are more open and democratic, and values racial equality more.
 
-Most white people vote relatively evenly, due to the fact that they are not affected by immigration or other policies. Whites hold a major voice and position in the US, most of the ideas and policies Trump proposes are favorable to whites. Therefore, he can gain support from most whites. However, there are some whites who want a democratic and equal environment, and at the same time do not want to see racial discrimination and other phenomena, so they will choose to support Biden, who values equality.
+Most white people vote relatively evenly, due to the fact that they are not affected by immigration or other policies. Whites hold a major voice and position in the US; most of the ideas and policies Trump proposes are favorable to whites. Therefore, he gains some support from White people. However, there are people who want a democratic and equal environment, and at the same time do not want to see racial discrimination and other phenomena, so they will choose to support Biden, who values equality.
 
 ## Regional Variations
 
 Our analysis highlights regional voting variations, with the Northeast, West, and Midwest favoring Biden, while the South supports Trump. These differences stem from diverse cultural, family, religious, and social perspectives.
 
-Biden's support base is concentrated in the Mid-Atlantic states, New England, the West Coast, Southwestern states, and certain regions around the Great Lakes. This support is particularly evident in cities within these regions, driven by various factors including liberal ideals and progressive policies. For instance, states like New York and Massachusetts support Biden due to their liberal-leaning populations, diverse demographics, and emphasis on social justices. Similarly, on the West Coast, states such as California and Washington are known for their progressive values and advocacy for issues like environmental conservation and LGBTQ+ rights, contributing to Biden's popularity in these areas. In the Southwest, states like Arizona and Nevada, with growing minority populations and concerns over immigration policies, also show significant support for Biden. Additionally, states around the Great Lakes, including Illinois and Michigan, align with Biden's platform due to their industrial heritage and strong labor unions.
+Biden's support base is concentrated in the Mid-Atlantic states, New England, the West Coast, Southwestern states, and certain regions around the Great Lakes [@wiki2020]. This support is particularly evident in cities within these regions, driven by various factors including liberal ideals and progressive policies. For instance, states like New York and Massachusetts support Biden due to their liberal-leaning populations, diverse demographics, and emphasis on social justices. Similarly, on the West Coast, states such as California and Washington are known for their progressive values and advocacy for issues like environmental conservation and LGBTQ+ rights, contributing to Biden's popularity in these areas. In the Southwest, states like Arizona and Nevada, with growing minority populations and concerns over immigration policies, also show significant support for Biden. Additionally, states around the Great Lakes, including Illinois and Michigan, align with Biden's platform due to their industrial heritage and strong labor unions.
 
 Voters favoring Biden are predominantly concentrated in big cities and large suburban regions, whereas Trump supporters are dispersed across rural areas with lower population density. Consequently, Trump secured victories in 2,588 counties, whereas Biden won over just 551 [@frey_2021]. Even in traditionally Republican states, major urban areas exhibit significant support for Biden. Notable examples include Charlotte, North Carolina; Salt Lake City, Utah; and Nashville and Memphis, Tennessee, among others [@cnn_2020]. 
 
@@ -510,7 +513,7 @@ posterior_vs_prior(political_preferences1) +
 #| label: fig-modelresults1
 #| fig-cap: "Credible intervals for predictors of support for Biden 1"
 
-modelplot(political_preferences1, conf_level = 0.90, size = 0.1) +
+modelplot(political_preferences1, conf_level = 0.90, size = 0.2) +
   labs(x = "90% credibility interval")
 ```
 
@@ -523,7 +526,7 @@ modelplot(political_preferences1, conf_level = 0.90, size = 0.1) +
 #| label: fig-modelresults2
 #| fig-cap: "Credible intervals for predictors of support for Biden 2"
 # Create the model plot
-model_plot <- modelplot(political_preferences1, conf_level = 0.9)
+model_plot <- modelplot(political_preferences1, conf_level = 0.9, , size = 0.2)
 
 # Modify the x-axis limits
 model_plot + xlim(-5, 5) +  # Adjust the limits as needed
