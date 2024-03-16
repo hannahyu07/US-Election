@@ -35,7 +35,7 @@ library(kableExtra)
 \newpage
 
 # Introduction
-Four years ago, the United States was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Republican parties are represented by Donald Trump and Joe Biden respectively [@wiki2020]. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton [@result2016]. On the other hand, Joe Biden led the Democratic campaign. He aimed to regain control from the Republican party. In the end, Biden won the election by 51.3% majority votes [@cnn_2020], which Trump questioned its credibility. Due to the COVID-19 pandemic in 2020, the vote system changed to in-mail voting instead of in-person voting, which was why Trump believed that some votes were stolen [@trump_stolenvote]. Therefore, it is important for us to analyze why people voted for Biden and Trump in 2020 election and how various demographic, economic, and social factors may influence individuals' voting decisions. Perhaps then we could see why Biden eventually won. We analyze the 2020 election data set from Cooperative Election Study (CES) [@citeCes2020]. CES is a national online survey conducted before and after United States presidential elections [@wiki_ces]. We build a prediction model for individual voting preference using dataset from CES 2020 elections. This allows us to discover trends and address potential political, economic, and societal situations that may cause the eventual winning for Biden in 2020.
+Four years ago, the United States was at the forefront of an important electoral contest between the Democratic and Republican parties in the 2020 presidential election. The Democratic and Republican parties are represented by Donald Trump and Joe Biden respectively. Donald Trump achieved a remarkable victory in the 2016 election against Hillary Clinton. On the other hand, Joe Biden led the Democratic campaign. He aimed to regain control from the Republican party. In the end, Biden won the election by 51.3% majority votes [@cnn_2020], which Trump questioned its credibility. Due to the COVID-19 pandemic in 2020, the vote system changed to in-mail voting instead of in-person voting, which was why Trump believed that some votes were stolen [@trump_stolenvote]. Therefore, it is important for us to analyze why people voted for Biden and Trump in 2020 election and how various demographic, economic, and social factors may influence individuals' voting decisions. Perhaps then we could see why Biden eventually won. We analyze the 2020 election data set from Cooperative Election Study (CES) [@citeCes2020]. CES is a national online survey conducted before and after United States presidential elections [@wiki_ces]. We build a prediction model for individual voting preference using dataset from CES 2020 elections. This allows us to discover trends and address potential political, economic, and societal situations that may cause the eventual winning for Biden in 2020.
 
 In this paper, a logistic regression model is used to forecast the outcome of the 2020 election, with data from the Cooperative Election Study. Logistic regression is a great choice since it is used to predict binary outcomes, such as election results (Trump or Biden). Our analysis focuses on estimating the likelihood of victory for either Trump or Biden, based on various demographic, geographic, and socioeconomic factors captured in the CES data set.We selected data features: race, region that they live, employment status, and who they voted for. The estimand in this paper is the number of people who support Trump and Biden in reality. However, it is difficult to measure the exact number of people who support Trump and Biden since there are millions of people in the United States and not all of them with the rights to vote would actually vote. Therefore, in this paper, we attempt to estimate the estimand using a logistic regression model which is trained using sample dataset from the 2020 election dataset from CES. 
 
@@ -371,7 +371,7 @@ Combining @fig-modelresults1 and @fig-modelresults2, we observe statistical sign
 
 # Discussion {#sec-discussion}
 
-Our discussion is made primarily based on the logistic regression model and its result in @tbl-modelresults1, as well as background information on different presidential candidates and their different views of the world and divergent approaches to tackling some of the  issues in the United States.
+Our discussion is made primarily based on the logistic regression model and its result in @tbl-modelresults1, as well as background information on the two presidential candidates, Trump and Biden, and their different views of the world and divergent approaches to tackling some of the issues in the United States.
 
 ## Racial Variations
 In the United States, race is always a sensitive topic. Many racist and discriminating events have happened in the past in this country that people in minority groups have to endure. As Trump and Biden have different ideology in guaranteeing racial equality [@biden_inclusion], it is obvious that being in different racial groups will influence people's decision in voting.
@@ -565,7 +565,7 @@ plot(political_preferences1, "rhat")
 #| warning: false
 #| message: false
 #| label: fig-modelresults1
-#| fig-cap: "Credible intervals for predictors of support for Biden 1"
+#| fig-cap: "Credible intervals for predictors of support for Biden"
 
 modelplot(political_preferences1, conf_level = 0.90, size = 0.2) +
   labs(x = "90% credibility interval")
@@ -578,7 +578,7 @@ modelplot(political_preferences1, conf_level = 0.90, size = 0.2) +
 #| warning: false
 #| message: false
 #| label: fig-modelresults2
-#| fig-cap: "Credible intervals for predictors of support for Biden 2"
+#| fig-cap: "Credible intervals for predictors of support for Biden with x_axis limits"
 # Create the model plot
 model_plot <- modelplot(political_preferences1, conf_level = 0.9, , size = 0.2)
 
