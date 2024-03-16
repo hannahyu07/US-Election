@@ -11,7 +11,7 @@
 #### Workspace setup ####
 library(tidyverse)
 library(rstanarm)
-
+library(testthat)
 #### Read data ####
 analysis_data <- read_csv("data/analysis_data/cleaned_ces2020.csv")
 
@@ -46,7 +46,7 @@ saveRDS(
   file = "models/political_preferences1.rds"
 )
 
-test_file("scripts/test_class.R")
-test_file("scripts/test_observations.R")
-test_file("scripts/test_coefficients.R")
+test_file("scripts/05-test_class.R")
+test_file("scripts/06-test_observations.R")
+test_file("scripts/07-test_coefficients.R")
 
