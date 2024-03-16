@@ -17,35 +17,6 @@ The repo is structured as:
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper.
 -   `scripts` contains the R scripts used to simulate, download, and clean data and model.
 
-list_files_tree <- function(path, depth = 0) {
-  # Indentation based on the depth
-  indent <- paste0(rep("│   ", depth - 1), collapse = "")
-  
-  # List files and directories
-  files <- list.files(path, full.names = TRUE)
-  dirs <- list.dirs(path, full.names = TRUE, recursive = FALSE)
-  
-  # Print directories
-  cat(indent, "├── ", basename(path), "/", "\n", sep = "")
-  
-  # Recursively list files and directories within directories
-  for (i in seq_along(dirs)) {
-    list_files_tree(dirs[i], depth + 1)
-    if (i < length(dirs) || length(files) > 0) {
-      cat(indent, "│", "\n", sep = "")
-    }
-  }
-  
-  # Print files
-  for (file in files) {
-    cat(indent, "├── ", basename(file), "\n", sep = "")
-  }
-}
-
-# Replace "path_to_your_directory" with the path to the directory you want to include
-list_files_tree("path_to_your_directory")
-
-
 ## Statement on LLM usage
 
 **Statement on LLM Usage: Aspects of the code and paper were written with the help of ChatGPT. Some of the data interpretation, introduction, abstract and discussion were also written using ChatGPT. The entire chat history is available in `inputs/llms/usage.txt`**
