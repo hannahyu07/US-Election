@@ -56,9 +56,9 @@ The original CES 2020 dataset, which shows in @tbl-raw, contains 61000 observati
 
 2. CC20_410: the presidential candidate the respondent voted for; numeric numbers starting from 1 correspond to  options "Joe Biden (Democrat)", "Donald J. Trump (Republican)", "Other", "I did not vote in this race", "I did not vote", "Not sure", respectively.
 
-3. region: the census region where the respondent lives; numeric numbers starting from 1 correspond to options "Northeast", "Midwest", "South", and "West", respectively.
+3. race: the racial or ethnic group of the respondent; numeric numbers starting from 1 correspond to options "White", "Black", "Hispanic", "Asian", "Native American", "Middle Eastern", "Two or more races", and "Other", respectively.
 
-4. race: the racial or ethnic group of the respondent; numeric numbers starting from 1 correspond to options "White", "Black", "Hispanic", "Asian", "Native American", "Middle Eastern", "Two or more races", and "Other", respectively.
+4. region: the census region where the respondent lives; numeric numbers starting from 1 correspond to options "Northeast", "Midwest", "South", and "West", respectively.
 
 5. employ: the current employment status of the respondent; numeric numbers starting from 1 correspond to options "Full-time", "Part-time", "Temporarily laid off", "Unemployed", "Retired", "Permanently disabled", "Homemaker", "Student", and "Other", respectively.
 
@@ -208,7 +208,7 @@ We chose this modeling approach for several reasons. Firstly, logistic regressio
 
 Alternative modeling approaches, such as linear regression models, were also considered. However, we chose Bayesian logistic regression because our result is a binary variable of voter's decision.
 
-We run the model in R [@citeR] using the `rstanarm` package of @citeRstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see -@sec-model-details).
+We run the model in R [@citeR] using the `rstanarm` package of @citeRstanarm. We use the default priors from `rstanarm`. Rstanarm employs Markov chain Monte Carlo (MCMC) techniques to estimate the posterior distribution of the parameters. To avoid exessive runtime, we randomly sampled 1000 observations to fit the model. Model diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see Appendix @sec-model-details).
 
 
 ## Model Justification
@@ -227,7 +227,7 @@ For posterior predictive checks, in @fig-post_dist, the great fit of the posteri
 
 The trace plot in @fig-trace does not suggest anything out of the ordinary. Also, with the Rhat plot (@fig-rhat), we can observe that everything is close to 1, and no more than 1.05, which shows the great convergence of Markov chain Monte Carlo for our model.
 
-More detailed explanation of each plot can be found in -@sec-model-details.
+More detailed explanation of each plot can be found in Appendix @sec-model-details.
 
 
 # Results {#sec-result}
@@ -396,7 +396,7 @@ Combining @fig-modelresults1 and @fig-modelresults2, we observe statistical sign
 
 # Discussion {#sec-discussion}
 
-Our discussion is made based on @tbl-modelresults1 from our model, as well as background information on different presidential candidates and their different views of the world and divergent approaches to tackling some of the  issues in the United States.
+Our discussion is made primarily based on the logistic regression model and its result in @tbl-modelresults1, as well as background information on different presidential candidates and their different views of the world and divergent approaches to tackling some of the  issues in the United States.
 
 ## Racial Variations
 In the United States, race is always a sensitive topic. Many racist and discriminating events have happened in the past in this country that people in minority groups have to endure. As Trump and Biden have different ideology in guaranteeing racial equality [@biden_inclusion], it is obvious that being in different racial groups will influence people's decision in voting.
