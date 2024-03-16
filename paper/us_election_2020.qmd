@@ -556,7 +556,7 @@ plot(political_preferences1, "rhat")
 ```
 
 ## Credibility Interval {#sec-credibility-interval}
-
+@fig-modelresults1 and @fig-modelresults2 show the 90% credibility interval for the model.
 
 
 ```{r}
