@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repo contains the analysis of the voting turnouts of the U.S. 2020 Presidential Election based on voters' backgrounds.
+This repo contains the analysis of the voting turnouts of the U.S. 2020 Presidential Election based on voters' backgrounds using data from the Cooperate Election Study (CES2020). A logistic regression model is built to analyze the impact of race, region, and employment status on individuals' voting preferences. 
 
 To use this folder, click the green "Code" button", then "Download ZIP". Move the downloaded folder to where you want to work on your own computer, and then modify it to suit.
 
